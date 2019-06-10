@@ -1,0 +1,35 @@
+.dashboard-card {
+    text-align: center
+}
+
+.dashboard-card-body {
+    min-height: 75px;
+}
+
+.dashboard-card-icon {
+    font-size: 40px;
+}
+
+.add-icon {
+    color: rgb(50,50,250);
+    cursor: pointer;
+}
+
+.combined-status {
+    font-size: 30px;
+}
+
+.combined-status span {
+    margin: 15px;
+}
+
+.status-fine {
+    color: green;
+}
+
+.status-warning {
+    color: yellow;
+}
+.status-bad {
+    color:red;
+}
