@@ -3,7 +3,8 @@ import {
     IJobState,
     JobActionTypes,
     INPUT_CHANGE,
-    JOB_CREATED_ERROR
+    JOB_CREATED_ERROR,
+    JOB_CREATED
 } from './types';
 
 const initialState: IJobState = {
@@ -28,6 +29,14 @@ export function jobsReducer(
             };
             toast.error(resultState.error_message);
             return resultState;
+        }
+        case JOB_CREATED: {
+            const createJobSuccessState = {
+                ...state,
+                newJob: {jobId: action.jobId, jobPostTitle: ''}
+            };
+            toast.success('Job Post created with id: ' + createJobSuccessState.newJob.jobId);
+            return createJobSuccessState;
         }
         default: return state;
     }

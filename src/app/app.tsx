@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
 import {
     Avatar,
     Badge,
@@ -51,13 +50,13 @@ export default function App(props: IAppProps) {
     ];
 
     const tasks = [
-        {title: 'task1', on: '20:15'},
-        {title: 'task2', on: '20:10'},
-        {title: 'task3', on: '20:05'},
-        {title: 'task4', on: '20:00'},
-        {title: 'task5', on: '19:33'},
-        {title: 'task6', on: '19:10'},
-        {title: 'task7', on: '19:01'},
+        { title: 'task1', on: '20:15' },
+        { title: 'task2', on: '20:10' },
+        { title: 'task3', on: '20:05' },
+        { title: 'task4', on: '20:00' },
+        { title: 'task5', on: '19:33' },
+        { title: 'task6', on: '19:10' },
+        { title: 'task7', on: '19:01' },
     ];
 
     const PageToolbar = (
@@ -74,11 +73,11 @@ export default function App(props: IAppProps) {
                                 <BellIcon />
                                 <Badge>{tasks.length}</Badge>
                             </DropdownToggle>
-                        }/>
+                        } />
                 </ToolbarItem>
                 <ToolbarItem>
-                    <Button id="horizontal-example-uid-02" 
-                        aria-label="Settings actions" 
+                    <Button id="horizontal-example-uid-02"
+                        aria-label="Settings actions"
                         variant={ButtonVariant.plain}
                         onClick={props.onToggleAbout}>
                         <QuestionIcon />
@@ -133,15 +132,13 @@ export default function App(props: IAppProps) {
     return (
         <Fragment>
             <ToastContainer autoClose={3000} position="bottom-right" />
-            <AppAbout 
-                imageBrandSrc={imgBrand} 
+            <AppAbout
+                imageBrandSrc={imgBrand}
                 isAboutOpen={props.isAboutOpen}
                 onToggleAbout={props.onToggleAbout} />
-            <Router>
-                <Page header={Header} skipToContent={PageSkipToContent} breadcrumb={PageBreadcrumb}>
-                    <AppRouter />
-                </Page>
-            </Router>
+            <Page header={Header} skipToContent={PageSkipToContent} breadcrumb={PageBreadcrumb}>
+                <AppRouter />
+            </Page>
         </Fragment>
     );
 }

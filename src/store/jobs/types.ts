@@ -4,7 +4,8 @@ export interface IJobState {
 }
 
 export interface IJob {
-    jobPostTitle: string;
+    jobId?: string,
+    jobPostTitle: string,
 }
 
 // Describe actions
@@ -23,7 +24,8 @@ interface IJobSubmitAction {
 }
 
 interface IJobCreatedAction {
-    type: typeof JOB_CREATED
+    type: typeof JOB_CREATED,
+    jobId: string
 }
 
 interface IJobCreatedErrorAction {

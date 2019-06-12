@@ -14,8 +14,9 @@ import {
 import { IJobState, IJob } from 'src/store/jobs/types';
 
 import { inputChange, createJob } from 'src/store/jobs/actions';
+import { Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 
-interface IJobFormProps {
+interface IJobFormProps extends RouteComponentProps<any> {
     jobState: IJobState,
     onInputChange: typeof inputChange
     onCreateJob: typeof createJob
@@ -23,6 +24,7 @@ interface IJobFormProps {
 
 class AddJobForm extends Component<IJobFormProps & InjectedFormProps<{}, IJobFormProps>, {}> {
     public render() {
+        
         return (<PageSection variant={PageSectionVariants.light}>
             <form onSubmit={this.props.handleSubmit}>
                 <FormGroup label="required"
@@ -58,6 +60,8 @@ const mapStateToProps: any = (state: AppState) => ({
     jobState: state.jobs
 });
 
+const formWithRouter = withRouter<IJobFormProps>(decoratedForm);
+
 // TODO: Map on submit fail
 // TODO: Retrieve env configuration for KIE-SERVER ENDPOINT
 // TODO: Send CASE CREATION REST API (KIE-SERVER ENDPOINT)
@@ -67,4 +71,4 @@ export default connect<{},{}>(
         onInputChange: inputChange,
         onSubmit: createJob
     }
-)(decoratedForm);
+)(formWithRouter);

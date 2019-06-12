@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from 'react-redux';
 import "@patternfly/react-core/dist/styles/base.css";
 
-import configureStore from './store';
+import configureStore, {history} from './store';
 import AppContainer from '@app/index';
+import { ConnectedRouter } from "connected-react-router";
 
 const store = configureStore();
 
@@ -16,7 +17,9 @@ if (process.env.NODE_ENV !== "production") {
 
 const Root = () => (
   <Provider store={store}>
-    <AppContainer />
+    <ConnectedRouter history={history}>
+      <AppContainer />
+    </ConnectedRouter>
   </Provider>
 );
 
