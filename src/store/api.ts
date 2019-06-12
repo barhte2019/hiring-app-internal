@@ -1,11 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
 
-const API_BASE = 'https://kie-hiring-kieserver-rhpam-user1.apps.9194.openshift.opentlc.com/services/rest/server';
+// const API_BASE = 'https://kie-hiring-kieserver-rhpam-user1.apps.9194.openshift.opentlc.com/services/rest/server';
 const API_KEY = 'Basic YWRtaW5Vc2VyOmFkbWluMSE='
 
 function api(): AxiosInstance {
     return axios.create({
-        baseURL: API_BASE,
         headers: {
             Accept: 'application/json',
             'Authorization': API_KEY,
@@ -18,7 +17,7 @@ function api(): AxiosInstance {
 export default {
     jobs: {
         create: job => api().post(
-            '/containers/hr-hiring/cases/hr-hiring.hiring-case-definition/instances',
+            '/services/rest/server/containers/hr-hiring/cases/hr-hiring.hiring-case-definition/instances',
             {
                 "case-group-assignments": { "talent-acquisition": "admin" }
             })

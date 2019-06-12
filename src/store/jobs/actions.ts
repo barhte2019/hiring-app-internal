@@ -8,14 +8,21 @@ export function inputChange(value: string) {
     }
 }
 
+export function createJobFormError(err: any) {
+    return {
+        err,
+        type: JOB_CREATED_ERROR,
+    }
+}
+
 export function createJob(job: IJob) {
     return dispatch => {
         dispatch({type: JOB_SUBMIT})
 
         return api.jobs.create(job).then(resp => {
             return dispatch({type: JOB_CREATED, job: resp.data})
-        }).catch(errr => {
-            return dispatch({type: JOB_CREATED_ERROR, serverErrors: errr.response.data})
+        }).catch(err => {
+            return dispatch({type: JOB_CREATED_ERROR, serverErrors: err})
         });
     }
 }

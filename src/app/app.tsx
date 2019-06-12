@@ -12,16 +12,9 @@ import {
     DropdownToggle,
     DropdownItem,
     DropdownSeparator,
-    Nav,
-    NavItem,
-    NavList,
-    NavVariants,
     Page,
     PageHeader,
     SkipToContent,
-    TextContent,
-    TextList,
-    TextListItem,
     Toolbar,
     ToolbarGroup,
     ToolbarItem
@@ -30,11 +23,13 @@ import {
 import { BellIcon, QuestionIcon } from '@patternfly/react-icons';
 import imgBrand from './hiring-app.png';
 import imgAvatar from './imgAvatar.png';
+import "react-toastify/dist/ReactToastify.css";
 
 import AppRouter from '../routes';
 import AppAbout from './about';
 import PageNav from './page-nav';
 import TaskDropdownItems from './task-dd-items';
+import { ToastContainer } from 'react-toastify';
 
 interface IAppProps {
     isAboutOpen: boolean,
@@ -137,6 +132,7 @@ export default function App(props: IAppProps) {
 
     return (
         <Fragment>
+            <ToastContainer autoClose={3000} position="bottom-right" />
             <AppAbout 
                 imageBrandSrc={imgBrand} 
                 isAboutOpen={props.isAboutOpen}

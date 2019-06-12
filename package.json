@@ -1,9 +1,9 @@
 {
-  "name": "patternfly-seed",
+  "name": "hiring-app-internal",
   "version": "0.0.1",
-  "description": "An open source build scaffolding utility for web apps.",
+  "description": "Back office application for posting jobs and manage interviews.",
   "main": "index.js",
-  "repository": "https://github.com/patternfly/patternfly-react-seed.git",
+  "repository": "https://github.com/barhte2019/hiring-app-internal.git",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -70,6 +70,7 @@
     "prop-types": "^15.7.2",
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.1",
+    "react-toastify": "^5.2.1",
     "recharts": "^1.6.2",
     "redux": "^4.0.1",
     "redux-form": "^8.2.3",

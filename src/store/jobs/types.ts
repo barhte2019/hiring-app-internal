@@ -1,5 +1,6 @@
 export interface IJobState {
-    newJob: IJob
+    newJob: IJob,
+    error_message?: string
 }
 
 export interface IJob {
@@ -26,7 +27,8 @@ interface IJobCreatedAction {
 }
 
 interface IJobCreatedErrorAction {
-    type: typeof JOB_CREATED_ERROR
+    type: typeof JOB_CREATED_ERROR,
+    serverErrors: any
 }
 
 export type JobActionTypes = IInputChangeAction 
