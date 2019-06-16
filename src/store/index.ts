@@ -4,14 +4,12 @@ import {connectRouter, routerMiddleware} from 'connected-react-router';
 import thunkMiddleware from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
-import {reducer as form} from 'redux-form';
 import {systemReducer} from './system/reducers';
 import {jobsReducer} from './jobs/reducers';
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-    form,
     jobs: jobsReducer,
     router: connectRouter(history),
     system: systemReducer,

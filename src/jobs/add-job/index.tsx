@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { AppState } from 'src/store';
 import { connect } from 'react-redux';
-import { reduxForm, InjectedFormProps, FormErrors} from 'redux-form';
 
 import {
     ActionGroup,
@@ -11,26 +10,33 @@ import {
     PageSection,
     PageSectionVariants
 } from '@patternfly/react-core';
-import { IJobState, IJob } from 'src/store/jobs/types';
+import { IJobState } from 'src/store/jobs/types';
 
-import { inputChange, createJob } from 'src/store/jobs/actions';
-import { Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
+import { jobTitleChange, createJob, jobDescriptionChange, jobLocationChange } from 'src/store/jobs/actions';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IJobFormProps extends RouteComponentProps<any> {
     jobState: IJobState,
-    onInputChange: typeof inputChange
+    onJobTitleChange: typeof jobTitleChange
+    onJobDescriptionChange: typeof jobDescriptionChange
+    onJobLocationChange: typeof jobLocationChange
     onCreateJob: typeof createJob
 }
 
-class AddJobForm extends Component<IJobFormProps & InjectedFormProps<{}, IJobFormProps>, {}> {
+class AddJobForm extends Component<IJobFormProps> {
+
+    constructor(props: IJobFormProps) {
+        super(props);
+        this.submit = this.submit.bind(this);
+    }
+
     public render() {
-        
         return (<PageSection variant={PageSectionVariants.light}>
-            <form onSubmit={this.props.handleSubmit}>
-                <FormGroup label="required"
+            <form onSubmit={this.submit}>
+            <FormGroup label="required"
                     isRequired={true}
                     fieldId="job-post-title"
-                    helperText="Job post title"
+                    helperText="Title"
                 >
                     <TextInput
                         isRequired={true}
@@ -38,7 +44,35 @@ class AddJobForm extends Component<IJobFormProps & InjectedFormProps<{}, IJobFor
                         id="job-post-title"
                         name="job-post-title"
                         aria-describedby="job-post-title-helper"
-                        onChange={this.props.onInputChange}
+                        onChange={this.props.onJobTitleChange}
+                    />
+                </FormGroup>
+                <FormGroup label="required"
+                    isRequired={true}
+                    fieldId="job-post-description"
+                    helperText="Description"
+                >
+                    <TextInput
+                        isRequired={true}
+                        type="text"
+                        id="job-post-description"
+                        name="job-post-description"
+                        aria-describedby="job-post-description-helper"
+                        onChange={this.props.onJobDescriptionChange}
+                    />
+                </FormGroup>
+                <FormGroup label="required"
+                    isRequired={true}
+                    fieldId="job-post-location"
+                    helperText="Location"
+                >
+                    <TextInput
+                        isRequired={true}
+                        type="text"
+                        id="job-post-location"
+                        name="job-post-location"
+                        aria-describedby="job-post-location-helper"
+                        onChange={this.props.onJobLocationChange}
                     />
                 </FormGroup>
                 <ActionGroup>
@@ -47,28 +81,29 @@ class AddJobForm extends Component<IJobFormProps & InjectedFormProps<{}, IJobFor
             </form>
         </PageSection>)
     }
+
+    private submit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        this.props.onCreateJob(this.props.jobState.newJob);
+    }
 }
-
-const formName = 'createJobForm';
-
-const decoratedForm = reduxForm<{}, IJobFormProps>({
-    form: formName
-})(AddJobForm)
 
 // Connect to the data store
 const mapStateToProps: any = (state: AppState) => ({
     jobState: state.jobs
 });
 
-const formWithRouter = withRouter<IJobFormProps>(decoratedForm);
+const formWithRouter = withRouter<IJobFormProps>(AddJobForm);
 
 // TODO: Map on submit fail
 // TODO: Retrieve env configuration for KIE-SERVER ENDPOINT
 // TODO: Send CASE CREATION REST API (KIE-SERVER ENDPOINT)
-export default connect<{},{}>(
+export default connect<{}, {}>(
     mapStateToProps,
     {
-        onInputChange: inputChange,
-        onSubmit: createJob
+        onCreateJob: createJob,
+        onJobDescriptionChange: jobDescriptionChange,
+        onJobLocationChange: jobLocationChange,
+        onJobTitleChange: jobTitleChange,
     }
 )(formWithRouter);
