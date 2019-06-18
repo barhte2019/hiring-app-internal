@@ -3,9 +3,8 @@ import { push } from 'connected-react-router';
 
 import {
     JOB_DESCRIPTION_CHANGE, JOB_LOCATION_CHANGE, JOB_TITLE_CHANGE,
-    JOB_SUBMIT,
-    JOB_CREATED,
-    JOB_CREATED_ERROR,
+    JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR,
+    JOB_SUBMIT, JOB_CREATED, JOB_CREATED_ERROR,
     IJob
 } from './types';
 
@@ -21,6 +20,19 @@ export function jobTitleChange(value: string) {
     return { type: JOB_TITLE_CHANGE, value }
 }
 
+export function jobListFecth() {
+    return dispatch => {
+        dispatch({ type: JOB_LIST_FECTHING });
+
+        return api.jobs.list(0, 10).then(resp => {
+            // TODO: Dispatch job detail fetch for each item (if parameter "withDetail" is true)
+            return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data });
+        }).catch(err => {
+            return dispatch({ type: JOB_LIST_FETCH_ERROR, serverErrors: err })
+        });
+    }
+}
+
 export function createJobFormError(err: any) {
     return { err, type: JOB_CREATED_ERROR }
 }
@@ -31,7 +43,7 @@ export function createJobFormSucceed(jobId: string) {
 
 export function createJob(job: IJob) {
     return dispatch => {
-        dispatch({ type: JOB_SUBMIT })
+        dispatch({ type: JOB_SUBMIT });
 
         return api.jobs.create(job).then(resp => {
             dispatch(push('/'));

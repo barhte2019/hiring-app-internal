@@ -29,7 +29,15 @@ export default {
               "case-user-assignments" : { "owner" : "adminUser" },
             }
           );
-        }
+        },
+        list:(page: number, pageSize: number) => api().get(
+          'services/rest/server/queries/cases/instances', 
+          {
+            params:{
+              page, 
+              'page_size':pageSize
+            }
+          })
     },
     recipes: {
         list: () => api().get('/recipes', { params: { page: 1, results_per_page: 15 } })
