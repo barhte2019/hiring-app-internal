@@ -3,12 +3,12 @@ import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 import ListJobsContainer, { IJobListProps } from './list-jobs';
 import { connect } from 'react-redux';
 import { AppState } from 'src/store';
-import { jobListFecth } from 'src/store/jobs/actions';
+import { jobListWithDetail } from 'src/store/jobs/actions';
 
 export class JobsContainer extends Component<IJobListProps> {
 
     public componentDidMount() {
-        this.props.fetchJobs();
+        this.props.jobListWithDetail();
     }
 
     public render() {
@@ -25,7 +25,7 @@ const mapStateToProps: any = (state: AppState) => ({
 });
 
 const mapDispatchToProps: any = ({
-    fetchJobs:  jobListFecth
+    jobListWithDetail
 })
 
 export default connect(

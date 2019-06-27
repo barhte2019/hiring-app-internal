@@ -15,3 +15,17 @@ export interface ICaseInstance {
     "case-stages"?: any,
     "case-roles"?: any
 }
+
+export interface ICaseInstances {
+    instances: ICaseInstance[]
+}
+
+export interface IHiringPetition {
+    jobTitle: string,
+    jobDescription: string,
+    location: string
+}
+
+export interface IApiJob {
+    hiringPetition: IHiringPetition
+}

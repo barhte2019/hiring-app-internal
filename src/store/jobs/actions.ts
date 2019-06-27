@@ -3,7 +3,8 @@ import { push } from 'connected-react-router';
 
 import {
     JOB_DESCRIPTION_CHANGE, JOB_LOCATION_CHANGE, JOB_TITLE_CHANGE,
-    JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR,
+    JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR, JOB_DETAIL_RECEIVED,
+    JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR,
     JOB_SUBMIT, JOB_CREATED, JOB_CREATED_ERROR,
     IJob
 } from './types';
@@ -24,11 +25,41 @@ export function jobListFecth() {
     return dispatch => {
         dispatch({ type: JOB_LIST_FECTHING });
 
-        return api.jobs.list(0, 10).then(resp => {
-            // TODO: Dispatch job detail fetch for each item (if parameter "withDetail" is true)
-            return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data });
+        return api.jobs.list(0, 10)
+            .then(resp => {
+                return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data })
+            })
+            .catch(err => {
+                return dispatch({ type: JOB_LIST_FETCH_ERROR, serverErrors: err })
+            }
+        );
+    }
+}
+
+export function jobDetailReceived(jobId: string) {
+    return dispatch => {
+        return api.jobs.detail(jobId).then(resp => {
+            return dispatch({type: JOB_DETAIL_RECEIVED, jobId, hiringPetition: resp.data});
+        })
+    }
+}
+
+export function jobListWithDetail() {
+    return (dispatch, getState) => {
+        dispatch(jobListFecth()).then(() => {
+            const jobIdsArr = getState().jobs.jobIds;
+            jobIdsArr.forEach(jobId => {dispatch(jobDetailReceived(jobId))});
+        });
+    }
+}
+
+export function jobDetailFetch(jobId: string) {
+    return dispatch => {
+        dispatch({type: JOB_DETAIL_FETCHING});
+        return api.jobs.detail(jobId).then(resp => {
+            return dispatch({type: JOB_DETAIL_FETCH_SUCCESS, job: resp.data});
         }).catch(err => {
-            return dispatch({ type: JOB_LIST_FETCH_ERROR, serverErrors: err })
+            return dispatch({type: JOB_DETAIL_FETCH_ERROR, serverErrors: err});
         });
     }
 }
