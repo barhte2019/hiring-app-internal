@@ -5438,6 +5438,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+keycloak-js@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-6.0.1.tgz#329a5e77210dfc4a7d4acf96f95dd0132455bea3"
+  integrity sha512-p02dBCA9pSH1xvTmRIEMdeMz00eCGKmZF+rjMeqrkiQD4xhXkzu50J9sQjaANolMlLhazOtfql70+N5QWm8Upg==
+
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -7312,6 +7317,14 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
+
+react-keycloak@^6.0.4:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/react-keycloak/-/react-keycloak-6.0.4.tgz#4d21dc7a9c9a158873a3a1fa0e0aee5f8d507b6d"
+  integrity sha512-fTUCGw+rAPKJBV05Buz3GCTtXqZRjWqmSAwvvf9exqHXuvK7P/uONQCUaqLVS5TF+AOmgOo/xmAHviCueDgSsw==
+  dependencies:
+    hoist-non-react-statics "^3.3.0"
+    prop-types "^15.7.2"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppState } from '../store';
 import {connect} from 'react-redux';
+import { withKeycloak, ReactKeycloakInjectedProps } from 'react-keycloak';
 
 import App from './app';
 import { ISystemState } from 'src/store/system/types';
@@ -12,8 +13,9 @@ import {
   toggleTasks,
   toggleAbout
 } from '../store/system/actions';
+import LoginPage from 'src/login/login';
 
-interface IAppProps {
+interface IAppProps extends ReactKeycloakInjectedProps {
   system: ISystemState,
   selectDropdown: typeof selectDropdown,
   toggleDropdown: typeof toggleDropdown,
@@ -26,7 +28,8 @@ export class AppContainer extends Component<IAppProps> {
 
   public render() {
     return (
-      <App
+      this.props.keycloak.authenticated 
+      ? <App
         key="AppKey" 
         isDropdownOpen={this.props.system.isDropdownOpen} 
         areTasksOpen={this.props.system.areTasksOpen}
@@ -36,6 +39,7 @@ export class AppContainer extends Component<IAppProps> {
         onTasksDropdownToggle={this.props.toggleTasks}
         onToggleAbout={this.props.toggleAbout}
         isAboutOpen={this.props.system.isAboutOpen} />
+      : <LoginPage />
     );
   }
 }
@@ -44,7 +48,7 @@ const mapStateToProps = (state: AppState) => ({
   system: state.system
 });
 
-export default connect(
+const connectedApp = connect(
   mapStateToProps, 
   {
     selectDropdown, 
@@ -53,4 +57,7 @@ export default connect(
     toggleDropdown,
     toggleTasks,
   }
-)(AppContainer);
+)(AppContainer)
+
+export default withKeycloak(connectedApp);
+

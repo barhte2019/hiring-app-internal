@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { useKeycloak } from 'react-keycloak';
+
 import {
     Avatar,
     Badge,
@@ -42,11 +44,16 @@ interface IAppProps {
 }
 
 export default function App(props: IAppProps) {
+    const {keycloak} = useKeycloak();
+    const appLogout = () => {
+        keycloak.logout();
+    }
+
     const userDropdownItems = [
         <DropdownItem key="LinkUserDropdownItem">Profile</DropdownItem>,
         <DropdownItem key="ActionButtonUserUserDropdownItem">Tasks</DropdownItem>,
         <DropdownSeparator key="dropDownSeparator" />,
-        <DropdownItem key="separatedLink">Log out</DropdownItem>
+        <DropdownItem key="separatedLink" onClick={appLogout}>Log out</DropdownItem>
     ];
 
     const tasks = [
@@ -59,6 +66,7 @@ export default function App(props: IAppProps) {
         { title: 'task7', on: '19:01' },
     ];
 
+    // tslint:disable:no-string-literal
     const PageToolbar = (
         <Toolbar>
             <ToolbarGroup>
@@ -91,7 +99,8 @@ export default function App(props: IAppProps) {
                         position="right"
                         onSelect={props.onDropdownSelect}
                         isOpen={props.isDropdownOpen}
-                        toggle={<DropdownToggle onToggle={props.onDropdownToggle}>User Name</DropdownToggle>}
+                        toggle={<DropdownToggle onToggle={props.onDropdownToggle}>
+                        {keycloak.tokenParsed?keycloak.tokenParsed['preferred_username']:keycloak.subject}</DropdownToggle>}
                         dropdownItems={userDropdownItems}
                     />
                 </ToolbarItem>
