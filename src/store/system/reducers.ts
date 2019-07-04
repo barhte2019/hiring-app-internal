@@ -10,10 +10,7 @@ import {
 const initialState: ISystemState = {
     areTasksOpen: false,
     isAboutOpen: false,
-    isDropdownOpen: false,
-    loggedIn: false,
-    session: '',
-    userName: ''
+    isDropdownOpen: false
 }
 
 export function systemReducer(

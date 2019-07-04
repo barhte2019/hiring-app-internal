@@ -1,8 +1,5 @@
 // Describing the shape of the system's slice of state
 export interface ISystemState {
-    loggedIn: boolean;
-    session: string;
-    userName: string;
     isDropdownOpen: boolean;
     areTasksOpen: boolean;
     isAboutOpen: boolean;

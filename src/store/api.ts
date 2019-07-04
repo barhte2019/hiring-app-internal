@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { IJob } from './jobs/types';
-import { IHiringPetition, ICaseInstances, IApiJob } from 'src/common/types';
+import { ICaseInstances, IApiJob, ITaskSummary } from 'src/common/types';
 
 // const API_BASE = 'https://kie-hiring-kieserver-rhpam-user1.apps.9194.openshift.opentlc.com/services/rest/server';
 // echo -n adminUser:r3dh4t1! | base64
@@ -45,6 +45,22 @@ export default {
         }
       }
     ),
+  },
+  tasks: {
+    listMine: (page: number, pageSize: number) => api().get<ITaskSummary>(
+      'services/rest/server/queries/tasks/instances/owners', {
+        params: {
+          page,
+          pageSize
+        }
+      }),
+    listPot: (page: number, pageSize: number) => api().get<ITaskSummary>(
+      'services/rest/server/queries/tasks/instances/pot-owners', {
+        params: {
+          page,
+          pageSize
+        }
+      })
   }
 }
 

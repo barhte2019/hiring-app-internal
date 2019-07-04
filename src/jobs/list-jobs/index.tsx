@@ -32,36 +32,3 @@ export default function ListJobsContainer(props: IJobListProps) {
         </Table>
     );
 }
-
-/*export class ListJobsContainer extends Component <IJobListProps> {
-    public componentDidMount() {
-        this.props.jobListWithDetail();
-    }
-
-    public render() {
-        const columns = [
-            'Id',
-            'Title',
-            'Description',
-            'Location'
-        ];
-        const rows = this.props.jobState.jobIds.map<string[]>(item => [item, 'Loading title ...', 'loading description..', 'loading location']);
-        return (
-            <Table caption="Jobs List" cells={columns} rows={rows}>
-                <TableHeader />
-                <TableBody />
-            </Table>
-        );
-    }
-}
-
-// Connect to the data store
-const mapStateToProps: any = (state: AppState) => ({
-    jobState: state.jobs
-});
-
-export default connect<{}, {}, IJobListProps>(
-    mapStateToProps, {
-        jobListWithDetail,
-    }
-)(ListJobsContainer)*/

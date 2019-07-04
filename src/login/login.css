@@ -55,6 +55,7 @@
     line-height: 2.5rem;
     letter-spacing: 0.8rem;
     background: -webkit-linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
   }
@@ -85,32 +86,4 @@
       max-width: 30rem;
       font-size: 1.25rem;
     }
-  }
-  
-  .pf-c-button {
-    -webkit-box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
-    box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
-    padding: 1.25rem 2rem;
-    font-family: 'Varela Round';
-    font-size: 80%;
-    text-transform: uppercase;
-    letter-spacing: .15rem;
-    border: 0;
-  }
-  
-  .pf-m-primary {
-    background-color: #64a19d;
-  }
-  
-  ..pf-m-primary:hover {
-    background-color: #4f837f;
-  }
-  
-  .pf-m-primary:focus {
-    background-color: #4f837f;
-    color: white;
-  }
-  
-  .pf-m-primary:active {
-    background-color: #467370 !important;
   }

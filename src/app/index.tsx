@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { AppState } from '../store';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { withKeycloak, ReactKeycloakInjectedProps } from 'react-keycloak';
 
 import App from './app';
 import { ISystemState } from 'src/store/system/types';
 
-import { 
-  selectDropdown, 
-  toggleDropdown, 
-  selectTasks, 
+import RingLoader from 'react-spinners/RingLoader';
+
+import {
+  selectDropdown,
+  toggleDropdown,
+  selectTasks,
   toggleTasks,
   toggleAbout
 } from '../store/system/actions';
 import LoginPage from 'src/login/login';
+import { potentialTaskListFetch } from 'src/store/tasks/actions';
 
 interface IAppProps extends ReactKeycloakInjectedProps {
   system: ISystemState,
@@ -21,43 +24,63 @@ interface IAppProps extends ReactKeycloakInjectedProps {
   toggleDropdown: typeof toggleDropdown,
   selectTasks: typeof selectTasks,
   toggleTasks: typeof toggleTasks,
-  toggleAbout: typeof toggleAbout
+  toggleAbout: typeof toggleAbout,
+  potentialTaskListFetch: typeof potentialTaskListFetch,
 }
 
-export class AppContainer extends Component<IAppProps> {
+export class AppContainer extends Component<any> {
+
+  public componentDidMount() {
+    // TODO: Pull potential tasks
+    this.props.potentialTaskListFetch(0,11);
+  }
 
   public render() {
+    if (!this.props.keycloakInitialized) {
+      return (
+        <div>
+          <RingLoader
+            sizeUnit={"px"}
+            size={150}
+            color={'#123abc'}
+          />
+        </div>);
+    }
+
     return (
-      this.props.keycloak.authenticated 
-      ? <App
-        key="AppKey" 
-        isDropdownOpen={this.props.system.isDropdownOpen} 
-        areTasksOpen={this.props.system.areTasksOpen}
-        onDropdownSelect={this.props.selectDropdown}
-        onDropdownToggle={this.props.toggleDropdown}
-        onTasksDropdownSelect={this.props.selectTasks}
-        onTasksDropdownToggle={this.props.toggleTasks}
-        onToggleAbout={this.props.toggleAbout}
-        isAboutOpen={this.props.system.isAboutOpen} />
-      : <LoginPage />
+      this.props.keycloak.authenticated
+        ? <App
+          key="AppKey"
+          isDropdownOpen={this.props.system.isDropdownOpen}
+          areTasksOpen={this.props.system.areTasksOpen}
+          onDropdownSelect={this.props.selectDropdown}
+          onDropdownToggle={this.props.toggleDropdown}
+          onTasksDropdownSelect={this.props.selectTasks}
+          onTasksDropdownToggle={this.props.toggleTasks}
+          onToggleAbout={this.props.toggleAbout}
+          isAboutOpen={this.props.system.isAboutOpen}
+          potentialTasks={this.props.task.potentialTasks} />
+        : <LoginPage />
     );
   }
 }
 
-const mapStateToProps = (state: AppState) => ({
-  system: state.system
+const mapStateToProps:any = (state: AppState) => ({
+  system: state.system,
+  task: state.task,
 });
 
-const connectedApp = connect(
-  mapStateToProps, 
+const wk = withKeycloak(AppContainer);
+
+export default connect<{},{}>(
+  mapStateToProps,
   {
-    selectDropdown, 
+    potentialTaskListFetch,
+    selectDropdown,
     selectTasks,
     toggleAbout,
     toggleDropdown,
     toggleTasks,
   }
-)(AppContainer)
-
-export default withKeycloak(connectedApp);
+)(wk)
 

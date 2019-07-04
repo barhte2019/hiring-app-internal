@@ -21,11 +21,11 @@ export function jobTitleChange(value: string) {
     return { type: JOB_TITLE_CHANGE, value }
 }
 
-export function jobListFecth() {
+export function jobListFecth(page: number, pageSize: number) {
     return dispatch => {
         dispatch({ type: JOB_LIST_FECTHING });
 
-        return api.jobs.list(0, 10)
+        return api.jobs.list(page, pageSize)
             .then(resp => {
                 return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data })
             })
@@ -44,9 +44,9 @@ export function jobDetailReceived(jobId: string) {
     }
 }
 
-export function jobListWithDetail() {
+export function jobListWithDetail(page: number, pageSize: number) {
     return (dispatch, getState) => {
-        dispatch(jobListFecth()).then(() => {
+        dispatch(jobListFecth(page, pageSize)).then(() => {
             const jobIdsArr = getState().jobs.jobIds;
             jobIdsArr.forEach(jobId => {dispatch(jobDetailReceived(jobId))});
         });

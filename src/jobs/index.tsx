@@ -8,7 +8,7 @@ import { jobListWithDetail } from 'src/store/jobs/actions';
 export class JobsContainer extends Component<IJobListProps> {
 
     public componentDidMount() {
-        this.props.jobListWithDetail();
+        this.props.jobListWithDetail(0,100);
     }
 
     public render() {

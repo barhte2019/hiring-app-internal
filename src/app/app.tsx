@@ -5,8 +5,6 @@ import {
     Avatar,
     Badge,
     Brand,
-    Breadcrumb,
-    BreadcrumbItem,
     Button,
     ButtonVariant,
     Dropdown,
@@ -31,11 +29,13 @@ import AppAbout from './about';
 import PageNav from './page-nav';
 import TaskDropdownItems from './task-dd-items';
 import { ToastContainer } from 'react-toastify';
+import { ITask } from 'src/common/types';
 
 interface IAppProps {
     isAboutOpen: boolean,
     isDropdownOpen: boolean,
     areTasksOpen: boolean,
+    potentialTasks: ITask[],
     onDropdownSelect: (event: any) => void,
     onDropdownToggle: (isDropdownOpen: boolean) => void,
     onTasksDropdownSelect: (event: any) => void,
@@ -44,26 +44,13 @@ interface IAppProps {
 }
 
 export default function App(props: IAppProps) {
-    const {keycloak} = useKeycloak();
+    const { keycloak } = useKeycloak();
     const appLogout = () => {
         keycloak.logout();
     }
 
     const userDropdownItems = [
-        <DropdownItem key="LinkUserDropdownItem">Profile</DropdownItem>,
-        <DropdownItem key="ActionButtonUserUserDropdownItem">Tasks</DropdownItem>,
-        <DropdownSeparator key="dropDownSeparator" />,
-        <DropdownItem key="separatedLink" onClick={appLogout}>Log out</DropdownItem>
-    ];
-
-    const tasks = [
-        { title: 'task1', on: '20:15' },
-        { title: 'task2', on: '20:10' },
-        { title: 'task3', on: '20:05' },
-        { title: 'task4', on: '20:00' },
-        { title: 'task5', on: '19:33' },
-        { title: 'task6', on: '19:10' },
-        { title: 'task7', on: '19:01' },
+       <DropdownItem key="separatedLink" onClick={appLogout}>Log out</DropdownItem>
     ];
 
     // tslint:disable:no-string-literal
@@ -75,11 +62,11 @@ export default function App(props: IAppProps) {
                         onSelect={props.onTasksDropdownSelect}
                         isOpen={props.areTasksOpen}
                         isPlain={true}
-                        dropdownItems={TaskDropdownItems(tasks)}
+                        dropdownItems={TaskDropdownItems(props.potentialTasks)}
                         toggle={
                             <DropdownToggle iconComponent={null} onToggle={props.onTasksDropdownToggle}>
                                 <BellIcon />
-                                <Badge>{tasks.length}</Badge>
+                                <Badge>{props.potentialTasks.length > 10 ? '+10': props.potentialTasks.length}</Badge>
                             </DropdownToggle>
                         } />
                 </ToolbarItem>
@@ -100,7 +87,7 @@ export default function App(props: IAppProps) {
                         onSelect={props.onDropdownSelect}
                         isOpen={props.isDropdownOpen}
                         toggle={<DropdownToggle onToggle={props.onDropdownToggle}>
-                        {keycloak.tokenParsed?keycloak.tokenParsed['preferred_username']:keycloak.subject}</DropdownToggle>}
+                            {keycloak.tokenParsed ? keycloak.tokenParsed['preferred_username'] : keycloak.subject}</DropdownToggle>}
                         dropdownItems={userDropdownItems}
                     />
                 </ToolbarItem>
@@ -117,23 +104,6 @@ export default function App(props: IAppProps) {
         />
     );
 
-    const PageBreadcrumb = (
-        <Breadcrumb>
-            <BreadcrumbItem isActive={true}><h1>Dashboard</h1></BreadcrumbItem>
-        </Breadcrumb>
-    );
-
-    /*const PageBreadcrumb = (
-            <Breadcrumb>
-              <BreadcrumbItem>Section Home</BreadcrumbItem>
-              <BreadcrumbItem to="#">Section Title</BreadcrumbItem>
-              <BreadcrumbItem to="#">Section Title</BreadcrumbItem>
-              <BreadcrumbItem to="#" isActive={true}>
-                Section Landing
-              </BreadcrumbItem>
-            </Breadcrumb>
-          );*/
-
     const PageSkipToContent = (
         <SkipToContent href="#main-content-page-layout-default-nav">Skip to Content</SkipToContent>
     );
@@ -145,7 +115,7 @@ export default function App(props: IAppProps) {
                 imageBrandSrc={imgBrand}
                 isAboutOpen={props.isAboutOpen}
                 onToggleAbout={props.onToggleAbout} />
-            <Page header={Header} skipToContent={PageSkipToContent} breadcrumb={PageBreadcrumb}>
+            <Page header={Header} skipToContent={PageSkipToContent}>
                 <AppRouter />
             </Page>
         </Fragment>

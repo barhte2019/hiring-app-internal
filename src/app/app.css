@@ -12,3 +12,8 @@
 .notification-container {
   flex: 0 1 auto;
 }
+
+.sweet-loading {
+  margin-left: auto!important;
+  margin-right: auto!important;
+}
