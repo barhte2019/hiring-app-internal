@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import ReactDOM from "react-dom";
 import { Provider } from 'react-redux';
 import "@patternfly/react-core/dist/styles/base.css";
@@ -29,6 +29,7 @@ function onKeycloakEvent(event, error) {
     localStorage.removeItem('kcTokens');
   }
 }
+
 
 const Root = () => (
   <KeycloakProvider 

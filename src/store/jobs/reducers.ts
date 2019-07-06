@@ -5,13 +5,14 @@ import {
     JOB_DESCRIPTION_CHANGE, JOB_LOCATION_CHANGE, JOB_TITLE_CHANGE,
     JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR, JOB_DETAIL_RECEIVED,
     JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR,
-    JOB_SUBMIT, JOB_CREATED_ERROR, JOB_CREATED,
+    JOB_SUBMIT, JOB_CREATED_ERROR, JOB_CREATED, JOB_MILESTONES_RECEIVED,
 } from './types';
 
 const initialState: IJobState = {
     jobIds: [],
     list: {},
     loading: false,
+    milestones: {},
     newJob: {
         jobDescription: '',
         jobTitle: '',
@@ -106,7 +107,16 @@ export function jobsReducer(
                 ...state,
                 list: {
                     ...state.list,
-                    [action.jobId]: {...action.hiringPetition}
+                    [action.jobId]: { ...action.hiringPetition }
+                }
+            }
+        }
+        case JOB_MILESTONES_RECEIVED: {
+            return {
+                ...state,
+                milestones: {
+                    ...state.milestones,
+                    [action.jobId]: { ...action.milestones },
                 }
             }
         }

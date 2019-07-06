@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { AppState } from '../store';
 import { connect } from 'react-redux';
-import { withKeycloak, ReactKeycloakInjectedProps } from 'react-keycloak';
+import { withKeycloak } from 'react-keycloak';
 
 import App from './app';
-import { ISystemState } from 'src/store/system/types';
-
 import RingLoader from 'react-spinners/RingLoader';
 
 import {
@@ -16,22 +14,11 @@ import {
   toggleAbout
 } from '../store/system/actions';
 import LoginPage from 'src/login/login';
-import { potentialTaskListFetch } from 'src/store/tasks/actions';
-
-interface IAppProps extends ReactKeycloakInjectedProps {
-  system: ISystemState,
-  selectDropdown: typeof selectDropdown,
-  toggleDropdown: typeof toggleDropdown,
-  selectTasks: typeof selectTasks,
-  toggleTasks: typeof toggleTasks,
-  toggleAbout: typeof toggleAbout,
-  potentialTaskListFetch: typeof potentialTaskListFetch,
-}
+import { potentialTaskListFetch } from '../store/tasks/actions';
 
 export class AppContainer extends Component<any> {
 
   public componentDidMount() {
-    // TODO: Pull potential tasks
     this.props.potentialTaskListFetch(0,11);
   }
 
@@ -66,6 +53,7 @@ export class AppContainer extends Component<any> {
 }
 
 const mapStateToProps:any = (state: AppState) => ({
+  jobs: state.jobs,
   system: state.system,
   task: state.task,
 });

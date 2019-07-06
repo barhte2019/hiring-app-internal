@@ -10,7 +10,6 @@ import {
     Dropdown,
     DropdownToggle,
     DropdownItem,
-    DropdownSeparator,
     Page,
     PageHeader,
     SkipToContent,

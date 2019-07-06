@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -36,6 +36,10 @@ import {
 } from 'recharts';
 
 import './dashboard.css';
+import { IJobState } from '../store/jobs/types';
+import { jobListFecth } from '../store/jobs/actions';
+import { connect } from 'react-redux';
+import { AppState } from '../store';
 
 const data = [
     { duration: 7, date: '2018-Jun', goal: 10 },
@@ -67,100 +71,126 @@ const iprData = [
     { ipr: 30, date: '2019-Jun', lsl: 30 },
 ];
 
-export default function DashboardContainer() {
-    return (<Fragment>
-        <PageSection variant={PageSectionVariants.light}>
-            <Gallery gutter="lg">
-                <GalleryItem>
-                    <Card className="dashboard-card">
-                        <CardHeader>
-                            <ThumbTackIcon /> 0 Jobs
-                        </CardHeader>
-                        <CardBody className="dashboard-card-body">
-                            <Link aria-label="add jobs" to="/jobs-add"><AddCircleOIcon className="dashboard-card-icon add-icon" /></Link>
-                        </CardBody>
-                    </Card>
-                </GalleryItem>
-                <GalleryItem>
-                    <Card className="dashboard-card">
-                        <CardHeader>
-                            <UsersIcon /> 0 Candidates
-                        </CardHeader>
-                        <CardBody className="combined-status dashboard-card-body">
-                            <Tooltip position="top" content={<div>Internal</div>}>
-                                <span>
-                                    <HomeIcon className="dashboard-card-icon" /> 0
+export interface IDashboardProps {
+    jobState: IJobState,
+    jobListFecth: typeof jobListFecth,
+}
+
+export class DashboardContainer extends Component<IDashboardProps> {
+
+    public componentDidMount() {
+        this.props.jobListFecth(0, 100);
+    }
+
+    public render() {
+        return (<Fragment>
+            <PageSection variant={PageSectionVariants.light}>
+                <Gallery gutter="lg">
+                    <GalleryItem>
+                        <Card className="dashboard-card">
+                            <CardHeader>
+                                <ThumbTackIcon /> {this.props.jobState.jobIds ? this.props.jobState.jobIds.length : 0} Jobs
+                            </CardHeader>
+                            <CardBody className="dashboard-card-body">
+                                <Link aria-label="add jobs" to="/jobs-add"><AddCircleOIcon className="dashboard-card-icon add-icon" /></Link>
+                            </CardBody>
+                        </Card>
+                    </GalleryItem>
+                    <GalleryItem>
+                        <Card className="dashboard-card">
+                            <CardHeader>
+                                <UsersIcon /> 0 Candidates
+                            </CardHeader>
+                            <CardBody className="combined-status dashboard-card-body">
+                                <Tooltip position="top" content={<div>Internal</div>}>
+                                    <span>
+                                        <HomeIcon className="dashboard-card-icon" /> 0
+                                    </span>
+                                </Tooltip>
+                                <Tooltip position="top" content={<div>External</div>}>
+                                    <span>
+                                        <GlobeIcon className="dashboard-card-icon" /> 0
                                 </span>
-                            </Tooltip>
-                            <Tooltip position="top" content={<div>External</div>}>
-                                <span>
-                                    <GlobeIcon className="dashboard-card-icon" /> 0
-                            </span>
-                            </Tooltip>
-                        </CardBody>
-                    </Card>
-                </GalleryItem>
-                <GalleryItem>
-                    <Card className="dashboard-card">
-                        <CardHeader>
-                            <TrendUpIcon /> 0% Int. Prom. Rate
-                        </CardHeader>
-                        <CardBody className="dashboard-card-body">
-                            <ErrorCircleOIcon className="dashboard-card-icon status-bad" />
-                        </CardBody>
-                    </Card>
-                </GalleryItem>
-                <GalleryItem>
-                    <Card className="dashboard-card">
-                        <CardHeader>
-                            <ClockIcon /> 0 Avg days for Hiring
-                        </CardHeader>
-                        <CardBody className="dashboard-card-body">
-                            <OkIcon className="dashboard-card-icon status-fine" />
-                        </CardBody>
-                    </Card>
-                </GalleryItem>
-            </Gallery>
-        </PageSection>
-        <PageSection>
-            <Grid gutter="md">
-                <GridItem span={6}>
-                    <Card>
-                        <CardHeader>Average Hiring Time in Days</CardHeader>
-                        <CardBody>
-                            <ResponsiveContainer width="90%" height={300}>
-                                <LineChart data={data}>
-                                    <XAxis dataKey="date" />
-                                    <YAxis />
-                                    <RTooltip />
-                                    <CartesianGrid stroke="#ccc" strokeDasharray="2 2" />
-                                    <Line type="monotone" dataKey="duration" stroke="#8884d8" />
-                                    <Line type="monotone" dataKey="goal" stroke="red" />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-                <GridItem span={6}>
-                    <Card>
-                        <CardHeader>Monthly Internal Promotion Rate %</CardHeader>
-                        <CardBody>
-                            <ResponsiveContainer width="90%" height={300}>
+                                </Tooltip>
+                            </CardBody>
+                        </Card>
+                    </GalleryItem>
+                    <GalleryItem>
+                        <Card className="dashboard-card">
+                            <CardHeader>
+                                <TrendUpIcon /> 0% Int. Prom. Rate
+                            </CardHeader>
+                            <CardBody className="dashboard-card-body">
+                                <ErrorCircleOIcon className="dashboard-card-icon status-bad" />
+                            </CardBody>
+                        </Card>
+                    </GalleryItem>
+                    <GalleryItem>
+                        <Card className="dashboard-card">
+                            <CardHeader>
+                                <ClockIcon /> 0 Avg days for Hiring
+                            </CardHeader>
+                            <CardBody className="dashboard-card-body">
+                                <OkIcon className="dashboard-card-icon status-fine" />
+                            </CardBody>
+                        </Card>
+                    </GalleryItem>
+                </Gallery>
+            </PageSection>
+            <PageSection>
+                <Grid gutter="md">
+                    <GridItem span={6}>
+                        <Card>
+                            <CardHeader>Average Hiring Time in Days</CardHeader>
+                            <CardBody>
                                 <ResponsiveContainer width="90%" height={300}>
-                                    <LineChart data={iprData}>
+                                    <LineChart data={data}>
                                         <XAxis dataKey="date" />
                                         <YAxis />
                                         <RTooltip />
                                         <CartesianGrid stroke="#ccc" strokeDasharray="2 2" />
-                                        <Line type="monotone" dataKey="ipr" stroke="#8884d8" />
-                                        <Line type="monotone" dataKey="lsl" stroke="red" />
+                                        <Line type="monotone" dataKey="duration" stroke="#8884d8" />
+                                        <Line type="monotone" dataKey="goal" stroke="red" />
                                     </LineChart>
                                 </ResponsiveContainer>
-                            </ResponsiveContainer>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </Grid>
-        </PageSection>
-    </Fragment>);
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                    <GridItem span={6}>
+                        <Card>
+                            <CardHeader>Monthly Internal Promotion Rate %</CardHeader>
+                            <CardBody>
+                                <ResponsiveContainer width="90%" height={300}>
+                                    <ResponsiveContainer width="90%" height={300}>
+                                        <LineChart data={iprData}>
+                                            <XAxis dataKey="date" />
+                                            <YAxis />
+                                            <RTooltip />
+                                            <CartesianGrid stroke="#ccc" strokeDasharray="2 2" />
+                                            <Line type="monotone" dataKey="ipr" stroke="#8884d8" />
+                                            <Line type="monotone" dataKey="lsl" stroke="red" />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </ResponsiveContainer>
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                </Grid>
+            </PageSection>
+        </Fragment>);
+    }
 }
+
+// Connect to the data store
+const mapStateToProps: any = (state: AppState) => ({
+    jobState: state.jobs
+})
+
+const mapDispatchToProps: any = ({
+    jobListFecth
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DashboardContainer)

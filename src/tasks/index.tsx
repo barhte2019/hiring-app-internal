@@ -6,7 +6,7 @@ import {
 } from '@patternfly/react-core';
 
 import {
-    Table, TableHeader, TableBody
+    Table, TableHeader, TableBody, IRow
 } from '@patternfly/react-table';
 
 import { AppState } from 'src/store';
@@ -21,13 +21,21 @@ interface ITaskProps {
     toggleActiveTab: typeof toggleActiveTab
 }
 
-function taskRowArray(task: ITask): string[] {
+function tableRowFromTask(task: ITask): IRow {
     const taskId: string = task["task-id"] ? String(task["task-id"]) : '';
     const jobTitle: string = task["task-subject"] ? task["task-subject"] : '';
     const taskName: string = task["task-name"] ? task["task-name"] : '';
     const taskDescription: string = task["task-description"] ? task["task-description"] : '';
 
-    return [taskId, jobTitle, taskName, taskDescription];
+    return {
+        cells: [
+            {title: taskId, props:{id:'task-id-' + taskId}},
+            {title: jobTitle, props:{id:'job-title-' + taskId}},
+            {title: taskName, props:{id:'task-name-' + taskId}},
+            {title: taskDescription, props:{id:'task-description-' + taskId}},
+        ],
+        props:{rowId: taskId}
+    };
 }
 
 export class TaskContainer extends Component<ITaskProps> {
@@ -49,22 +57,22 @@ export class TaskContainer extends Component<ITaskProps> {
                         <Table
                             caption="Potential Tasks"
                             cells={['Id', 'Job Title', 'Task Name', 'Task Description']}
-                            rows={this.props.taskState.potentialTasks.map<string[]>(item => taskRowArray(item))}
+                            rows={this.props.taskState.potentialTasks.map<IRow>(item => tableRowFromTask(item))}
                             actions={[
                                 { title: 'process', onClick: (event, rowId, rowData, extra) => console.log('clicked on picture for row:', rowId) },
                                 { title: 'claim', onClick: (event, rowId, rowData, extra) => console.log('clicked on claim for row:', rowId) },
                                 { isSeparator: true },
                                 { title: 'more', onClick: (event, rowId, rowData, extra) => console.log('clicked on more for row:', rowId) }
                             ]}>
-                            <TableHeader />
-                            <TableBody />
+                            <TableHeader  />
+                            <TableBody rowKey='rowId' />
                         </Table>
                     </Tab>
                     <Tab eventKey={1} title="User Tasks">
                         <Table
                             caption="My Tasks"
                             cells={['Id', 'Job Title', 'Task Name', 'Task Description']}
-                            rows={this.props.taskState.ownedTasks.map<string[]>(item => taskRowArray(item))}
+                            rows={this.props.taskState.ownedTasks.map<IRow>(item => tableRowFromTask(item))}
                             actions={[
                                 { title: 'process', onClick: (event, rowId, rowData, extra) => console.log('clicked on picture for row:', rowId) },
                                 { title: 'release', onClick: (event, rowId, rowData, extra) => console.log('clicked on release for row:', rowId) },
@@ -72,7 +80,7 @@ export class TaskContainer extends Component<ITaskProps> {
                                 { title: 'modify/complete', onClick: (event, rowId, rowData, extra) => console.log('clicked on more for row:', rowId) }
                             ]}>
                             <TableHeader />
-                            <TableBody />
+                            <TableBody rowKey='rowId' />
                         </Table></Tab>
                 </Tabs>
             </PageSection>);

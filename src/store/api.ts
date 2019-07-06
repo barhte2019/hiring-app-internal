@@ -17,6 +17,17 @@ function api(): AxiosInstance {
   });
 }
 
+export interface ICaseMilestones {
+  milestones: ICaseMilestone[]
+}
+
+export interface ICaseMilestone {
+  "milestone-name": string,
+  "milestone-id": string,
+  "milestone-achieved": boolean,
+  "milestone-status": string
+}
+
 export default {
   jobs: {
     create: (job: IJob) => {
@@ -45,6 +56,11 @@ export default {
         }
       }
     ),
+    milestones: (jobId: string) => {
+      // services/rest/server/containers/hr-hiring/cases/instances/JOB-0000000001/milestones?achievedOnly=false&page=0&pageSize=10
+      const url = 'services/rest/server/containers/hr-hiring/cases/instances/' + jobId + '/milestones';
+      return api().get<ICaseMilestones>(url, {params: {'achievedOnly': true, page: 0, 'page-size':10, }})
+    }
   },
   tasks: {
     listMine: (page: number, pageSize: number) => api().get<ITaskSummary>(

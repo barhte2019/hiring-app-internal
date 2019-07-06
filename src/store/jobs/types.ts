@@ -1,9 +1,11 @@
 import { ICaseInstances, IHiringPetition } from "src/common/types";
+import { ICaseMilestones } from "../api";
 
 export interface IJobState {
     jobIds: string[],
     newJob: IJob,
     list: any,
+    milestones: any,
     error_message?: string,
     loading: boolean,
     selectedJob: IJob,
@@ -25,6 +27,7 @@ export const JOB_LIST_FECTHING = 'JOB_LIST_FETCHING';
 export const JOB_LIST_FETCH_SUCCESS = 'JOB_LIST_FETCH_SUCCESS';
 export const JOB_LIST_FETCH_ERROR = 'JOB_LIST_FETCH_ERROR';
 export const JOB_DETAIL_RECEIVED = 'JOB_DETAIL_RECEIVED';
+export const JOB_MILESTONES_RECEIVED = 'JOB_MILESTONES_RECEIVED';
 
 export const JOB_DETAIL_FETCHING = 'JOB_DETAIL_FETCHING';
 export const JOB_DETAIL_FETCH_SUCCESS = 'JOB_DETAIL_FETCH_SUCCESS';
@@ -48,6 +51,8 @@ interface IJobListFetchErrorAction {type: typeof JOB_LIST_FETCH_ERROR, serverErr
 
 interface IJobDetailReceivedAction {type: typeof JOB_DETAIL_RECEIVED, jobId: string,  hiringPetition: IHiringPetition}
 
+interface IJobMilestonesReceivedAction {type: typeof JOB_MILESTONES_RECEIVED, jobId: string, milestones: ICaseMilestones }
+
 interface IJobDetailFetchingAction { type: typeof JOB_DETAIL_FETCHING, jobId: string }
 
 interface IJobDetailFetchSuccessAction { type: typeof JOB_DETAIL_FETCH_SUCCESS, data: IJob }
@@ -62,6 +67,7 @@ interface IJobCreatedErrorAction { type: typeof JOB_CREATED_ERROR, serverErrors:
 
 export type JobActionTypes = 
     IJobDescriptionChangeAction | IJobLocationChangeAction | IJobTitleChangeAction
-    | IJobListFetchingAction | IJobListFetchSuccessAction | IJobListFetchErrorAction | IJobDetailReceivedAction
+    | IJobListFetchingAction | IJobListFetchSuccessAction | IJobListFetchErrorAction 
+    | IJobDetailReceivedAction | IJobMilestonesReceivedAction
     | IJobDetailFetchingAction | IJobDetailFetchSuccessAction | IJobDetailFetchErrorAction
     | IJobSubmitAction | IJobCreatedAction | IJobCreatedErrorAction;

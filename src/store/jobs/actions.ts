@@ -6,7 +6,8 @@ import {
     JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR, JOB_DETAIL_RECEIVED,
     JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR,
     JOB_SUBMIT, JOB_CREATED, JOB_CREATED_ERROR,
-    IJob
+    IJob,
+    JOB_MILESTONES_RECEIVED
 } from './types';
 
 export function jobDescriptionChange(value: string) {
@@ -40,6 +41,18 @@ export function jobDetailReceived(jobId: string) {
     return dispatch => {
         return api.jobs.detail(jobId).then(resp => {
             return dispatch({type: JOB_DETAIL_RECEIVED, jobId, hiringPetition: resp.data});
+        }).catch(err => {
+            return dispatch({type: JOB_DETAIL_FETCH_ERROR, serverErrors: err})
+        })
+    }
+}
+
+export function jobMilestonesReceived(jobId: string) {
+    return dispatch => {
+        return api.jobs.milestones(jobId).then(response => {
+            return dispatch({type: JOB_MILESTONES_RECEIVED, jobId, milestones: response.data});
+        }).catch(err => {
+            return dispatch({type: JOB_DETAIL_FETCH_ERROR, serverErrors: err})
         })
     }
 }
@@ -47,8 +60,11 @@ export function jobDetailReceived(jobId: string) {
 export function jobListWithDetail(page: number, pageSize: number) {
     return (dispatch, getState) => {
         dispatch(jobListFecth(page, pageSize)).then(() => {
-            const jobIdsArr = getState().jobs.jobIds;
-            jobIdsArr.forEach(jobId => {dispatch(jobDetailReceived(jobId))});
+            getState().jobs.jobIds.forEach(jobId => {dispatch(jobDetailReceived(jobId))});
+        }).then(() => {
+            getState().jobs.jobIds.forEach(jobId => {dispatch(jobMilestonesReceived(jobId))});
+        }).catch(e => {
+            dispatch({type: JOB_DETAIL_FETCH_ERROR, serverErrors: e})
         });
     }
 }
