@@ -10,15 +10,13 @@ import {
     GridItem,
     PageSection,
     PageSectionVariants,
-    Tooltip
+    Page
 } from '@patternfly/react-core';
 
 import {
     AddCircleOIcon,
     ThumbTackIcon,
     UsersIcon,
-    HomeIcon,
-    GlobeIcon,
     TrendUpIcon,
     ErrorCircleOIcon,
     ClockIcon,
@@ -83,7 +81,7 @@ export class DashboardContainer extends Component<IDashboardProps> {
     }
 
     public render() {
-        return (<Fragment>
+        return (<Page>
             <PageSection variant={PageSectionVariants.light}>
                 <Gallery gutter="lg">
                     <GalleryItem>
@@ -93,25 +91,6 @@ export class DashboardContainer extends Component<IDashboardProps> {
                             </CardHeader>
                             <CardBody className="dashboard-card-body">
                                 <Link aria-label="add jobs" to="/jobs-add"><AddCircleOIcon className="dashboard-card-icon add-icon" /></Link>
-                            </CardBody>
-                        </Card>
-                    </GalleryItem>
-                    <GalleryItem>
-                        <Card className="dashboard-card">
-                            <CardHeader>
-                                <UsersIcon /> 0 Candidates
-                            </CardHeader>
-                            <CardBody className="combined-status dashboard-card-body">
-                                <Tooltip position="top" content={<div>Internal</div>}>
-                                    <span>
-                                        <HomeIcon className="dashboard-card-icon" /> 0
-                                    </span>
-                                </Tooltip>
-                                <Tooltip position="top" content={<div>External</div>}>
-                                    <span>
-                                        <GlobeIcon className="dashboard-card-icon" /> 0
-                                </span>
-                                </Tooltip>
                             </CardBody>
                         </Card>
                     </GalleryItem>
@@ -135,6 +114,14 @@ export class DashboardContainer extends Component<IDashboardProps> {
                             </CardBody>
                         </Card>
                     </GalleryItem>
+                    <GalleryItem>
+                        <Card className="dashboard-card">
+                            <CardHeader>
+                                <UsersIcon /> 0 Candidates
+                            </CardHeader>
+                        </Card>
+                    </GalleryItem>
+                    
                 </Gallery>
             </PageSection>
             <PageSection>
@@ -177,7 +164,7 @@ export class DashboardContainer extends Component<IDashboardProps> {
                     </GridItem>
                 </Grid>
             </PageSection>
-        </Fragment>);
+        </Page>);
     }
 }
 

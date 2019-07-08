@@ -37,6 +37,8 @@ export const JOB_SUBMIT = 'JOB_SUBMIT';
 export const JOB_CREATED = 'JOB_CREATED';
 export const JOB_CREATED_ERROR = 'JOB_CREATED_ERROR';
 
+export const JOB_VIEW_DETAIL = 'JOB_VIEW_DETAIL';
+
 interface IJobDescriptionChangeAction { type: typeof JOB_DESCRIPTION_CHANGE, value: string }
 
 interface IJobLocationChangeAction {type: typeof JOB_LOCATION_CHANGE, value: string}
@@ -65,9 +67,12 @@ interface IJobCreatedAction { type: typeof JOB_CREATED, jobId: string }
 
 interface IJobCreatedErrorAction { type: typeof JOB_CREATED_ERROR, serverErrors: any}
 
+interface IJobViewDetailAction {type:typeof JOB_VIEW_DETAIL, jobId: string}
+
 export type JobActionTypes = 
     IJobDescriptionChangeAction | IJobLocationChangeAction | IJobTitleChangeAction
     | IJobListFetchingAction | IJobListFetchSuccessAction | IJobListFetchErrorAction 
     | IJobDetailReceivedAction | IJobMilestonesReceivedAction
     | IJobDetailFetchingAction | IJobDetailFetchSuccessAction | IJobDetailFetchErrorAction
-    | IJobSubmitAction | IJobCreatedAction | IJobCreatedErrorAction;
+    | IJobSubmitAction | IJobCreatedAction | IJobCreatedErrorAction
+    | IJobViewDetailAction;

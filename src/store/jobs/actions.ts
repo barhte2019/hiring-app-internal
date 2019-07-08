@@ -7,7 +7,7 @@ import {
     JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR,
     JOB_SUBMIT, JOB_CREATED, JOB_CREATED_ERROR,
     IJob,
-    JOB_MILESTONES_RECEIVED
+    JOB_MILESTONES_RECEIVED, JOB_VIEW_DETAIL
 } from './types';
 
 export function jobDescriptionChange(value: string) {
@@ -98,5 +98,11 @@ export function createJob(job: IJob) {
         }).catch(err => {
             return dispatch({ type: JOB_CREATED_ERROR, serverErrors: err })
         });
+    }
+}
+
+export function jobViewDetail(jobId: string) {
+    return dispatch => {
+        return dispatch(push('/jobs/' + jobId));
     }
 }

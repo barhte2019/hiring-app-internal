@@ -114,9 +114,8 @@ export default function App(props: IAppProps) {
                 imageBrandSrc={imgBrand}
                 isAboutOpen={props.isAboutOpen}
                 onToggleAbout={props.onToggleAbout} />
-            <Page header={Header} skipToContent={PageSkipToContent}>
-                <AppRouter />
-            </Page>
+            <Page header={Header} skipToContent={PageSkipToContent} />
+            <AppRouter />
         </Fragment>
     );
 }
