@@ -2,11 +2,11 @@ import Keycloak from 'keycloak-js';
 
 export const keycloak = new Keycloak({
     "principal-attribute": "preferred_username",
-    "realm": "kie-realm",
-    "url": "http://localhost:8230/auth",
+    "realm": process.env.REACT_APP_RHSSO_REALM,
+    "url": process.env.REACT_APP_RHSSO_URL,
     "ssl-required": "external",
-    "resource": "reactapp",
+    "resource": process.env.REACT_APP_RHSSO_CLIENT,
     "public-client": true,
-    "clientId": "reactapp",
+    "clientId": process.env.REACT_APP_RHSSO_CLIENT,
     "enable-cors": true
 });

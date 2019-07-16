@@ -14,6 +14,7 @@ function api(): AxiosInstance {
       'Content-Type': 'application/json'
     },
     timeout: 10000,
+    url: process.env.REACT_APP_KIE_SERVER_URL?process.env.REACT_APP_KIE_SERVER_URL:'',
   });
 }
 

@@ -12,6 +12,9 @@ import {keycloak} from './keycloak-config';
 
 const store = configureStore();
 
+console.log(process.env.NODE_ENV);
+console.log(process.env.REACT_APP_RHSSO_REALM);
+
 if (process.env.NODE_ENV !== "production") {
   // tslint:disable-next-line
   const axe = require("react-axe");

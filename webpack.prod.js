@@ -3,6 +3,8 @@ const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
+const Dotenv = require('dotenv-webpack');
+
 module.exports = merge(common, {
   mode: 'production',
   devtool: 'source-map',
@@ -24,5 +26,12 @@ module.exports = merge(common, {
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       }
     ]
-  }
+  },
+  plugins: [
+    new Dotenv({
+      systemvars: true,
+      defaults: true,
+      silent: true,
+    })
+  ]
 });
