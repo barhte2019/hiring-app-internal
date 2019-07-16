@@ -32,6 +32,9 @@ module.exports = merge(common, {
       systemvars: true,
       defaults: true,
       silent: true,
+    }),
+    new MiniCssExtractPlugin({
+      filename: `styles/[name].css`
     })
   ]
 });

@@ -1,4 +1,4 @@
-import React, { Component, FormEvent } from 'react'
+import React, { Component } from 'react'
 import {
     PageSection,
     PageSectionVariants,
@@ -46,7 +46,7 @@ export class TaskContainer extends Component<ITaskProps> {
 
     public render() {
 
-        const tabSelectWrapper = (event: FormEvent<HTMLInputElement>, eventKey: number) => {
+        const tabSelectWrapper = (event: any, eventKey: number) => {
             this.props.toggleActiveTab(eventKey);
         }
 
