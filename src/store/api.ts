@@ -8,13 +8,13 @@ const API_KEY = 'Basic YWRtaW5Vc2VyOnIzZGg0dDEh'
 
 function api(): AxiosInstance {
   return axios.create({
+    baseURL: process.env.NODE_ENV === "production"?process.env.REACT_APP_KIE_SERVER_URL:'',
     headers: {
       Accept: 'application/json',
       'Authorization': API_KEY,
       'Content-Type': 'application/json'
     },
     timeout: 10000,
-    url: process.env.REACT_APP_KIE_SERVER_URL?process.env.REACT_APP_KIE_SERVER_URL:'',
   });
 }
 
