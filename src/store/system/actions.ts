@@ -3,7 +3,7 @@ import {
     TOGGLE_DROPDOWN,
     SELECT_TASKS,
     TOGGLE_TASKS,
-    TOGGLE_ABOUT
+    TOGGLE_ABOUT, UPDATE_TOKEN
 } from './types';
 
 export function selectDropdown() {
@@ -35,5 +35,12 @@ export function toggleTasks(isDropdownOpen: boolean) {
 export function toggleAbout() {
     return {
         type: TOGGLE_ABOUT
+    }
+}
+
+export function updateToken(token: string) {
+    return {
+        token,
+        type: UPDATE_TOKEN,
     }
 }

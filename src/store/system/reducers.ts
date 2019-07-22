@@ -5,12 +5,14 @@ import {
     TOGGLE_DROPDOWN,
     SELECT_TASKS,
     TOGGLE_TASKS,
-    TOGGLE_ABOUT
+    TOGGLE_ABOUT,
+    UPDATE_TOKEN
 } from './types';
 const initialState: ISystemState = {
     areTasksOpen: false,
     isAboutOpen: false,
-    isDropdownOpen: false
+    isDropdownOpen: false,
+    token: '',
 }
 
 export function systemReducer(
@@ -46,6 +48,12 @@ export function systemReducer(
             return {
                 ...state,
                 isAboutOpen: !state.isAboutOpen
+            }
+        }
+        case UPDATE_TOKEN: {
+            return {
+                ...state,
+                token: action.token
             }
         }
         default: return state;

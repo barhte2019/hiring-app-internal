@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from 'react-redux';
 import "@patternfly/react-core/dist/styles/base.css";
@@ -8,12 +8,9 @@ import { KeycloakProvider } from 'react-keycloak';
 import configureStore, { history } from './store';
 import AppContainer from '@app/index';
 import { ConnectedRouter } from "connected-react-router";
-import {keycloak} from './keycloak-config';
+import { keycloak } from './keycloak-config';
 
 const store = configureStore();
-
-console.log(process.env.NODE_ENV);
-console.log(process.env.REACT_APP_RHSSO_REALM);
 
 if (process.env.NODE_ENV !== "production") {
   // tslint:disable-next-line
@@ -25,18 +22,23 @@ const tokens = JSON.parse(localStorage.getItem('kcTokens') || '{}');
 
 function onKeycloakTokens(tks) {
   localStorage.setItem('kcTokens', JSON.stringify(tks));
+  store.dispatch({ type: "UPDATE_TOKEN", token: tks.token });
+  setInterval(() => {
+    keycloak.updateToken(10).error(() => keycloak.logout());
+  }, 10000);
 }
 
 function onKeycloakEvent(event, error) {
   if (event === 'onAuthLogout') {
     localStorage.removeItem('kcTokens');
+    store.dispatch({ type: "UPDATE_TOKEN", token: '' });
   }
 }
 
 
 const Root = () => (
-  <KeycloakProvider 
-    keycloak={keycloak} 
+  <KeycloakProvider
+    keycloak={keycloak}
     initConfig={{ onLoad: 'check-sso', ...tokens }}
     onEvent={onKeycloakEvent}
     onTokens={onKeycloakTokens}>

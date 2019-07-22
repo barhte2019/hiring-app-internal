@@ -77,7 +77,10 @@ export interface IDashboardProps {
 export class DashboardContainer extends Component<IDashboardProps> {
 
     public componentDidMount() {
-        this.props.jobListFecth(0, 100);
+        const tokens = JSON.parse(localStorage.getItem('kcTokens') || '{}');
+        if (tokens && tokens.token) {
+            this.props.jobListFecth(0, 100);
+        }
     }
 
     public render() {
@@ -121,7 +124,7 @@ export class DashboardContainer extends Component<IDashboardProps> {
                             </CardHeader>
                         </Card>
                     </GalleryItem>
-                    
+
                 </Gallery>
             </PageSection>
             <PageSection>

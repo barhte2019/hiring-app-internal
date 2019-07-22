@@ -19,7 +19,9 @@ import { potentialTaskListFetch } from '../store/tasks/actions';
 export class AppContainer extends Component<any> {
 
   public componentDidMount() {
-    this.props.potentialTaskListFetch(0,11);
+    if(this.props.system.token !== '') {
+      this.props.potentialTaskListFetch(0,11);
+    }
   }
 
   public render() {
@@ -35,7 +37,7 @@ export class AppContainer extends Component<any> {
     }
 
     return (
-      this.props.keycloak.authenticated
+      this.props.keycloakInitialized && this.props.keycloak.authenticated && this.props.system.token !== ''
         ? <App
           key="AppKey"
           isDropdownOpen={this.props.system.isDropdownOpen}
