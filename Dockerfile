@@ -7,7 +7,7 @@ COPY . ./
 ENV REACT_APP_RHSSO_URL=http://localhost:8230/auth
 ENV REACT_APP_KIE_SERVER_URL=http://localhost:8080
 ENV REACT_APP_RHSSO_REALM=kie-realm
-ENV REACT_APP_RHSSO_CLIENT=reactapp
+ENV REACT_APP_RHSSO_CLIENT=kie-remote
 
 RUN yarn
 RUN yarn build
