@@ -4,8 +4,11 @@ import { ICaseInstances, IApiJob, ITaskSummary } from 'src/common/types';
 
 function api(): AxiosInstance {
   const tokens = JSON.parse(localStorage.getItem('kcTokens') || '{}');
+  console.log('Configuring kie-server at')
+  console.log(window['_env_'].KIE_URL);
   return axios.create({
-    baseURL: process.env.NODE_ENV === "production" ? process.env.REACT_APP_KIE_SERVER_URL : '',
+    // tslint:disable-next-line:no-string-literal
+    baseURL: window['_env_'].KIE_URL,
     headers: {
       Accept: 'application/json',
       'Authorization': 'Bearer ' + tokens.token,

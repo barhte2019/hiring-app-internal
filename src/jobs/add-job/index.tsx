@@ -96,8 +96,6 @@ const mapStateToProps: any = (state: AppState) => ({
 const formWithRouter = withRouter<IJobFormProps, any>(AddJobForm);
 
 // TODO: Map on submit fail
-// TODO: Retrieve env configuration for KIE-SERVER ENDPOINT
-// TODO: Send CASE CREATION REST API (KIE-SERVER ENDPOINT)
 export default connect<{}, {}>(
     mapStateToProps,
     {

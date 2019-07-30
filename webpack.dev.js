@@ -4,8 +4,6 @@ const common = require("./webpack.common.js");
 const HOST = process.env.HOST || "localhost";
 const PORT = process.env.PORT || "9000";
 
-const KIE_SERVER = process.env.REACT_APP_KIE_SERVER_URL || "http://localhost:8080"
-
 const Dotenv = require('dotenv-webpack');
 
 module.exports = merge(common, {
@@ -23,7 +21,7 @@ module.exports = merge(common, {
     open: true,
     proxy:  {
       '/services/rest/**': {
-        'target': KIE_SERVER + '/kie-server',
+        'target': 'http://localhost:8080/kie-server',
         'secure': false,
         'changeOrigin': true,
         'bypass': function(req, res, proxyOptions) {
@@ -46,7 +44,6 @@ module.exports = merge(common, {
   },
   plugins: [
     new Dotenv({
-      path: './.env.development',
       safe: true,
       systemvars: true,
       defaults: true,
