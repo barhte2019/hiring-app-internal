@@ -4,8 +4,6 @@ const common = require("./webpack.common.js");
 const HOST = process.env.HOST || "localhost";
 const PORT = process.env.PORT || "9000";
 
-const Dotenv = require('dotenv-webpack');
-
 module.exports = merge(common, {
   mode: "development",
   devtool: "eval-source-map",
@@ -41,12 +39,5 @@ module.exports = merge(common, {
         use: ["style-loader", "css-loader"]
       }
     ]
-  },
-  plugins: [
-    new Dotenv({
-      safe: true,
-      systemvars: true,
-      defaults: true,
-    })
-  ]
+  }
 });
