@@ -6,8 +6,8 @@ COPY . ./
 # environment variables are replaced in client app diring build by webpack
 ENV SSO_URL=http://localhost:8230/auth
 ENV KIE_URL=http://localhost:8080
-ENV REACT_APP_RHSSO_REALM=reactapp-internal
-ENV REACT_APP_RHSSO_CLIENT=kie-remote
+ENV REACT_APP_RHSSO_REALM=kie-realm
+ENV REACT_APP_RHSSO_CLIENT=hiring-internal
 
 RUN yarn
 RUN yarn build
