@@ -12,6 +12,7 @@ const initialState: ISystemState = {
     areTasksOpen: false,
     isAboutOpen: false,
     isDropdownOpen: false,
+    loggedUser: '',
     token: '',
 }
 
@@ -53,6 +54,7 @@ export function systemReducer(
         case UPDATE_TOKEN: {
             return {
                 ...state,
+                loggedUser: action.loggedUser,
                 token: action.token
             }
         }

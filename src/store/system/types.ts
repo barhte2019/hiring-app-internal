@@ -1,5 +1,6 @@
 // Describing the shape of the system's slice of state
 export interface ISystemState {
+    loggedUser: string;
     token: string;
     isDropdownOpen: boolean;
     areTasksOpen: boolean;
@@ -38,7 +39,8 @@ interface IToggleAboutAction {
 
 interface IUpdateTokenAction {
     type: typeof UPDATE_TOKEN,
-    token: string
+    token: string,
+    loggedUser: string
 }
 
 export type SystemActionTypes = IToggleDropdownAction | ISelectDropdownAction 

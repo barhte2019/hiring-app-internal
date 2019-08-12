@@ -22,7 +22,9 @@ const tokens = JSON.parse(localStorage.getItem('kcTokens') || '{}');
 
 function onKeycloakTokens(tks) {
   localStorage.setItem('kcTokens', JSON.stringify(tks));
-  store.dispatch({ type: "UPDATE_TOKEN", token: tks.token });
+  // tslint:disable-next-line:no-string-literal
+  store.dispatch({ type: "UPDATE_TOKEN", token: tks.token, loggedUser: keycloak.tokenParsed ? keycloak.tokenParsed['preferred_username'] : keycloak.subject });
+
   setInterval(() => {
     keycloak.updateToken(10).error(() => keycloak.logout());
   }, 10000);
@@ -31,7 +33,7 @@ function onKeycloakTokens(tks) {
 function onKeycloakEvent(event, error) {
   if (event === 'onAuthLogout') {
     localStorage.removeItem('kcTokens');
-    store.dispatch({ type: "UPDATE_TOKEN", token: '' });
+    store.dispatch({ type: "UPDATE_TOKEN", token: '', loggedUser: '' });
   }
 }
 

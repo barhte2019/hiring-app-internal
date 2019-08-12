@@ -5,17 +5,20 @@ import { connect } from 'react-redux';
 import {
     ActionGroup,
     Button,
+    Form,
     FormGroup,
     TextInput,
     PageSection,
     PageSectionVariants
 } from '@patternfly/react-core';
 import { IJobState } from 'src/store/jobs/types';
+import { ISystemState } from 'src/store/system/types';
 
 import { jobTitleChange, createJob, jobDescriptionChange, jobLocationChange } from 'src/store/jobs/actions';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IJobFormProps extends RouteComponentProps<any> {
+    sysState: ISystemState,
     jobState: IJobState,
     onJobTitleChange: typeof jobTitleChange
     onJobDescriptionChange: typeof jobDescriptionChange
@@ -32,11 +35,11 @@ class AddJobForm extends Component<IJobFormProps> {
 
     public render() {
         return (<PageSection variant={PageSectionVariants.light}>
-            <form onSubmit={this.submit}>
-            <FormGroup label="required"
+            <Form isHorizontal={true} onSubmit={this.submit} style={{marginTop:50, marginRight:30, marginLeft:20}}>
+            <FormGroup label="Job Title"
                     isRequired={true}
                     fieldId="job-post-title"
-                    helperText="Title"
+                    helperText="Please provide the job title or possition"
                 >
                     <TextInput
                         isRequired={true}
@@ -47,10 +50,10 @@ class AddJobForm extends Component<IJobFormProps> {
                         onChange={this.props.onJobTitleChange}
                     />
                 </FormGroup>
-                <FormGroup label="required"
+                <FormGroup label="Description"
                     isRequired={true}
                     fieldId="job-post-description"
-                    helperText="Description"
+                    helperText="Please provide a detailed job description"
                 >
                     <TextInput
                         isRequired={true}
@@ -61,10 +64,10 @@ class AddJobForm extends Component<IJobFormProps> {
                         onChange={this.props.onJobDescriptionChange}
                     />
                 </FormGroup>
-                <FormGroup label="required"
+                <FormGroup label="Location"
                     isRequired={true}
                     fieldId="job-post-location"
-                    helperText="Location"
+                    helperText="Please specify the job location (Remote, office name)"
                 >
                     <TextInput
                         isRequired={true}
@@ -78,19 +81,20 @@ class AddJobForm extends Component<IJobFormProps> {
                 <ActionGroup>
                     <Button variant="primary" type="submit">Submit form</Button>
                 </ActionGroup>
-            </form>
+            </Form>
         </PageSection>)
     }
 
     private submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        this.props.onCreateJob(this.props.jobState.newJob);
+        this.props.onCreateJob(this.props.jobState.newJob, this.props.sysState.loggedUser);
     }
 }
 
 // Connect to the data store
 const mapStateToProps: any = (state: AppState) => ({
-    jobState: state.jobs
+    jobState: state.jobs,
+    sysState: state.system
 });
 
 const formWithRouter = withRouter<IJobFormProps, any>(AddJobForm);

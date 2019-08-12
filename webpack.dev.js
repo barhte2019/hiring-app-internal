@@ -23,6 +23,7 @@ module.exports = merge(common, {
         'secure': false,
         'changeOrigin': true,
         'bypass': function(req, res, proxyOptions) {
+          console.log(req);
           if(req.method === 'OPTIONS') {
             res.statusCode = 200
             return 'ok'

@@ -38,8 +38,9 @@ export function toggleAbout() {
     }
 }
 
-export function updateToken(token: string) {
+export function updateToken(token: string, loggedUser: string) {
     return {
+        loggedUser,
         token,
         type: UPDATE_TOKEN,
     }

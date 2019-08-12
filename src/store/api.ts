@@ -1,21 +1,24 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { IJob } from './jobs/types';
 import { ICaseInstances, IApiJob, ITaskSummary } from 'src/common/types';
 
 function api(): AxiosInstance {
   const tokens = JSON.parse(localStorage.getItem('kcTokens') || '{}');
-  console.log('Configuring kie-server at')
-  console.log(window['_env_'].KIE_URL);
-  return axios.create({
-    // tslint:disable-next-line:no-string-literal
-    baseURL: window['_env_'].KIE_URL,
+  const axiosConfig: AxiosRequestConfig = {
     headers: {
       Accept: 'application/json',
       'Authorization': 'Bearer ' + tokens.token,
       'Content-Type': 'application/json'
     },
     timeout: 10000,
-  });
+  };
+
+  if (process.env.NODE_ENV === "production") {
+    // tslint:disable-next-line:no-string-literal
+    axiosConfig.baseURL = window['_env_'].KIE_URL;
+  }
+
+  return axios.create(axiosConfig);
 }
 
 export interface ICaseMilestones {
@@ -31,15 +34,19 @@ export interface ICaseMilestone {
 
 export default {
   jobs: {
-    create: (job: IJob) => {
+    create: (job: IJob, owner: string) => {
       return api().post(
         '/services/rest/server/containers/hr-hiring/cases/com.myspace.hr_hiring.job-vacancy-lifecycle/instances',
         {
           "case-data": {
             "hiringPetition": { ...job }
           },
-          "case-group-assignments": { "talent-acquisition": "talent-acquisition" },
-          "case-user-assignments": { "owner": "adminUser" },
+          "case-group-assignments": { 
+            "benefits-compensation": "talent-acquisition",
+            "talent-acquisition": "talent-acquisition",  
+            "vacancy-department": "talent-acquisition",
+          },
+          "case-user-assignments": { "owner": owner },
         }
       );
     },

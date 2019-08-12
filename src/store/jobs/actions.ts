@@ -88,10 +88,10 @@ export function createJobFormSucceed(jobId: string) {
     return { jobId, type: JOB_CREATED }
 }
 
-export function createJob(job: IJob) {
+export function createJob(job: IJob, owner: string) {
     return dispatch => {
         dispatch({ type: JOB_SUBMIT });
-        return api.jobs.create(job).then(resp => {
+        return api.jobs.create(job, owner).then(resp => {
             dispatch(push('/'));
             return dispatch({ type: JOB_CREATED, jobId: resp.data });
         }).catch(err => {
