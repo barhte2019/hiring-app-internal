@@ -89,16 +89,23 @@ export default {
     }
   },
   tasks: {
+    claim: (id: number) => api().put(
+      'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/claimed'
+    ),
     listMine: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/owners', {
         params: {
           page,
-          pageSize
+          pageSize,
         }
       }),
+      /* FIXME: services/rest/server/queries/tasks/instances/owners
+      is returning empty list
+      */
     listPot: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/pot-owners', {
         params: {
+          'groups': 'talent-acquisition',
           page,
           pageSize
         }

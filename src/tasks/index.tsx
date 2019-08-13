@@ -11,11 +11,13 @@ import {
 
 import { AppState } from 'src/store';
 import { connect } from 'react-redux';
-import { toggleActiveTab, potentialTaskListFetch } from 'src/store/tasks/actions';
+import { toggleActiveTab, potentialTaskListFetch, claimTask } from 'src/store/tasks/actions';
 import { ITaskState } from 'src/store/tasks/types';
 import { ITask } from 'src/common/types';
+import { TintSlashIcon } from '@patternfly/react-icons';
 
 interface ITaskProps {
+    claimTask: typeof claimTask,
     potentialTaskListFetch: typeof potentialTaskListFetch,
     taskState: ITaskState,
     toggleActiveTab: typeof toggleActiveTab
@@ -59,8 +61,10 @@ export class TaskContainer extends Component<ITaskProps> {
                             cells={['Id', 'Job Title', 'Task Name', 'Task Description']}
                             rows={this.props.taskState.potentialTasks.map<IRow>(item => tableRowFromTask(item))}
                             actions={[
-                                { title: 'process', onClick: (event, rowId, rowData, extra) => console.log('clicked on picture for row:', rowId) },
-                                { title: 'claim', onClick: (event, rowId, rowData, extra) => console.log('clicked on claim for row:', rowId) },
+                                // tslint:disable-next-line:no-string-literal
+                                { title: 'process', onClick: (event, rowId, rowData, extra) => console.log('clicked on process for row:', rowData['props'].rowId) },
+                                // tslint:disable-next-line:no-string-literal
+                                { title: 'claim', onClick: (event, rowId, rowData, extra) =>  this.props.claimTask(rowData['props'].rowId) },
                                 { isSeparator: true },
                                 { title: 'more', onClick: (event, rowId, rowData, extra) => console.log('clicked on more for row:', rowId) }
                             ]}>
@@ -96,6 +100,7 @@ const mapStateToProps: any = (state: AppState) => ({
 })
 
 const mapDispatchToProps: any = ({
+    claimTask,
     potentialTaskListFetch,
     toggleActiveTab
 })

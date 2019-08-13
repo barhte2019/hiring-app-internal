@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import {
     ITaskState, TaskActionTypes,
-    POT_TASK_LIST_FETCHING, POT_TASK_LIST_SUCCESS, POT_TASK_LIST_ERROR, TOGGLE_ACTIVE_TAB,
+    POT_TASK_LIST_FETCHING, POT_TASK_LIST_SUCCESS, POT_TASK_LIST_ERROR, TOGGLE_ACTIVE_TAB, POT_TASK_CLAIMING, POT_TASK_CLAIM_SUCCESS, POT_TASK_CLAIM_FAILED,
 } from "./types";
 
 
@@ -36,6 +36,25 @@ export function tasksReducer(state = initialState, action: TaskActionTypes): ITa
             }
         }
         case POT_TASK_LIST_ERROR: {
+            return {
+                ...state,
+                error_message: action.serverErrors,
+                loading: false,
+            }
+        }
+        case POT_TASK_CLAIMING: {
+            return {
+                ...state,
+                loading: true,
+            }
+        }
+        case POT_TASK_CLAIM_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+            }
+        }
+        case POT_TASK_CLAIM_FAILED: {
             return {
                 ...state,
                 error_message: action.serverErrors,
