@@ -58,28 +58,15 @@ export default {
         params: { 'name': 'hiringPetition' }
       });
     },
-    list: (page: number, pageSize: number) => api().get<IProcessInstances>(
-      'services/rest/server/containers/hr-hiring_1.0.0/processes/instances', {
-        params: {
-          page,
-          pageSize
-        }
-      }),
-    /*
-    FIXME:
-    - services/rest/server/queries/cases/instances
-    - services/rest/server/containers/{containerId}/cases/{caseDefId}/instances
-    Are returning an empty list, I had to replace by: 
-    - services/rest/server/containers/hr-hiring_1.0.0/processes/instances?page=0&pageSize=10&sortOrder=true
     list: (page: number, pageSize: number) => api().get<ICaseInstances>(
-      'services/rest/server/queries/cases/instances',
+      'services/rest/server/containers/hr-hiring/cases/com.myspace.hr_hiring.job-vacancy-lifecycle/instances',
       {
         params: {
           page,
           'page_size': pageSize
         }
       }
-    ),*/
+    ),
     milestones: (jobId: string) => {
       // services/rest/server/containers/hr-hiring/cases/instances/JOB-0000000001/milestones?achievedOnly=false&page=0&pageSize=10
       const url = 'services/rest/server/containers/hr-hiring/cases/instances/' + jobId + '/milestones';
@@ -99,13 +86,9 @@ export default {
           pageSize,
         }
       }),
-      /* FIXME: services/rest/server/queries/tasks/instances/owners
-      is returning empty list
-      */
     listPot: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/pot-owners', {
         params: {
-          'groups': 'talent-acquisition',
           page,
           pageSize
         }

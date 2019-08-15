@@ -89,7 +89,7 @@ export function jobsReducer(
         case JOB_LIST_FETCH_SUCCESS: {
             return {
                 ...state,
-                jobIds: action.list.filter(item=>item["process-name"]==='job-vacancy-lifecycle').map<string>(item => item["correlation-key"]),
+                jobIds: action.list.instances.map<string>(item => item["case-id"]),
                 loading: false,
             }
         }

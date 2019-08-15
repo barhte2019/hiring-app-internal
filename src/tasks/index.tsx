@@ -11,14 +11,19 @@ import {
 
 import { AppState } from 'src/store';
 import { connect } from 'react-redux';
-import { toggleActiveTab, potentialTaskListFetch, claimTask } from 'src/store/tasks/actions';
 import { ITaskState } from 'src/store/tasks/types';
 import { ITask } from 'src/common/types';
-import { TintSlashIcon } from '@patternfly/react-icons';
+
+import { 
+    toggleActiveTab, 
+    potentialTaskListFetch, 
+    ownedTaskListFetch,
+    claimTask } from 'src/store/tasks/actions';
 
 interface ITaskProps {
     claimTask: typeof claimTask,
     potentialTaskListFetch: typeof potentialTaskListFetch,
+    ownedTaskListFetch: typeof ownedTaskListFetch,
     taskState: ITaskState,
     toggleActiveTab: typeof toggleActiveTab
 }
@@ -43,6 +48,7 @@ function tableRowFromTask(task: ITask): IRow {
 export class TaskContainer extends Component<ITaskProps> {
 
     public componentDidMount() {
+        this.props.ownedTaskListFetch(0,10);
         this.props.potentialTaskListFetch(0, 10);
     }
 
@@ -101,6 +107,7 @@ const mapStateToProps: any = (state: AppState) => ({
 
 const mapDispatchToProps: any = ({
     claimTask,
+    ownedTaskListFetch,
     potentialTaskListFetch,
     toggleActiveTab
 })

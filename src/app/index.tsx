@@ -19,9 +19,9 @@ import { potentialTaskListFetch } from '../store/tasks/actions';
 export class AppContainer extends Component<any> {
 
   public componentDidMount() {
-    if(this.props.system.token !== '') {
+    setInterval(() => {
       this.props.potentialTaskListFetch(0,11);
-    }
+    }, 15000);
   }
 
   public render() {

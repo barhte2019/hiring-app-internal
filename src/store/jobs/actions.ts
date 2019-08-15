@@ -28,7 +28,7 @@ export function jobListFecth(page: number, pageSize: number) {
 
         return api.jobs.list(page, pageSize)
             .then(resp => {
-                return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data['process-instance'] });
+                return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data});
             })
             .catch(err => {
                 return dispatch({ type: JOB_LIST_FETCH_ERROR, serverErrors: err })

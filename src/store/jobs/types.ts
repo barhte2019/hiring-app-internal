@@ -48,7 +48,7 @@ interface IJobTitleChangeAction { type: typeof JOB_TITLE_CHANGE, value: string }
 
 interface IJobListFetchingAction { type: typeof JOB_LIST_FECTHING, page: number, pageSize: number }
 
-interface IJobListFetchSuccessAction {type: typeof JOB_LIST_FETCH_SUCCESS, list: IProcessInstance[]}
+interface IJobListFetchSuccessAction {type: typeof JOB_LIST_FETCH_SUCCESS, list: ICaseInstances}
 
 interface IJobListFetchErrorAction {type: typeof JOB_LIST_FETCH_ERROR, serverErrors: any}
 
