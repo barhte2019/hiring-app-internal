@@ -7,11 +7,15 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {systemReducer} from './system/reducers';
 import {jobsReducer} from './jobs/reducers';
 import { tasksReducer } from './tasks/reducer';
+import { interviewerTeamModalReducer } from 'src/components/interviewer-team/reducer';
+import { processImageModalReducer } from 'src/components/process-image-modal/reducer';
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
+    interviewerModalState: interviewerTeamModalReducer,
     jobs: jobsReducer,
+    processImageModalState: processImageModalReducer,
     router: connectRouter(history),
     system: systemReducer,
     task: tasksReducer,

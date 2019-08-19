@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { IJob } from './jobs/types';
 import { ICaseInstances, IApiJob, ITaskSummary } from 'src/common/types';
-import { IProcessInstances } from 'src/common/process-instance-types';
 
 function api(): AxiosInstance {
   const tokens = JSON.parse(localStorage.getItem('kcTokens') || '{}');
@@ -42,9 +41,9 @@ export default {
           "case-data": {
             "hiringPetition": { ...job }
           },
-          "case-group-assignments": { 
+          "case-group-assignments": {
             "benefits-compensation": "talent-acquisition",
-            "talent-acquisition": "talent-acquisition",  
+            "talent-acquisition": "talent-acquisition",
             "vacancy-department": "talent-acquisition",
           },
           "case-user-assignments": { "owner": owner },
@@ -74,6 +73,16 @@ export default {
         params: { 'achievedOnly': true, page: 0, 'page-size': 10, }
       })
     }
+  },
+  process: {
+    image: (id: number) => api().get(
+      '/services/rest/server/containers/hr-hiring/images/processes/instances/' + id,
+      {
+        headers: {
+          Accept: 'application/svg+xml',
+          'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('kcTokens') || '{}').token
+        }
+      })
   },
   tasks: {
     claim: (id: number) => api().put(

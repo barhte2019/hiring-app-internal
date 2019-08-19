@@ -1,6 +1,5 @@
 import { ICaseInstances, IHiringPetition } from "src/common/types";
 import { ICaseMilestones } from "../api";
-import { IProcessInstances, IProcessInstance } from "src/common/process-instance-types";
 
 export interface IJobState {
     jobIds: string[],
