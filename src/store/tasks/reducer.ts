@@ -1,7 +1,10 @@
-import { toast } from "react-toastify";
 import {
     ITaskState, TaskActionTypes,
-    POT_TASK_LIST_FETCHING, POT_TASK_LIST_SUCCESS, POT_TASK_LIST_ERROR, TOGGLE_ACTIVE_TAB, POT_TASK_CLAIMING, POT_TASK_CLAIM_SUCCESS, POT_TASK_CLAIM_FAILED, OWNED_TASK_LIST_FETCHING, OWNED_TASK_LIST_SUCCESS, OWNED_TASK_LIST_ERROR,
+    POT_TASK_LIST_FETCHING, POT_TASK_LIST_SUCCESS, POT_TASK_LIST_ERROR,
+    TOGGLE_ACTIVE_TAB,
+    POT_TASK_CLAIMING, POT_TASK_CLAIM_SUCCESS, POT_TASK_CLAIM_FAILED,
+    OWNED_TASK_LIST_FETCHING, OWNED_TASK_LIST_SUCCESS, OWNED_TASK_LIST_ERROR,
+    OWNED_TASK_RELEASING, OWNED_TASK_RELEASE_SUCCESS, OWNED_TASK_RELEASE_FAILED, TASK_COMPLETING, TASK_COMPLETED_SUCCESS, TASK_COMPLETED_FAILED, TASK_DETAIL_FETCHING, TASK_DETAIL_FETCH_SUCCESS, TASK_DETAIL_FECH_FAILED,
 } from "./types";
 
 
@@ -11,7 +14,8 @@ const initialState: ITaskState = {
     loading: false,
     ownedTasks: [],
     potentialTasks: [],
-    selectedTask: {},
+    selectedTaskId: 0,
+    selectedTaskOutput: {},
 }
 
 export function tasksReducer(state = initialState, action: TaskActionTypes): ITaskState {
@@ -83,6 +87,18 @@ export function tasksReducer(state = initialState, action: TaskActionTypes): ITa
                 loading: false,
             }
         }
+        case OWNED_TASK_RELEASING: { return { ...state, loading: true, } }
+        case OWNED_TASK_RELEASE_SUCCESS: { return { ...state, loading: false, } }
+        case OWNED_TASK_RELEASE_FAILED: { return { ...state, error_message: action.serverErrors, loading: false, } }
+
+        case TASK_COMPLETING: { return { ...state, loading: true, } }
+        case TASK_COMPLETED_SUCCESS: { return { ...state, loading: false, } }
+        case TASK_COMPLETED_FAILED: { return { ...state, error_message: action.serverErrors, loading: false, } }
+
+        case TASK_DETAIL_FETCHING: { return { ...state, loading: true } }
+        case TASK_DETAIL_FETCH_SUCCESS: { return { ...state, selectedTaskOutput: action.output, selectedTaskId: action.taskId, loading: false } }
+        case TASK_DETAIL_FECH_FAILED: { return { ...state, loading: false } }
+
         default: return state;
     }
 }

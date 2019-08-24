@@ -25,11 +25,12 @@ interface IInterviewerTeamModalProps {
     interviewerName: string,
     interviewerComment: string,
     interviewers: IInterviewer[],
+    onOkClick: any,
 }
 
 function tableRowFromInterviewer(interviewer: IInterviewer): IRow {
     return {
-        cells:[{title:interviewer.name}, {title:interviewer.comment}]
+        cells: [{ title: interviewer.name }, { title: interviewer.comment }]
     }
 }
 
@@ -64,8 +65,8 @@ export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) 
             <TableHeader />
             <TableBody rowKey='rowId' />
         </Table>
-        <Button id="OkButton">OK</Button>
-    </Modal>)
+        <Button id="OkButton" isActive={props.interviewers.length >= 1} onClick={props.onOkClick}>OK</Button>
+    </Modal>) 
 }
 
 

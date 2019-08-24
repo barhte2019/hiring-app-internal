@@ -1,12 +1,15 @@
 import api from '../api';
-import { push } from 'connected-react-router';
 
 import {
     TOGGLE_ACTIVE_TAB,
     POT_TASK_LIST_FETCHING, POT_TASK_LIST_SUCCESS, POT_TASK_LIST_ERROR,
     OWNED_TASK_LIST_FETCHING, OWNED_TASK_LIST_SUCCESS, OWNED_TASK_LIST_ERROR,
     POT_TASK_CLAIMING, POT_TASK_CLAIM_SUCCESS, POT_TASK_CLAIM_FAILED,
+    OWNED_TASK_RELEASING, OWNED_TASK_RELEASE_SUCCESS, OWNED_TASK_RELEASE_FAILED,
+    TASK_COMPLETING, TASK_COMPLETED_SUCCESS, TASK_COMPLETED_FAILED,
+    TASK_DETAIL_FETCHING, TASK_DETAIL_FETCH_SUCCESS, TASK_DETAIL_FECH_FAILED,
 } from './types';
+import { replace } from 'connected-react-router';
 
 export function toggleActiveTab(tabIndex: number) {
     return {
@@ -49,10 +52,47 @@ export function claimTask(taskId: number) {
         return api.tasks.claim(taskId).then(resp => {
             dispatch({ tabIndex: 1, type: TOGGLE_ACTIVE_TAB })
             return dispatch({ type: POT_TASK_CLAIM_SUCCESS })
-            .then(dispatch(ownedTaskListFetch(0,10)))
-            .then(dispatch(potentialTaskListFetch(0,10)))
+                .then(dispatch(ownedTaskListFetch(0, 10)))
+                .then(dispatch(potentialTaskListFetch(0, 10)))
         }).catch(err => {
             return dispatch({ type: POT_TASK_CLAIM_FAILED, serverErrors: err })
+        });
+    }
+}
+
+export function releaseTask(taskId: number) {
+    return dispatch => {
+        dispatch({ type: OWNED_TASK_RELEASING });
+        return api.tasks.release(taskId).then(resp => {
+            return dispatch({ type: OWNED_TASK_RELEASE_SUCCESS })
+                .then(dispatch(ownedTaskListFetch(0, 10)))
+                .then(dispatch(potentialTaskListFetch(0, 10)))
+        }).catch(err => {
+            return dispatch({ type: OWNED_TASK_RELEASE_FAILED, serverErrors: err })
+        });
+    }
+}
+
+export function completeTask(taskId: number, output: any) {
+    return dispatch => {
+        dispatch({ type: TASK_COMPLETING });
+        return api.tasks.complete(taskId, output).then(resp => {
+            return dispatch({ type: TASK_COMPLETED_SUCCESS })
+                .then(dispatch(ownedTaskListFetch(0, 10)))
+                .then(dispatch(potentialTaskListFetch(0, 10)))
+        }).catch( err => {
+            return dispatch({ type: TASK_COMPLETED_FAILED, serverErrors: err })
+        });
+    }
+}
+
+export function taskDetail(taskId: number) {
+    return dispatch => {
+        dispatch({type: TASK_DETAIL_FETCHING});
+        return api.tasks.detail(taskId).then(resp => {
+            return dispatch({type: TASK_DETAIL_FETCH_SUCCESS, output: resp.data, taskId})
+        }).catch( err => {
+            return dispatch({type: TASK_DETAIL_FECH_FAILED, serverErrors: err})
         });
     }
 }

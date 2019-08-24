@@ -75,19 +75,34 @@ export default {
     }
   },
   process: {
-    image: (id: number) => api().get(
-      '/services/rest/server/containers/hr-hiring/images/processes/instances/' + id,
-      {
-        headers: {
-          Accept: 'application/svg+xml',
-          'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('kcTokens') || '{}').token
-        }
-      })
+    image: (id: number) => {
+      if (id > 0) {
+        return api().get(
+          '/services/rest/server/containers/hr-hiring/images/processes/instances/' + id,
+          {
+            headers: {
+              Accept: 'application/svg+xml',
+              'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('kcTokens') || '{}').token
+            }
+          })
+      }
+      else { return undefined };
+    }
   },
   tasks: {
     claim: (id: number) => api().put(
       'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/claimed'
     ),
+    complete: (id: number, output: any) => api().put(
+      'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/completed',
+      output,
+      {
+        params: {
+          'auto-progress': true,
+        }
+      }
+    ),
+    detail: (id: number) => api().get('services/rest/server/containers/hr-hiring/tasks/' + id + '/contents/input'),
     listMine: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/owners', {
         params: {
@@ -101,6 +116,15 @@ export default {
           page,
           pageSize
         }
-      })
+      }),
+    release: (id: number) => api().put(
+      'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/released'
+    ),
+    start: (id: number) => api().put(
+      'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/started'
+    ),
+    stop: (id: number) => api().put(
+      'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/stopped'
+    )
   }
 }

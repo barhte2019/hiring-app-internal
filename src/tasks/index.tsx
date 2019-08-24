@@ -30,7 +30,7 @@ import {
     toggleActiveTab,
     potentialTaskListFetch,
     ownedTaskListFetch,
-    claimTask
+    claimTask, releaseTask, completeTask, taskDetail
 } from 'src/store/tasks/actions';
 import ProcessImageModal from 'src/components/process-image-modal';
 import { IProcessModalState } from 'src/components/process-image-modal/types';
@@ -38,8 +38,11 @@ import { IProcessModalState } from 'src/components/process-image-modal/types';
 
 interface ITaskProps {
     claimTask: typeof claimTask,
+    releaseTask: typeof releaseTask,
     potentialTaskListFetch: typeof potentialTaskListFetch,
     ownedTaskListFetch: typeof ownedTaskListFetch,
+    completeTask: typeof completeTask,
+    taskDetail: typeof taskDetail,
 
     taskState: ITaskState,
     interviewerModalState: IInterviewerTeamState,
@@ -92,13 +95,29 @@ export class TaskContainer extends Component<ITaskProps> {
             this.props.toggleActiveTab(eventKey);
         }
 
-        const showTaskForm = () => {
+        const showTaskForm = (id: number) => {
+            this.props.taskDetail(id);
             this.props.handleModalToggle();
         }
 
         const showProcessImage = (id: number) => {
             this.props.changeProcessId(id);
             this.props.handleProcessModalToggle();
+        }
+
+        const interviewerTeamOk = () => {
+            if(this.props.interviewerModalState.interviewers.length >= 1) {
+                this.props.completeTask(this.props.taskState.selectedTaskId, {
+                    "hiringPetition": {
+                        "com.myspace.hr_hiring.HiringPetition": {
+                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
+                            interviewers: this.props.interviewerModalState.interviewers.map<string>(item => item.name)
+                        }
+                    },
+                    "interviewerTeamDefined": true
+                });
+                this.props.handleModalToggle();
+            }
         }
 
         return (
@@ -127,9 +146,11 @@ export class TaskContainer extends Component<ITaskProps> {
                             actions={[
                                 // tslint:disable-next-line:no-string-literal
                                 { title: 'process', onClick: (event, rowId, rowData, extra) => showProcessImage(rowData['process'].title) },
-                                { title: 'release', onClick: (event, rowId, rowData, extra) => console.log('clicked on release for row:', rowId) },
+                                // tslint:disable-next-line:no-string-literal
+                                { title: 'release', onClick: (event, rowId, rowData, extra) => this.props.releaseTask(rowData['props'].rowId) },
                                 { isSeparator: true },
-                                { title: 'modify/complete', onClick: (event, rowId, rowData, extra) => showTaskForm() }
+                                // tslint:disable-next-line:no-string-literal
+                                { title: 'modify/complete', onClick: (event, rowId, rowData, extra) => showTaskForm(rowData['props'].rowId) }
                             ]}>
                             <TableHeader />
                             <TableBody rowKey='rowId' />
@@ -143,7 +164,8 @@ export class TaskContainer extends Component<ITaskProps> {
                     handleModalToggle={this.props.handleModalToggle}
                     interviewerName={this.props.interviewerModalState.interviewerName}
                     interviewerComment={this.props.interviewerModalState.interviewerComment}
-                    interviewers={this.props.interviewerModalState.interviewers} />
+                    interviewers={this.props.interviewerModalState.interviewers}
+                    onOkClick={interviewerTeamOk} />
                 <ProcessImageModal
                     processId={this.props.processImageModalState.processId}
                     modalVisible={this.props.processImageModalState.modalVisible}
@@ -164,13 +186,16 @@ const mapDispatchToProps: any = ({
     addInterviewerClick,
     changeProcessId,
     claimTask,
+    completeTask,
     handleModalToggle,
     handleProcessModalToggle,
     interviewerCommentChange,
     interviewerNameChange,
     ownedTaskListFetch,
     potentialTaskListFetch,
-    toggleActiveTab
+    releaseTask,
+    taskDetail,
+    toggleActiveTab,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskContainer);

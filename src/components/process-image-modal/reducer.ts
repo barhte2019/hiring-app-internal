@@ -8,8 +8,8 @@ import {
 const initialState: IProcessModalState = {
     error_message: '',
     loading: false,
-    modalVisible: true,
-    processId: 1
+    modalVisible: false,
+    processId: 0
 }
 
 export function processImageModalReducer(

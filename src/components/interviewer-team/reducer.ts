@@ -13,6 +13,7 @@ const initialState: IInterviewerTeamState = {
     interviewers: [],
     loading: false,
     modalVisible: false,
+    taskId: 0,
 }
 
 export function interviewerTeamModalReducer(
@@ -45,7 +46,7 @@ export function interviewerTeamModalReducer(
         case HANDLE_MODAL_TOGGLE: {
             return {
                 ...state,
-                modalVisible: !state.modalVisible
+                modalVisible: !state.modalVisible,
             }
         }
         default: return state;

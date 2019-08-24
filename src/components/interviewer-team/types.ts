@@ -5,6 +5,7 @@ export interface IInterviewerTeamState {
     loading: boolean,
     error_message?: string,
     modalVisible: boolean,
+    taskId: number
 }
 
 export interface IInterviewer {
