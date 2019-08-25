@@ -75,6 +75,9 @@ export default {
     }
   },
   process: {
+    byCorrelationKey: (correlationKey: string) => {
+      return api().get('/services/rest/server/queries/processes/instance/correlation/' + correlationKey)
+    },
     image: (id: number) => {
       if (id > 0) {
         return api().get(
@@ -87,7 +90,7 @@ export default {
           })
       }
       else { return undefined };
-    }
+    },
   },
   tasks: {
     claim: (id: number) => api().put(

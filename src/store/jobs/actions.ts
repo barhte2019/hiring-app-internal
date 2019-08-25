@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 import {
     JOB_DESCRIPTION_CHANGE, JOB_LOCATION_CHANGE, JOB_TITLE_CHANGE,
     JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR, JOB_DETAIL_RECEIVED,
-    JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR,
+    JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR, JOB_PROCESS_INSTANCE_RECEIVED,
     JOB_SUBMIT, JOB_CREATED, JOB_CREATED_ERROR,
     IJob,
     JOB_MILESTONES_RECEIVED
@@ -28,7 +28,7 @@ export function jobListFecth(page: number, pageSize: number) {
 
         return api.jobs.list(page, pageSize)
             .then(resp => {
-                return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data});
+                return dispatch({ type: JOB_LIST_FETCH_SUCCESS, list: resp.data });
             })
             .catch(err => {
                 return dispatch({ type: JOB_LIST_FETCH_ERROR, serverErrors: err })
@@ -57,12 +57,28 @@ export function jobMilestonesReceived(jobId: string) {
     }
 }
 
+export function jobProcessInstanceReceived(jobId: string) {
+    return dispatch => {
+        api.process.byCorrelationKey(jobId).then(response => {
+            return dispatch({ type: JOB_PROCESS_INSTANCE_RECEIVED, jobId, processInstance: response.data })
+        }).catch(err => {
+            return dispatch({ type: JOB_DETAIL_FETCH_ERROR, serverErrors: err })
+        })
+    }
+}
+
 export function jobListWithDetail(page: number, pageSize: number) {
     return (dispatch, getState) => {
         dispatch(jobListFecth(page, pageSize)).then(() => {
-            getState().jobs.jobIds.forEach(jobId => { dispatch(jobDetailReceived(jobId)) });
+            getState().jobs.jobIds.forEach(jobId => {
+                dispatch(jobDetailReceived(jobId));
+                dispatch(jobProcessInstanceReceived(jobId));
+            });
         }).then(() => {
-            getState().jobs.jobIds.forEach(jobId => { dispatch(jobMilestonesReceived(jobId)) });
+            getState().jobs.jobIds.forEach(jobId => {
+                dispatch(jobMilestonesReceived(jobId));
+                dispatch(jobProcessInstanceReceived(jobId));
+            });
         }).catch(e => {
             dispatch({ type: JOB_DETAIL_FETCH_ERROR, serverErrors: e })
         });

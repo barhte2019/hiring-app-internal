@@ -58,10 +58,6 @@ interface ITaskProps {
     changeProcessId: typeof changeProcessId,
 }
 
-interface IInterviewer {
-    name: string,
-    comment: string,
-}
 
 function tableRowFromTask(task: ITask): IRow {
     const taskId: string = task["task-id"] ? String(task["task-id"]) : '';

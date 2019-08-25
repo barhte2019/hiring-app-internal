@@ -12,7 +12,8 @@ export interface IProcessInstance {
     "process-instance-desc" : string,
     "correlation-key" : string,
     "parent-instance-id" : number,
-    "sla-compliance" : number
+    "sla-compliance" : number,
+    "process-instance-variables": any
 }
 
 export interface IProcessInstances {
