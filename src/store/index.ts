@@ -9,10 +9,12 @@ import {jobsReducer} from './jobs/reducers';
 import { tasksReducer } from './tasks/reducer';
 import { interviewerTeamModalReducer } from 'src/components/interviewer-team/reducer';
 import { processImageModalReducer } from 'src/components/process-image-modal/reducer';
+import { candidateSkillModalReducer } from 'src/components/candidate-skills/reducer';
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
+    candidateSkillModalState: candidateSkillModalReducer,
     interviewerModalState: interviewerTeamModalReducer,
     jobs: jobsReducer,
     processImageModalState: processImageModalReducer,

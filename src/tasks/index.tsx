@@ -35,6 +35,12 @@ import {
 import ProcessImageModal from 'src/components/process-image-modal';
 import { IProcessModalState } from 'src/components/process-image-modal/types';
 
+import { ICandidateSkillsModalState } from 'src/components/candidate-skills/types';
+import {
+    candidateSkillNameChange
+} from 'src/components/candidate-skills/actions';
+import CandidateSkillsModal from 'src/components/candidate-skills';
+
 
 interface ITaskProps {
     claimTask: typeof claimTask,
@@ -47,6 +53,7 @@ interface ITaskProps {
     taskState: ITaskState,
     interviewerModalState: IInterviewerTeamState,
     processImageModalState: IProcessModalState,
+    candidateSkillModalState: ICandidateSkillsModalState,
 
     toggleActiveTab: typeof toggleActiveTab,
     interviewerCommentChange: typeof interviewerCommentChange,
@@ -56,6 +63,8 @@ interface ITaskProps {
 
     handleProcessModalToggle: typeof handleProcessModalToggle,
     changeProcessId: typeof changeProcessId,
+
+    candidateSkillNameChange: typeof candidateSkillNameChange,
 }
 
 
@@ -91,9 +100,16 @@ export class TaskContainer extends Component<ITaskProps> {
             this.props.toggleActiveTab(eventKey);
         }
 
-        const showTaskForm = (id: number) => {
-            this.props.taskDetail(id);
-            this.props.handleModalToggle();
+        const showTaskForm = (id: number, taskName: string) => {
+            if (taskName.startsWith('Define')) {
+                this.props.taskDetail(id);
+                this.props.handleModalToggle();
+            }
+
+            if (taskName.startsWith('Interviewer')) {
+                this.props.taskDetail(id);
+                this.props.handleModalToggle();
+            }
         }
 
         const showProcessImage = (id: number) => {
@@ -102,7 +118,7 @@ export class TaskContainer extends Component<ITaskProps> {
         }
 
         const interviewerTeamOk = () => {
-            if(this.props.interviewerModalState.interviewers.length >= 1) {
+            if (this.props.interviewerModalState.interviewers.length >= 1) {
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
                     "hiringPetition": {
                         "com.myspace.hr_hiring.HiringPetition": {
@@ -146,7 +162,7 @@ export class TaskContainer extends Component<ITaskProps> {
                                 { title: 'release', onClick: (event, rowId, rowData, extra) => this.props.releaseTask(rowData['props'].rowId) },
                                 { isSeparator: true },
                                 // tslint:disable-next-line:no-string-literal
-                                { title: 'modify/complete', onClick: (event, rowId, rowData, extra) => showTaskForm(rowData['props'].rowId) }
+                                { title: 'modify/complete', onClick: (event, rowId, rowData, extra) => showTaskForm(rowData['props'].rowId, rowData['task-name'].title) }
                             ]}>
                             <TableHeader />
                             <TableBody rowKey='rowId' />
@@ -166,6 +182,12 @@ export class TaskContainer extends Component<ITaskProps> {
                     processId={this.props.processImageModalState.processId}
                     modalVisible={this.props.processImageModalState.modalVisible}
                     handleProcessModalToggle={this.props.handleProcessModalToggle} />
+                <CandidateSkillsModal
+                    candidateSkillNameChange={this.props.candidateSkillNameChange}
+                    candidateSkillsModalVisible={this.props.candidateSkillModalState.candidateSkillsModalVisible}
+                    skillName={this.props.candidateSkillModalState.skillName}
+                    skills={this.props.candidateSkillModalState.skills}
+                />
             </PageSection>);
     }
 
@@ -173,6 +195,7 @@ export class TaskContainer extends Component<ITaskProps> {
 
 // Connect to the data store
 const mapStateToProps: any = (state: AppState) => ({
+    candidateSkillModalState: state.candidateSkillModalState,
     interviewerModalState: state.interviewerModalState,
     processImageModalState: state.processImageModalState,
     taskState: state.task,
@@ -180,6 +203,7 @@ const mapStateToProps: any = (state: AppState) => ({
 
 const mapDispatchToProps: any = ({
     addInterviewerClick,
+    candidateSkillNameChange,
     changeProcessId,
     claimTask,
     completeTask,
