@@ -14,18 +14,15 @@ import {
 import {
     Table, TableHeader, TableBody, IRow
 } from '@patternfly/react-table';
-import { IInterviewer } from './types';
+import { IInterviewer, IInterviewerTeamState } from './types';
 
 interface IInterviewerTeamModalProps {
     addInterviewerClick: typeof addInterviewerClick,
     handleModalToggle: typeof handleModalToggle,
     interviewerCommentChange: typeof interviewerCommentChange,
     interviewerNameChange: typeof interviewerNameChange,
-    modalVisible: boolean,
-    interviewerName: string,
-    interviewerComment: string,
-    interviewers: IInterviewer[],
     onOkClick: any,
+    interviewerTeamState: IInterviewerTeamState,
 }
 
 function tableRowFromInterviewer(interviewer: IInterviewer): IRow {
@@ -38,7 +35,7 @@ export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) 
     return (<Modal
         width={'50%'}
         title="Define Interviewer Team"
-        isOpen={props.modalVisible}
+        isOpen={props.interviewerTeamState.modalVisible}
         onClose={props.handleModalToggle}>
         <InputGroup>
             <TextInput
@@ -46,13 +43,13 @@ export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) 
                 aria-label="Interviewer"
                 placeholder="Name"
                 onChange={props.interviewerNameChange}
-                value={props.interviewerName} />
+                value={props.interviewerTeamState.interviewerName} />
             <TextInput
                 id="textInputComment"
                 aria-label="Comment"
                 placeholder="Comment"
                 onChange={props.interviewerCommentChange}
-                value={props.interviewerComment} />
+                value={props.interviewerTeamState.interviewerComment} />
             <Button
                 id="AddInterviewerButton"
                 onClick={props.addInterviewerClick}>Add</Button>
@@ -60,12 +57,12 @@ export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) 
         <Table
             caption="Interviewer Team"
             cells={['Name', 'Comment']}
-            rows={props.interviewers.map<IRow>(interviewer => tableRowFromInterviewer(interviewer))}
+            rows={props.interviewerTeamState.interviewers.map<IRow>(interviewer => tableRowFromInterviewer(interviewer))}
         >
             <TableHeader />
             <TableBody rowKey='rowId' />
         </Table>
-        <Button id="OkButton" isActive={props.interviewers.length >= 1} onClick={props.onOkClick}>OK</Button>
+        <Button id="OkButton" isActive={props.interviewerTeamState.interviewers.length >= 1} onClick={props.onOkClick}>OK</Button>
     </Modal>) 
 }
 

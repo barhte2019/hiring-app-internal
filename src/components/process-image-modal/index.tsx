@@ -6,26 +6,27 @@ import {
 } from '@patternfly/react-core';
 import api from 'src/store/api';
 import { handleProcessModalToggle } from './actions';
+import {IProcessModalState} from './types';
 
 interface IProcessImageModalProps {
     handleProcessModalToggle: typeof handleProcessModalToggle,
-    modalVisible: boolean,
-    processId: number,
+    state: IProcessModalState,
 }
 
 export default function ProcessImageModal(props: IProcessImageModalProps) {
+    const loadingComponent = () => {
+        return (<span>Loading ...</span>)
+    }
     return (<Modal
         isLarge={true}
-        title={`Process status - ${props.processId}`}
-        isOpen={props.modalVisible}
+        title={`Process status - ${props.state.processId}`}
+        isOpen={props.state.modalVisible}
         onClose={props.handleProcessModalToggle}>
         <SVG
             src={'/no-svg.svg'}
             cacheRequests={false}
-            // tslint:disable-next-line:jsx-no-lambda
-            loader={() => <span>Loading ...</span>}
-            axiosRequest={api.process.image(props.processId)}
-            // tslint:disable-next-line:jsx-no-lambda
-            onError={() => <span>Loading ...</span>} />
+            loader={loadingComponent}
+            axiosRequest={api.process.image(props.state.processId)}
+            onError={loadingComponent} />
     </Modal>);
 }

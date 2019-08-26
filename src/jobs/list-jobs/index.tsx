@@ -4,9 +4,7 @@ import {
     Table,
     TableHeader,
     TableBody,
-    IRow,
-    IAction,
-    ISeparator,
+    IRow
 } from '@patternfly/react-table';
 import { jobListWithDetail, jobViewDetail } from 'src/store/jobs/actions';
 import { IJobState, IJob } from 'src/store/jobs/types';
@@ -93,8 +91,7 @@ export class ListJobsContainer extends Component<IJobListProps> {
                     <TableBody rowKey='rowId' />
                 </Table>
                 <ProcessImageModal
-                    processId={this.props.processImageModalState.processId}
-                    modalVisible={this.props.processImageModalState.modalVisible}
+                    state={this.props.processImageModalState}
                     handleProcessModalToggle={this.props.handleProcessModalToggle} />
             </Fragment>
         );

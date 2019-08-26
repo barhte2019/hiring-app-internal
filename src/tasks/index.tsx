@@ -37,7 +37,11 @@ import { IProcessModalState } from 'src/components/process-image-modal/types';
 
 import { ICandidateSkillsModalState } from 'src/components/candidate-skills/types';
 import {
-    candidateSkillNameChange
+    candidateSkillNameChange,
+    candidateSkillKnowledgeToggle,
+    candidateSkillKnowledgeSelect,
+    candidateSkillKnowledgeClear,
+    candidateSkillModalToggle,
 } from 'src/components/candidate-skills/actions';
 import CandidateSkillsModal from 'src/components/candidate-skills';
 
@@ -65,6 +69,10 @@ interface ITaskProps {
     changeProcessId: typeof changeProcessId,
 
     candidateSkillNameChange: typeof candidateSkillNameChange,
+    candidateSkillKnowledgeToggle: typeof candidateSkillKnowledgeToggle,
+    candidateSkillKnowledgeSelect: typeof candidateSkillKnowledgeSelect,
+    candidateSkillKnowledgeClear: typeof candidateSkillKnowledgeClear,
+    candidateSkillModalToggle: typeof candidateSkillModalToggle,
 }
 
 
@@ -103,7 +111,7 @@ export class TaskContainer extends Component<ITaskProps> {
         const showTaskForm = (id: number, taskName: string) => {
             if (taskName.startsWith('Define')) {
                 this.props.taskDetail(id);
-                this.props.handleModalToggle();
+                this.props.candidateSkillModalToggle();
             }
 
             if (taskName.startsWith('Interviewer')) {
@@ -169,24 +177,22 @@ export class TaskContainer extends Component<ITaskProps> {
                         </Table></Tab>
                 </Tabs>
                 <InterviewerTeamModal
-                    modalVisible={this.props.interviewerModalState.modalVisible}
+                    interviewerTeamState={this.props.interviewerModalState}
                     interviewerCommentChange={this.props.interviewerCommentChange}
                     interviewerNameChange={this.props.interviewerNameChange}
                     addInterviewerClick={this.props.addInterviewerClick}
                     handleModalToggle={this.props.handleModalToggle}
-                    interviewerName={this.props.interviewerModalState.interviewerName}
-                    interviewerComment={this.props.interviewerModalState.interviewerComment}
-                    interviewers={this.props.interviewerModalState.interviewers}
                     onOkClick={interviewerTeamOk} />
                 <ProcessImageModal
-                    processId={this.props.processImageModalState.processId}
-                    modalVisible={this.props.processImageModalState.modalVisible}
+                    state={this.props.processImageModalState}
                     handleProcessModalToggle={this.props.handleProcessModalToggle} />
                 <CandidateSkillsModal
+                    state={this.props.candidateSkillModalState}
                     candidateSkillNameChange={this.props.candidateSkillNameChange}
-                    candidateSkillsModalVisible={this.props.candidateSkillModalState.candidateSkillsModalVisible}
-                    skillName={this.props.candidateSkillModalState.skillName}
-                    skills={this.props.candidateSkillModalState.skills}
+                    candidateSkillKnowledgeToggle={this.props.candidateSkillKnowledgeToggle}
+                    candidateSkillKnowledgeSelect={this.props.candidateSkillKnowledgeSelect}
+                    candidateSkillKnowledgeClear={this.props.candidateSkillKnowledgeClear}
+                    candidateSkillModalToggle={this.props.candidateSkillModalToggle}
                 />
             </PageSection>);
     }
@@ -203,6 +209,10 @@ const mapStateToProps: any = (state: AppState) => ({
 
 const mapDispatchToProps: any = ({
     addInterviewerClick,
+    candidateSkillKnowledgeClear,
+    candidateSkillKnowledgeSelect,
+    candidateSkillKnowledgeToggle,
+    candidateSkillModalToggle,
     candidateSkillNameChange,
     changeProcessId,
     claimTask,
