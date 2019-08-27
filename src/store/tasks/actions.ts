@@ -9,7 +9,6 @@ import {
     TASK_COMPLETING, TASK_COMPLETED_SUCCESS, TASK_COMPLETED_FAILED,
     TASK_DETAIL_FETCHING, TASK_DETAIL_FETCH_SUCCESS, TASK_DETAIL_FECH_FAILED,
 } from './types';
-import { replace } from 'connected-react-router';
 
 export function toggleActiveTab(tabIndex: number) {
     return {

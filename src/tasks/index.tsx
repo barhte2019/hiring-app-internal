@@ -144,6 +144,21 @@ export class TaskContainer extends Component<ITaskProps> {
             }
         }
 
+        const candidateSkillsOk = () => {
+            if(this.props.candidateSkillModalState.skills.length >= 1) {
+                this.props.completeTask(this.props.taskState.selectedTaskId, {
+                    "hiringPetition" : {
+                        "com.myspace.hr_hiring.HiringPetition" : {
+                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
+                            skills: this.props.candidateSkillModalState.skills
+                        }
+                    },
+                    "skillsDefined": true
+                });
+                this.props.candidateSkillModalToggle();
+            }
+        }
+
         return (
             <PageSection variant={PageSectionVariants.light}>
                 <Tabs activeKey={this.props.taskState.activeTabKey} onSelect={tabSelectWrapper}>
@@ -199,6 +214,7 @@ export class TaskContainer extends Component<ITaskProps> {
                     candidateSkillExperienceChange={this.props.candidateSkillExperienceChange}
                     candidateSkillModalToggle={this.props.candidateSkillModalToggle}
                     candidateSkillAdd={this.props.candidateSkillAdd}
+                    okClickHandler={candidateSkillsOk}
                 />
             </PageSection>);
     }

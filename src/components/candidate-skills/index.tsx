@@ -28,6 +28,7 @@ interface ICandidateSkillsModalProps {
     candidateSkillKnowledgeClear: typeof candidateSkillKnowledgeClear,
     candidateSkillExperienceChange: typeof candidateSkillExperienceChange,
     state: ICandidateSkillsModalState,
+    okClickHandler: any
 }
 
 export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) {
@@ -100,6 +101,9 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
             <TableHeader />
             <TableBody rowKey='rowId' />
         </Table>
-        <Button id="OkButton" isActive={props.state.skills.length >= 1}>OK</Button>
+        <Button 
+            id="OkButton" 
+            isActive={props.state.skills.length >= 1}
+            onClick={props.okClickHandler}>OK</Button>
     </Modal>)
 }
