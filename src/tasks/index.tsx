@@ -41,7 +41,9 @@ import {
     candidateSkillKnowledgeToggle,
     candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeClear,
+    candidateSkillExperienceChange,
     candidateSkillModalToggle,
+    candidateSkillAdd,
 } from 'src/components/candidate-skills/actions';
 import CandidateSkillsModal from 'src/components/candidate-skills';
 
@@ -72,7 +74,9 @@ interface ITaskProps {
     candidateSkillKnowledgeToggle: typeof candidateSkillKnowledgeToggle,
     candidateSkillKnowledgeSelect: typeof candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeClear: typeof candidateSkillKnowledgeClear,
+    candidateSkillExperienceChange: typeof candidateSkillExperienceChange,
     candidateSkillModalToggle: typeof candidateSkillModalToggle,
+    candidateSkillAdd: typeof candidateSkillAdd,
 }
 
 
@@ -192,7 +196,9 @@ export class TaskContainer extends Component<ITaskProps> {
                     candidateSkillKnowledgeToggle={this.props.candidateSkillKnowledgeToggle}
                     candidateSkillKnowledgeSelect={this.props.candidateSkillKnowledgeSelect}
                     candidateSkillKnowledgeClear={this.props.candidateSkillKnowledgeClear}
+                    candidateSkillExperienceChange={this.props.candidateSkillExperienceChange}
                     candidateSkillModalToggle={this.props.candidateSkillModalToggle}
+                    candidateSkillAdd={this.props.candidateSkillAdd}
                 />
             </PageSection>);
     }
@@ -209,6 +215,8 @@ const mapStateToProps: any = (state: AppState) => ({
 
 const mapDispatchToProps: any = ({
     addInterviewerClick,
+    candidateSkillAdd,
+    candidateSkillExperienceChange,
     candidateSkillKnowledgeClear,
     candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeToggle,

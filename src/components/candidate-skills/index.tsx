@@ -9,20 +9,24 @@ import {
 } from '@patternfly/react-table';
 
 import {
+    candidateSkillAdd,
     candidateSkillNameChange,
     candidateSkillKnowledgeToggle,
     candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeClear,
     candidateSkillModalToggle,
+    candidateSkillExperienceChange,
 } from './actions';
 import { ICandidateSkill, ICandidateSkillsModalState } from './types';
 
 interface ICandidateSkillsModalProps {
+    candidateSkillAdd: typeof candidateSkillAdd,
     candidateSkillModalToggle: typeof candidateSkillModalToggle,
     candidateSkillNameChange: typeof candidateSkillNameChange,
     candidateSkillKnowledgeToggle: typeof candidateSkillKnowledgeToggle,
     candidateSkillKnowledgeSelect: typeof candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeClear: typeof candidateSkillKnowledgeClear,
+    candidateSkillExperienceChange: typeof candidateSkillExperienceChange,
     state: ICandidateSkillsModalState,
 }
 
@@ -37,11 +41,17 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
         }
     }
 
-    const candidateSkillSelectWrapper = (event, value: string, isPlaceholder?: boolean|undefined) => {
+    const candidateSkillSelectWrapper = (event, value: string, isPlaceholder?: boolean | undefined) => {
         if (!isPlaceholder) {
             props.candidateSkillKnowledgeSelect(value);
         } else {
             props.candidateSkillKnowledgeClear();
+        }
+    }
+
+    const candidateSkillValidator = () => {
+        if (!props.state.skills.find(skill => props.state.skillName === skill.skillName)) {
+            props.candidateSkillAdd();
         }
     }
 
@@ -56,12 +66,14 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
                 aria-label="Skill"
                 placeholder="Skill name"
                 onChange={props.candidateSkillNameChange}
-                value={props.state.skillName} />
+                value={props.state.skillName} isValid={props.state.skills.find(skill => props.state.skillName === skill.skillName) === undefined} />
             <TextInput
                 id="textInputExperience"
                 aria-label="Years of Experience"
                 placeholder="Years of experience"
-                type="number" />
+                type="number"
+                onChange={props.candidateSkillExperienceChange}
+                value={props.state.yearsOfExperience} />
         </InputGroup>
         <InputGroup>
             <Select
@@ -78,13 +90,13 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
                 <SelectOption value="Foundational" />
             </Select>
             <Button
-                id="AddInterviewerButton">Add</Button>
+                id="AddInterviewerButton"
+                onClick={candidateSkillValidator}>Add</Button>
         </InputGroup>
         <Table
             caption="Suggested Candidate Skills"
             cells={['Name', 'Level', 'Experience']}
-            rows={props.state.skills.map<IRow>(skillItem => tableRowFromSkill(skillItem))}
-        >
+            rows={props.state.skills.map<IRow>(skillItem => tableRowFromSkill(skillItem))}>
             <TableHeader />
             <TableBody rowKey='rowId' />
         </Table>

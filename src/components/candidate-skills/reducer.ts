@@ -6,10 +6,12 @@ import {
     CANDIDATE_SKILL_KNOWLEDGE_SELECT,
     CANDIDATE_SKILL_KNOWLEDGE_CLEAR,
     CANDIDATE_SKILL_MODAL_TOGGLE,
+    CANDIDATE_SKILL_EXPERIENCE_CHANGE,
+    CANDIDATE_SKILL_ADD,
 } from './types';
 
 const initialState: ICandidateSkillsModalState = {
-    candidateSkillsModalVisible: true,
+    candidateSkillsModalVisible: false,
     error_message: '',
     levelOfKnowledge: '',
     loading: false,
@@ -17,6 +19,7 @@ const initialState: ICandidateSkillsModalState = {
     skillName: '',
     skills: [],
     taskId: 0,
+    yearsOfExperience: 0,
 }
 
 export function candidateSkillModalReducer(
@@ -24,8 +27,8 @@ export function candidateSkillModalReducer(
     action: CandidateSkillModalActionTypes
 ): ICandidateSkillsModalState {
     switch (action.type) {
-        case CANDIDATE_SKILL_MODAL_TOGGLE: { 
-            return { ...state, candidateSkillsModalVisible: !state.candidateSkillsModalVisible } 
+        case CANDIDATE_SKILL_MODAL_TOGGLE: {
+            return { ...state, candidateSkillsModalVisible: !state.candidateSkillsModalVisible }
         }
         case CANDIDATE_SKILL_NAME_CHANGE: {
             return {
@@ -51,6 +54,21 @@ export function candidateSkillModalReducer(
                 ...state,
                 levelOfKnowledge: '',
                 selectKnowledgeExpanded: false,
+            }
+        }
+        case CANDIDATE_SKILL_EXPERIENCE_CHANGE: {
+            return {
+                ...state,
+                yearsOfExperience: Number(action.value)
+            }
+        }
+        case CANDIDATE_SKILL_ADD: {
+            return {
+                ...state,
+                levelOfKnowledge: '',
+                skillName: '',
+                skills: state.skills.concat([state]),
+                yearsOfExperience: 0,
             }
         }
         default: return state;
