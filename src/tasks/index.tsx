@@ -47,6 +47,15 @@ import {
 } from 'src/components/candidate-skills/actions';
 import CandidateSkillsModal from 'src/components/candidate-skills';
 
+import { IBenefitModalState } from 'src/components/benefits-modal/types';
+import {
+    benefitAdd,
+    benefitDescriptionChange,
+    benefitModalToggle,
+    benefitNameChange
+} from 'src/components/benefits-modal/actions';
+import BenefitsModal from 'src/components/benefits-modal';
+
 
 interface ITaskProps {
     claimTask: typeof claimTask,
@@ -60,6 +69,7 @@ interface ITaskProps {
     interviewerModalState: IInterviewerTeamState,
     processImageModalState: IProcessModalState,
     candidateSkillModalState: ICandidateSkillsModalState,
+    benefitsModalState: IBenefitModalState,
 
     toggleActiveTab: typeof toggleActiveTab,
     interviewerCommentChange: typeof interviewerCommentChange,
@@ -77,6 +87,11 @@ interface ITaskProps {
     candidateSkillExperienceChange: typeof candidateSkillExperienceChange,
     candidateSkillModalToggle: typeof candidateSkillModalToggle,
     candidateSkillAdd: typeof candidateSkillAdd,
+
+    benefitNameChange: typeof benefitNameChange,
+    benefitDescriptionChange: typeof benefitDescriptionChange,
+    benefitModalToggle: typeof benefitModalToggle,
+    benefitAdd: typeof benefitAdd,
 }
 
 
@@ -122,6 +137,11 @@ export class TaskContainer extends Component<ITaskProps> {
                 this.props.taskDetail(id);
                 this.props.handleModalToggle();
             }
+
+            if (taskName.startsWith('Benefit')) {
+                this.props.taskDetail(id);
+                this.props.benefitModalToggle();
+            }
         }
 
         const showProcessImage = (id: number) => {
@@ -145,10 +165,10 @@ export class TaskContainer extends Component<ITaskProps> {
         }
 
         const candidateSkillsOk = () => {
-            if(this.props.candidateSkillModalState.skills.length >= 1) {
+            if (this.props.candidateSkillModalState.skills.length >= 1) {
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
-                    "hiringPetition" : {
-                        "com.myspace.hr_hiring.HiringPetition" : {
+                    "hiringPetition": {
+                        "com.myspace.hr_hiring.HiringPetition": {
                             ...this.props.taskState.selectedTaskOutput.hiringPetition,
                             skills: this.props.candidateSkillModalState.skills
                         }
@@ -157,6 +177,21 @@ export class TaskContainer extends Component<ITaskProps> {
                 });
                 this.props.candidateSkillModalToggle();
             }
+        }
+
+        const benefitsOk = () => {
+            if (this.props.benefitsModalState.benefits.length >= 1) {
+                this.props.completeTask(this.props.taskState.selectedTaskId, {
+                    "benefitsDefined": true,
+                    "hiringPetition": {
+                        "com.myspace.hr_hiring.HiringPetition": {
+                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
+                            benefits: this.props.benefitsModalState.benefits
+                        }
+                    },
+                })
+            }
+            this.props.benefitModalToggle();
         }
 
         return (
@@ -216,6 +251,13 @@ export class TaskContainer extends Component<ITaskProps> {
                     candidateSkillAdd={this.props.candidateSkillAdd}
                     okClickHandler={candidateSkillsOk}
                 />
+                <BenefitsModal
+                    state={this.props.benefitsModalState}
+                    benefitAdd={this.props.benefitAdd}
+                    benefitDescriptionChange={this.props.benefitDescriptionChange}
+                    benefitNameChange={this.props.benefitNameChange}
+                    benefitModalToggle={this.props.benefitModalToggle}
+                    okClickHandler={benefitsOk} />
             </PageSection>);
     }
 
@@ -223,6 +265,7 @@ export class TaskContainer extends Component<ITaskProps> {
 
 // Connect to the data store
 const mapStateToProps: any = (state: AppState) => ({
+    benefitsModalState: state.benefitsModalState,
     candidateSkillModalState: state.candidateSkillModalState,
     interviewerModalState: state.interviewerModalState,
     processImageModalState: state.processImageModalState,
@@ -231,6 +274,10 @@ const mapStateToProps: any = (state: AppState) => ({
 
 const mapDispatchToProps: any = ({
     addInterviewerClick,
+    benefitAdd,
+    benefitDescriptionChange,
+    benefitModalToggle,
+    benefitNameChange,
     candidateSkillAdd,
     candidateSkillExperienceChange,
     candidateSkillKnowledgeClear,
