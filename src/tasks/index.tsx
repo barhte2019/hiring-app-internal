@@ -60,6 +60,16 @@ import {
 } from 'src/components/benefits-modal/actions';
 import BenefitsModal from 'src/components/benefits-modal';
 
+import { IBenefitsApprovalModalState } from 'src/components/benefits-approval-modal/types';
+import {
+    benefitApprovalAdd,
+    benefitApprovalDescriptionChange,
+    benefitApprovalModalToggle,
+    benefitApprovalNameChange, 
+    benefitApprovalOpen
+} from 'src/components/benefits-approval-modal/actions';
+import BenefitsApprovalModal from 'src/components/benefits-approval-modal';
+
 
 interface ITaskProps {
     claimTask: typeof claimTask,
@@ -75,6 +85,7 @@ interface ITaskProps {
     processImageModalState: IProcessModalState,
     candidateSkillModalState: ICandidateSkillsModalState,
     benefitsModalState: IBenefitModalState,
+    benefitsApprovalModalState: IBenefitsApprovalModalState,
 
     toggleActiveTab: typeof toggleActiveTab,
     interviewerCommentChange: typeof interviewerCommentChange,
@@ -100,6 +111,12 @@ interface ITaskProps {
     benefitManagerClear: typeof benefitManagerClear,
     benefitManagerSelect: typeof benefitManagerSelect,
     benefitManagerSelectToggle: typeof benefitManagerSelectToggle,
+
+    benefitApprovalAdd: typeof benefitApprovalAdd,
+    benefitApprovalDescriptionChange: typeof benefitApprovalDescriptionChange,
+    benefitApprovalModalToggle: typeof benefitApprovalModalToggle,
+    benefitApprovalNameChange: typeof benefitApprovalNameChange,
+    benefitApprovalOpen: typeof benefitApprovalOpen
 }
 
 
@@ -149,6 +166,11 @@ export class TaskContainer extends Component<ITaskProps> {
             if (taskName.startsWith('Benefit') && taskName.endsWith('compensation')) {
                 this.props.taskDetail(id);
                 this.props.benefitModalToggle();
+            }
+
+            if (taskName.startsWith('Benefit') && taskName.endsWith('Approval')) {
+                this.props.taskDetail(id);
+                this.props.benefitApprovalOpen(id);
             }
         }
 
@@ -200,6 +222,21 @@ export class TaskContainer extends Component<ITaskProps> {
                 })
             }
             this.props.benefitModalToggle();
+        }
+
+        const benefitsApprovalOk = () => {
+            if (this.props.benefitsApprovalModalState.benefits.length >= 1) {
+                this.props.completeTask(this.props.taskState.selectedTaskId, {
+                    "benefitsDefined": true,
+                    "hiringPetition": {
+                        "com.myspace.hr_hiring.HiringPetition": {
+                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
+                            benefits: this.props.benefitsModalState.benefits
+                        }
+                    }
+                })
+            }
+            this.props.benefitApprovalModalToggle();
         }
 
         return (
@@ -269,8 +306,14 @@ export class TaskContainer extends Component<ITaskProps> {
                     benefitManagerToggle={this.props.benefitManagerSelectToggle}
                     benefitModalToggle={this.props.benefitModalToggle}
                     okClickHandler={benefitsOk}
-                    loggedInUser={this.props.sysState.loggedUser}
-                    isApprovalForm={false} />
+                    loggedInUser={this.props.sysState.loggedUser} />
+                <BenefitsApprovalModal
+                    state={this.props.benefitsApprovalModalState}
+                    benefitApprovalAdd={this.props.benefitApprovalAdd}
+                    benefitApprovalDescriptionChange={this.props.benefitApprovalDescriptionChange}
+                    benefitApprovalModalToggle={this.props.benefitApprovalModalToggle}
+                    benefitApprovalNameChange={this.props.benefitApprovalNameChange}
+                    okClickHandler={benefitsApprovalOk} />
             </PageSection>);
     }
 
@@ -278,6 +321,7 @@ export class TaskContainer extends Component<ITaskProps> {
 
 // Connect to the data store
 const mapStateToProps: any = (state: AppState) => ({
+    benefitsApprovalModalState: state.benefitsApprovalModalState,
     benefitsModalState: state.benefitsModalState,
     candidateSkillModalState: state.candidateSkillModalState,
     interviewerModalState: state.interviewerModalState,
@@ -289,6 +333,11 @@ const mapStateToProps: any = (state: AppState) => ({
 const mapDispatchToProps: any = ({
     addInterviewerClick,
     benefitAdd,
+    benefitApprovalAdd,
+    benefitApprovalDescriptionChange,
+    benefitApprovalModalToggle,
+    benefitApprovalNameChange,
+    benefitApprovalOpen,
     benefitDescriptionChange,
     benefitManagerClear,
     benefitManagerSelect,

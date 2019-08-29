@@ -22,8 +22,7 @@ interface IBenefitsModalProps {
     benefitManagerSelect: typeof benefitManagerSelect,
     benefitManagerToggle: typeof benefitManagerSelectToggle,
     okClickHandler: any,
-    loggedInUser: string,
-    isApprovalForm: boolean
+    loggedInUser: string
 }
 
 export default function BenefitsModal(props: IBenefitsModalProps) {

@@ -1,20 +1,22 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import {createBrowserHistory} from 'history';
-import {connectRouter, routerMiddleware} from 'connected-react-router';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createBrowserHistory } from 'history';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import thunkMiddleware from 'redux-thunk';
-import {composeWithDevTools} from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-import {systemReducer} from './system/reducers';
-import {jobsReducer} from './jobs/reducers';
+import { systemReducer } from './system/reducers';
+import { jobsReducer } from './jobs/reducers';
 import { tasksReducer } from './tasks/reducer';
 import { interviewerTeamModalReducer } from 'src/components/interviewer-team/reducer';
 import { processImageModalReducer } from 'src/components/process-image-modal/reducer';
 import { candidateSkillModalReducer } from 'src/components/candidate-skills/reducer';
 import { benefitModalReducer } from 'src/components/benefits-modal/reducer';
+import { benefitApprovalModalReducer } from 'src/components/benefits-approval-modal/reducer';
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
+    benefitsApprovalModalState: benefitApprovalModalReducer,
     benefitsModalState: benefitModalReducer,
     candidateSkillModalState: candidateSkillModalReducer,
     interviewerModalState: interviewerTeamModalReducer,
