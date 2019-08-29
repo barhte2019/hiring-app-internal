@@ -25,6 +25,7 @@ import {
 import { handleProcessModalToggle, changeProcessId } from 'src/components/process-image-modal/actions';
 
 import { ITaskState } from 'src/store/tasks/types';
+import { ISystemState } from 'src/store/system/types';
 import { ITask } from 'src/common/types';
 import {
     toggleActiveTab,
@@ -52,7 +53,10 @@ import {
     benefitAdd,
     benefitDescriptionChange,
     benefitModalToggle,
-    benefitNameChange
+    benefitNameChange,
+    benefitManagerClear,
+    benefitManagerSelect,
+    benefitManagerSelectToggle
 } from 'src/components/benefits-modal/actions';
 import BenefitsModal from 'src/components/benefits-modal';
 
@@ -65,6 +69,7 @@ interface ITaskProps {
     completeTask: typeof completeTask,
     taskDetail: typeof taskDetail,
 
+    sysState: ISystemState,
     taskState: ITaskState,
     interviewerModalState: IInterviewerTeamState,
     processImageModalState: IProcessModalState,
@@ -92,6 +97,9 @@ interface ITaskProps {
     benefitDescriptionChange: typeof benefitDescriptionChange,
     benefitModalToggle: typeof benefitModalToggle,
     benefitAdd: typeof benefitAdd,
+    benefitManagerClear: typeof benefitManagerClear,
+    benefitManagerSelect: typeof benefitManagerSelect,
+    benefitManagerSelectToggle: typeof benefitManagerSelectToggle,
 }
 
 
@@ -138,7 +146,7 @@ export class TaskContainer extends Component<ITaskProps> {
                 this.props.handleModalToggle();
             }
 
-            if (taskName.startsWith('Benefit')) {
+            if (taskName.startsWith('Benefit') && taskName.endsWith('compensation')) {
                 this.props.taskDetail(id);
                 this.props.benefitModalToggle();
             }
@@ -182,13 +190,13 @@ export class TaskContainer extends Component<ITaskProps> {
         const benefitsOk = () => {
             if (this.props.benefitsModalState.benefits.length >= 1) {
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
-                    "benefitsDefined": true,
                     "hiringPetition": {
                         "com.myspace.hr_hiring.HiringPetition": {
                             ...this.props.taskState.selectedTaskOutput.hiringPetition,
                             benefits: this.props.benefitsModalState.benefits
                         }
                     },
+                    "manager": this.props.benefitsModalState.manager
                 })
             }
             this.props.benefitModalToggle();
@@ -256,8 +264,13 @@ export class TaskContainer extends Component<ITaskProps> {
                     benefitAdd={this.props.benefitAdd}
                     benefitDescriptionChange={this.props.benefitDescriptionChange}
                     benefitNameChange={this.props.benefitNameChange}
+                    benefitManagerClear={this.props.benefitManagerClear}
+                    benefitManagerSelect={this.props.benefitManagerSelect}
+                    benefitManagerToggle={this.props.benefitManagerSelectToggle}
                     benefitModalToggle={this.props.benefitModalToggle}
-                    okClickHandler={benefitsOk} />
+                    okClickHandler={benefitsOk}
+                    loggedInUser={this.props.sysState.loggedUser}
+                    isApprovalForm={false} />
             </PageSection>);
     }
 
@@ -269,6 +282,7 @@ const mapStateToProps: any = (state: AppState) => ({
     candidateSkillModalState: state.candidateSkillModalState,
     interviewerModalState: state.interviewerModalState,
     processImageModalState: state.processImageModalState,
+    sysState: state.system,
     taskState: state.task,
 })
 
@@ -276,6 +290,9 @@ const mapDispatchToProps: any = ({
     addInterviewerClick,
     benefitAdd,
     benefitDescriptionChange,
+    benefitManagerClear,
+    benefitManagerSelect,
+    benefitManagerSelectToggle,
     benefitModalToggle,
     benefitNameChange,
     candidateSkillAdd,

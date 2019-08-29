@@ -5,6 +5,9 @@ import {
     BENEFIT_DESCRIPTION_CHANGE,
     BENEFIT_MODAL_TOGGLE,
     BENEFIT_NAME_CHANGE,
+    BENEFIT_MANAGER_SELECT,
+    BENEFIT_MANAGER_SELECT_CLEAR,
+    BENEFIT_MANAGER_SELECT_TOGGLE,
 } from './types';
 
 const initialState: IBenefitModalState = {
@@ -14,7 +17,9 @@ const initialState: IBenefitModalState = {
     benefitsModalVisible: false,
     error_message: '',
     loading: false,
-    taskId: 0
+    manager: '',
+    selectManagerExpanded: false,
+    taskId: 0,
 }
 
 export function benefitModalReducer(
@@ -34,6 +39,26 @@ export function benefitModalReducer(
                 benefitDescription: '',
                 benefitName: '',
                 benefits: state.benefits.concat([state]),
+            }
+        }
+        case BENEFIT_MANAGER_SELECT_TOGGLE: {
+            return {
+                ...state,
+                selectManagerExpanded: action.expanded,
+            }
+        }
+        case BENEFIT_MANAGER_SELECT: {
+            return {
+                ...state,
+                manager: action.selection,
+                selectManagerExpanded: false,
+            }
+        }
+        case BENEFIT_MANAGER_SELECT_CLEAR: {
+            return {
+                ...state,
+                manager: '',
+                selectManagerExpanded: false,
             }
         }
         case BENEFIT_DESCRIPTION_CHANGE: {

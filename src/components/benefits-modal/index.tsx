@@ -1,14 +1,16 @@
-import React from 'react';
-import { Modal, InputGroup, TextInput, Button } from '@patternfly/react-core';
+import React, { Fragment } from 'react';
+import { Modal, InputGroup, TextInput, Button, Select, SelectVariant, SelectOption } from '@patternfly/react-core';
 import { IBenefitModalState, IBenefit } from './types';
 import {
     benefitAdd,
     benefitNameChange,
     benefitDescriptionChange,
-    benefitModalToggle
+    benefitModalToggle,
+    benefitManagerClear,
+    benefitManagerSelect,
+    benefitManagerSelectToggle,
 } from './actions';
 import { IRow, Table, TableHeader, TableBody } from '@patternfly/react-table';
-import { propTypes } from '@patternfly/react-icons/dist/js/common';
 
 interface IBenefitsModalProps {
     state: IBenefitModalState,
@@ -16,7 +18,12 @@ interface IBenefitsModalProps {
     benefitNameChange: typeof benefitNameChange,
     benefitDescriptionChange: typeof benefitDescriptionChange,
     benefitModalToggle: typeof benefitModalToggle,
-    okClickHandler: any
+    benefitManagerClear: typeof benefitManagerClear,
+    benefitManagerSelect: typeof benefitManagerSelect,
+    benefitManagerToggle: typeof benefitManagerSelectToggle,
+    okClickHandler: any,
+    loggedInUser: string,
+    isApprovalForm: boolean
 }
 
 export default function BenefitsModal(props: IBenefitsModalProps) {
@@ -36,6 +43,24 @@ export default function BenefitsModal(props: IBenefitsModalProps) {
             props.benefitAdd();
         }
     }
+
+    const managerSelectWrapper = (event, value: string, isPlaceholder?: boolean | undefined) => {
+        if (!isPlaceholder) {
+            props.benefitManagerSelect(value);
+        } else {
+            props.benefitManagerClear();
+        }
+    }
+
+    const managers = ['tina', 'tom', 'eve', 'ann', 'bob'];
+
+    const managerOptions =
+        (<Fragment>
+            {managers
+                .filter(m => m !== props.loggedInUser)
+                .map((manager, index) => (<SelectOption key={`manager-${index}`} value={manager} />))
+            }
+        </Fragment>)
 
     return (<Modal
         width={'50%'}
@@ -59,6 +84,19 @@ export default function BenefitsModal(props: IBenefitsModalProps) {
             <Button
                 id="AddBenefitButton"
                 onClick={benefitAddValidator} >Add</Button>
+        </InputGroup>
+        <InputGroup>
+            <Select
+                id="selectKnowledge"
+                variant={SelectVariant.single}
+                aria-label="Select Level of Knowledge"
+                onToggle={props.benefitManagerToggle}
+                onSelect={managerSelectWrapper}
+                isExpanded={props.state.selectManagerExpanded}
+                selections={props.state.manager}>
+                <SelectOption value="Choose manager" isPlaceholder={true} />
+                {managerOptions}
+            </Select>
         </InputGroup>
         <Table
             caption="Suggested Benefits Offer"
