@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import {
     Table,
     TableHeader,
@@ -38,11 +37,25 @@ export class ListJobsContainer extends Component<IJobListProps> {
             const genericLoading: string = 'loading job details ...';
 
             if (item) {
-                const job: IJob = item.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
+                let job: IJob;
+                if(item.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
+                    job = item.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
+                } else if(item.hiringPetition) {
+                    job = item.hiringPetition;
+                } else {
+                    job = {}
+                }
                 const jobTitle = job.jobTitle ? job.jobTitle : 'loading title ...';
                 const jobDescription = job.jobDescription ? job.jobDescription : 'loading description...';
                 const jobLocation = job.location ? job.location : 'loading location...';
-                const jobStatus = milestones && milestones.milestones.length > 0 ? milestones.milestones[0]['milestone-name'] : 'Created';
+                const arrMilestones: any[] = milestones!==undefined?milestones.milestones:[];
+                let jobStatus = 'Created';
+                switch(arrMilestones.length){
+                    case 0: jobStatus='Job Definition'; break;
+                    case 1: jobStatus='Receiving Candidates'; break;
+                    case 2: jobStatus = 'Completed'; break;
+                    default: jobStatus = 'Created';
+                }   
 
                 const jobStatusLink = <Button variant="link" 
                     // tslint:disable-next-line:jsx-no-lambda

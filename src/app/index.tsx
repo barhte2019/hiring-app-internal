@@ -14,13 +14,13 @@ import {
   toggleAbout
 } from '../store/system/actions';
 import LoginPage from 'src/login/login';
-import { potentialTaskListFetch } from '../store/tasks/actions';
+import { ownedTaskListFetch } from '../store/tasks/actions';
 
 export class AppContainer extends Component<any> {
 
   public componentDidMount() {
     setInterval(() => {
-      this.props.potentialTaskListFetch(0,11);
+      this.props.ownedTaskListFetch(0,11);
     }, 15000);
   }
 
@@ -48,7 +48,7 @@ export class AppContainer extends Component<any> {
           onTasksDropdownToggle={this.props.toggleTasks}
           onToggleAbout={this.props.toggleAbout}
           isAboutOpen={this.props.system.isAboutOpen}
-          potentialTasks={this.props.task.potentialTasks} />
+          potentialTasks={this.props.task.ownedTasks} />
         : <LoginPage />
     );
   }
@@ -65,7 +65,7 @@ const wk = withKeycloak(AppContainer);
 export default connect<{},{}>(
   mapStateToProps,
   {
-    potentialTaskListFetch,
+    ownedTaskListFetch,
     selectDropdown,
     selectTasks,
     toggleAbout,

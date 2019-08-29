@@ -126,7 +126,7 @@ export function jobsReducer(
             return {
                 ...state,
                 processInstances: {
-                    ...state.milestones,
+                    ...state.processInstances,
                     [action.jobId]: { ...action.processInstance },
                 }
             }
