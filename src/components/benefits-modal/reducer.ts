@@ -8,6 +8,8 @@ import {
     BENEFIT_MANAGER_SELECT,
     BENEFIT_MANAGER_SELECT_CLEAR,
     BENEFIT_MANAGER_SELECT_TOGGLE,
+    BENEFIT_REMOVE,
+    BENEFIT_CLEAR,
 } from './types';
 
 const initialState: IBenefitModalState = {
@@ -41,6 +43,8 @@ export function benefitModalReducer(
                 benefits: state.benefits.concat([state]),
             }
         }
+        case BENEFIT_REMOVE: { return { ...state, benefits: state.benefits.filter(b => b.benefitName !== action.name) } }
+        case BENEFIT_CLEAR: { return { ...state, benefits: [] } }
         case BENEFIT_MANAGER_SELECT_TOGGLE: {
             return {
                 ...state,

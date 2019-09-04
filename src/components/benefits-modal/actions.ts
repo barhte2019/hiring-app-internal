@@ -6,6 +6,8 @@ import {
     BENEFIT_MANAGER_SELECT,
     BENEFIT_MANAGER_SELECT_CLEAR,
     BENEFIT_MANAGER_SELECT_TOGGLE,
+    BENEFIT_REMOVE,
+    BENEFIT_CLEAR,
 } from './types'
 
 export function benefitModalToggle() {
@@ -22,6 +24,14 @@ export function benefitDescriptionChange(value: string) {
 
 export function benefitAdd() {
     return { type: BENEFIT_ADD }
+}
+
+export function benefitRemove(name: string) {
+    return { type: BENEFIT_REMOVE, name }
+}
+
+export function benefitClear() {
+    return { type: BENEFIT_CLEAR }
 }
 
 export function benefitManagerSelectToggle(expanded: boolean) {

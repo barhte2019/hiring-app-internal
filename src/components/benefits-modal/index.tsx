@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
-import { Modal, InputGroup, TextInput, Button, Select, SelectVariant, SelectOption } from '@patternfly/react-core';
+import { Modal, InputGroup, TextInput, Button, Select, SelectVariant, SelectOption, ButtonVariant } from '@patternfly/react-core';
 import { IBenefitModalState, IBenefit } from './types';
 import {
     benefitAdd,
+    benefitRemove,
     benefitNameChange,
     benefitDescriptionChange,
     benefitModalToggle,
@@ -15,6 +16,7 @@ import { IRow, Table, TableHeader, TableBody } from '@patternfly/react-table';
 interface IBenefitsModalProps {
     state: IBenefitModalState,
     benefitAdd: typeof benefitAdd,
+    benefitRemove: typeof benefitRemove,
     benefitNameChange: typeof benefitNameChange,
     benefitDescriptionChange: typeof benefitDescriptionChange,
     benefitModalToggle: typeof benefitModalToggle,
@@ -31,7 +33,9 @@ export default function BenefitsModal(props: IBenefitsModalProps) {
         return {
             cells: [
                 { title: benefit.benefitName },
-                { title: benefit.benefitDescription }
+                { title: benefit.benefitDescription },
+                // tslint:disable-next-line:jsx-no-lambda
+                { title: <Button variant={ButtonVariant.link} onClick={() => { props.benefitRemove(benefit.benefitName) }}>X</Button> }
             ]
         }
     }
@@ -99,7 +103,7 @@ export default function BenefitsModal(props: IBenefitsModalProps) {
         </InputGroup>
         <Table
             caption="Suggested Benefits Offer"
-            cells={['Name', 'Description']}
+            cells={['Name', 'Description', 'Remove']}
             rows={props.state.benefits.map<IRow>(b => tableRowFromBenefit(b))} >
             <TableHeader />
             <TableBody rowKey="rowId" />

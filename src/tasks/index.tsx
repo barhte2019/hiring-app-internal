@@ -60,7 +60,9 @@ import {
     benefitNameChange,
     benefitManagerClear,
     benefitManagerSelect,
-    benefitManagerSelectToggle
+    benefitManagerSelectToggle,
+    benefitRemove,
+    benefitClear
 } from 'src/components/benefits-modal/actions';
 import BenefitsModal from 'src/components/benefits-modal';
 
@@ -117,6 +119,8 @@ interface ITaskProps {
     benefitDescriptionChange: typeof benefitDescriptionChange,
     benefitModalToggle: typeof benefitModalToggle,
     benefitAdd: typeof benefitAdd,
+    benefitRemove: typeof benefitRemove,
+    benefitClear: typeof benefitClear,
     benefitManagerClear: typeof benefitManagerClear,
     benefitManagerSelect: typeof benefitManagerSelect,
     benefitManagerSelectToggle: typeof benefitManagerSelectToggle,
@@ -177,6 +181,7 @@ export class TaskContainer extends Component<ITaskProps> {
             }
 
             if (taskName.startsWith('Benefit') && taskName.endsWith('compensation')) {
+                this.props.benefitClear();
                 this.props.taskDetail(id);
                 this.props.benefitModalToggle();
             }
@@ -271,7 +276,10 @@ export class TaskContainer extends Component<ITaskProps> {
                     "benefitsDefined": true,
                     "hiringPetition": {
                         ...hiringPetition,
-                        benefits: this.props.benefitsModalState.benefits
+                        benefits: this.props.benefitsApprovalModalState.benefits.map<IBenefit>(b => ({
+                            benefitDescription: b.benefitDescription,
+                            benefitName: b.benefitName
+                        }))
                     }
                 })
             }
@@ -340,6 +348,7 @@ export class TaskContainer extends Component<ITaskProps> {
                 <BenefitsModal
                     state={this.props.benefitsModalState}
                     benefitAdd={this.props.benefitAdd}
+                    benefitRemove={this.props.benefitRemove}
                     benefitDescriptionChange={this.props.benefitDescriptionChange}
                     benefitNameChange={this.props.benefitNameChange}
                     benefitManagerClear={this.props.benefitManagerClear}
@@ -379,12 +388,14 @@ const mapDispatchToProps: any = ({
     benefitApprovalModalToggle,
     benefitApprovalNameChange,
     benefitApprovalOpen,
+    benefitClear,
     benefitDescriptionChange,
     benefitManagerClear,
     benefitManagerSelect,
     benefitManagerSelectToggle,
     benefitModalToggle,
     benefitNameChange,
+    benefitRemove,
     candidateSkillAdd,
     candidateSkillClear,
     candidateSkillExperienceChange,
