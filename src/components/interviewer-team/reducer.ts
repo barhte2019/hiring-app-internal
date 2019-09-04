@@ -3,7 +3,9 @@ import {
     INTERVIEWER_COMMENT_CHANGE,
     INTERVIEWER_NAME_CHANGE,
     ADD_INTERVIEWER_CLICK,
-    HANDLE_MODAL_TOGGLE
+    HANDLE_MODAL_TOGGLE,
+    REMOVE_INTERVIEWER,
+    CLEAR_INTERVIEWERS
 } from './types'
 
 const initialState: IInterviewerTeamState = {
@@ -41,6 +43,18 @@ export function interviewerTeamModalReducer(
                 interviewers: state.interviewers.concat([
                     { name: state.interviewerName, comment: state.interviewerComment }
                 ]),
+            }
+        }
+        case REMOVE_INTERVIEWER: {
+            return {
+                ...state,
+                interviewers: state.interviewers.filter(i => i.name !== action.name)
+            }
+        }
+        case CLEAR_INTERVIEWERS: {
+            return {
+                ...state,
+                interviewers: []
             }
         }
         case HANDLE_MODAL_TOGGLE: {

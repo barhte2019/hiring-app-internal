@@ -19,6 +19,8 @@ import {
     interviewerCommentChange,
     interviewerNameChange,
     addInterviewerClick,
+    clearInterviewers,
+    removeInterviewer,
     handleModalToggle,
 } from 'src/components/interviewer-team/actions';
 
@@ -36,7 +38,7 @@ import {
 import ProcessImageModal from 'src/components/process-image-modal';
 import { IProcessModalState } from 'src/components/process-image-modal/types';
 
-import { ICandidateSkillsModalState } from 'src/components/candidate-skills/types';
+import { ICandidateSkillsModalState, ICandidateSkill } from 'src/components/candidate-skills/types';
 import {
     candidateSkillNameChange,
     candidateSkillKnowledgeToggle,
@@ -65,7 +67,7 @@ import {
     benefitApprovalAdd,
     benefitApprovalDescriptionChange,
     benefitApprovalModalToggle,
-    benefitApprovalNameChange, 
+    benefitApprovalNameChange,
     benefitApprovalOpen
 } from 'src/components/benefits-approval-modal/actions';
 import BenefitsApprovalModal from 'src/components/benefits-approval-modal';
@@ -91,6 +93,9 @@ interface ITaskProps {
     interviewerCommentChange: typeof interviewerCommentChange,
     interviewerNameChange: typeof interviewerNameChange,
     addInterviewerClick: typeof addInterviewerClick,
+    removeInterviewer: typeof removeInterviewer,
+    clearInterviewers: typeof clearInterviewers,
+
     handleModalToggle: typeof handleModalToggle,
 
     handleProcessModalToggle: typeof handleProcessModalToggle,
@@ -149,6 +154,8 @@ export class TaskContainer extends Component<ITaskProps> {
     public render() {
 
         const tabSelectWrapper = (event: any, eventKey: number) => {
+            this.props.ownedTaskListFetch(0, 10);
+            this.props.potentialTaskListFetch(0, 10);
             this.props.toggleActiveTab(eventKey);
         }
 
@@ -159,6 +166,7 @@ export class TaskContainer extends Component<ITaskProps> {
             }
 
             if (taskName.startsWith('Interviewer')) {
+                this.props.clearInterviewers();
                 this.props.taskDetail(id);
                 this.props.handleModalToggle();
             }
@@ -181,12 +189,16 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const interviewerTeamOk = () => {
             if (this.props.interviewerModalState.interviewers.length >= 1) {
+                let hiringPetition: any;
+                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
+                } else {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
+                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
                     "hiringPetition": {
-                        "com.myspace.hr_hiring.HiringPetition": {
-                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
-                            interviewers: this.props.interviewerModalState.interviewers.map<string>(item => item.name)
-                        }
+                        ...hiringPetition,
+                        interviewers: this.props.interviewerModalState.interviewers.map<string>(item => item.name)
                     },
                     "interviewerTeamDefined": true
                 });
@@ -196,12 +208,22 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const candidateSkillsOk = () => {
             if (this.props.candidateSkillModalState.skills.length >= 1) {
+                let hiringPetition: any;
+                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
+                } else {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
+                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
                     "hiringPetition": {
-                        "com.myspace.hr_hiring.HiringPetition": {
-                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
-                            skills: this.props.candidateSkillModalState.skills
-                        }
+                        ...hiringPetition,
+                        skills: this.props.candidateSkillModalState.skills
+                            .map<ICandidateSkill>(s => (
+                                {
+                                    levelOfKnowledge: s.levelOfKnowledge,
+                                    skillName: s.skillName,
+                                    yearsOfExperience: s.yearsOfExperience
+                                }))
                     },
                     "skillsDefined": true
                 });
@@ -211,12 +233,16 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const benefitsOk = () => {
             if (this.props.benefitsModalState.benefits.length >= 1) {
+                let hiringPetition: any;
+                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
+                } else {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
+                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
                     "hiringPetition": {
-                        "com.myspace.hr_hiring.HiringPetition": {
-                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
-                            benefits: this.props.benefitsModalState.benefits
-                        }
+                        ...hiringPetition,
+                        benefits: this.props.benefitsModalState.benefits
                     },
                     "manager": this.props.benefitsModalState.manager
                 })
@@ -226,13 +252,17 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const benefitsApprovalOk = () => {
             if (this.props.benefitsApprovalModalState.benefits.length >= 1) {
+                let hiringPetition: any;
+                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
+                } else {
+                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
+                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
                     "benefitsDefined": true,
                     "hiringPetition": {
-                        "com.myspace.hr_hiring.HiringPetition": {
-                            ...this.props.taskState.selectedTaskOutput.hiringPetition,
-                            benefits: this.props.benefitsModalState.benefits
-                        }
+                        ...hiringPetition,
+                        benefits: this.props.benefitsModalState.benefits
                     }
                 })
             }
@@ -280,6 +310,7 @@ export class TaskContainer extends Component<ITaskProps> {
                     interviewerCommentChange={this.props.interviewerCommentChange}
                     interviewerNameChange={this.props.interviewerNameChange}
                     addInterviewerClick={this.props.addInterviewerClick}
+                    removeInterviewer={this.props.removeInterviewer}
                     handleModalToggle={this.props.handleModalToggle}
                     onOkClick={interviewerTeamOk} />
                 <ProcessImageModal
@@ -353,6 +384,7 @@ const mapDispatchToProps: any = ({
     candidateSkillNameChange,
     changeProcessId,
     claimTask,
+    clearInterviewers,
     completeTask,
     handleModalToggle,
     handleProcessModalToggle,
@@ -361,6 +393,7 @@ const mapDispatchToProps: any = ({
     ownedTaskListFetch,
     potentialTaskListFetch,
     releaseTask,
+    removeInterviewer,
     taskDetail,
     toggleActiveTab,
 })

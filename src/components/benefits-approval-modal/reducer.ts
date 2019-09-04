@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import {
     BenefitApprovalModalActionTypes,
     IBenefitsApprovalModalState,
@@ -38,7 +37,6 @@ export function benefitApprovalModalReducer(
             return { ...state, benefits: action.benefits, loading: false }
         }
         case BENEFITS_FAILED: {
-            toast.error(action.serverErrors);
             return { ...state, loading: false, error_message: action.serverErrors }
         }
         case BENEFIT_APPROVAL_ADD: {

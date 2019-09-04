@@ -32,9 +32,9 @@ export function benefitApprovalOpen(taskId: number) {
         return api.tasks.detail(taskId)
             .then(response => {
                 // tslint:disable-next-line:no-string-literal
-                const responseBenefits: any[] = response.data['hiringPetition']['com.myspace.hr_hiring.HiringPetition'].benefits;
+                const responseBenefits: any[] = response.data['hiringPetition'].benefits;
                 // tslint:disable-next-line:no-string-literal
-                const benefits: IBenefit[] = responseBenefits.map<IBenefit>(item => ({ ...item['com.myspace.hr_hiring.JobRoleBenefit'] }))
+                const benefits: IBenefit[] = responseBenefits.map<IBenefit>(item => ({ ...item }))
                 dispatch(benefitApprovalModalToggle());
                 return dispatch({ type: BENEFITS_SUCCESS, benefits });
             })
