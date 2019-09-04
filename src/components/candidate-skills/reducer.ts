@@ -8,6 +8,8 @@ import {
     CANDIDATE_SKILL_MODAL_TOGGLE,
     CANDIDATE_SKILL_EXPERIENCE_CHANGE,
     CANDIDATE_SKILL_ADD,
+    CANDIDATE_SKILL_REMOVE,
+    CANDIDATE_SKILL_CLEAR,
 } from './types';
 
 const initialState: ICandidateSkillsModalState = {
@@ -69,6 +71,18 @@ export function candidateSkillModalReducer(
                 skillName: '',
                 skills: state.skills.concat([state]),
                 yearsOfExperience: 0,
+            }
+        }
+        case CANDIDATE_SKILL_REMOVE: {
+            return {
+                ...state,
+                skills: state.skills.filter(s => s.skillName !== action.name)
+            }
+        }
+        case CANDIDATE_SKILL_CLEAR: {
+            return {
+                ...state,
+                skills: []
             }
         }
         default: return state;

@@ -47,10 +47,12 @@ import {
     candidateSkillExperienceChange,
     candidateSkillModalToggle,
     candidateSkillAdd,
+    candidateSkillRemove,
+    candidateSkillClear,
 } from 'src/components/candidate-skills/actions';
 import CandidateSkillsModal from 'src/components/candidate-skills';
 
-import { IBenefitModalState } from 'src/components/benefits-modal/types';
+import { IBenefitModalState, IBenefit } from 'src/components/benefits-modal/types';
 import {
     benefitAdd,
     benefitDescriptionChange,
@@ -108,6 +110,8 @@ interface ITaskProps {
     candidateSkillExperienceChange: typeof candidateSkillExperienceChange,
     candidateSkillModalToggle: typeof candidateSkillModalToggle,
     candidateSkillAdd: typeof candidateSkillAdd,
+    candidateSkillRemove: typeof candidateSkillRemove,
+    candidateSkillClear: typeof candidateSkillClear,
 
     benefitNameChange: typeof benefitNameChange,
     benefitDescriptionChange: typeof benefitDescriptionChange,
@@ -161,6 +165,7 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const showTaskForm = (id: number, taskName: string) => {
             if (taskName.startsWith('Define')) {
+                this.props.candidateSkillClear();
                 this.props.taskDetail(id);
                 this.props.candidateSkillModalToggle();
             }
@@ -243,6 +248,10 @@ export class TaskContainer extends Component<ITaskProps> {
                     "hiringPetition": {
                         ...hiringPetition,
                         benefits: this.props.benefitsModalState.benefits
+                            .map<IBenefit>(b => ({
+                                benefitDescription: b.benefitDescription,
+                                benefitName: b.benefitName
+                            }))
                     },
                     "manager": this.props.benefitsModalState.manager
                 })
@@ -325,6 +334,7 @@ export class TaskContainer extends Component<ITaskProps> {
                     candidateSkillExperienceChange={this.props.candidateSkillExperienceChange}
                     candidateSkillModalToggle={this.props.candidateSkillModalToggle}
                     candidateSkillAdd={this.props.candidateSkillAdd}
+                    candidateSkillRemove={this.props.candidateSkillRemove}
                     okClickHandler={candidateSkillsOk}
                 />
                 <BenefitsModal
@@ -376,12 +386,14 @@ const mapDispatchToProps: any = ({
     benefitModalToggle,
     benefitNameChange,
     candidateSkillAdd,
+    candidateSkillClear,
     candidateSkillExperienceChange,
     candidateSkillKnowledgeClear,
     candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeToggle,
     candidateSkillModalToggle,
     candidateSkillNameChange,
+    candidateSkillRemove,
     changeProcessId,
     claimTask,
     clearInterviewers,

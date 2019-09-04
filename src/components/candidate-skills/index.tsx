@@ -3,6 +3,7 @@ import {
     InputGroup, Button, TextInput,
     Select, SelectOption, SelectVariant,
     Modal,
+    ButtonVariant,
 } from '@patternfly/react-core';
 import {
     Table, TableHeader, TableBody, IRow
@@ -16,6 +17,7 @@ import {
     candidateSkillKnowledgeClear,
     candidateSkillModalToggle,
     candidateSkillExperienceChange,
+    candidateSkillRemove,
 } from './actions';
 import { ICandidateSkill, ICandidateSkillsModalState } from './types';
 
@@ -27,8 +29,9 @@ interface ICandidateSkillsModalProps {
     candidateSkillKnowledgeSelect: typeof candidateSkillKnowledgeSelect,
     candidateSkillKnowledgeClear: typeof candidateSkillKnowledgeClear,
     candidateSkillExperienceChange: typeof candidateSkillExperienceChange,
+    candidateSkillRemove: typeof candidateSkillRemove,
     state: ICandidateSkillsModalState,
-    okClickHandler: any
+    okClickHandler: any,
 }
 
 export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) {
@@ -38,6 +41,12 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
                 { title: skill.skillName },
                 { title: skill.levelOfKnowledge },
                 { title: skill.yearsOfExperience },
+
+                {
+                    title: <Button variant={ButtonVariant.link}
+                        // tslint:disable-next-line:jsx-no-lambda
+                        onClick={() => { props.candidateSkillRemove(skill.skillName) }}>X</Button>
+                }
             ]
         }
     }
@@ -96,13 +105,13 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
         </InputGroup>
         <Table
             caption="Suggested Candidate Skills"
-            cells={['Name', 'Level', 'Experience']}
+            cells={['Name', 'Level', 'Experience', 'Remove']}
             rows={props.state.skills.map<IRow>(skillItem => tableRowFromSkill(skillItem))}>
             <TableHeader />
             <TableBody rowKey='rowId' />
         </Table>
-        <Button 
-            id="OkButton" 
+        <Button
+            id="OkButton"
             isActive={props.state.skills.length >= 1}
             onClick={props.okClickHandler}>OK</Button>
     </Modal>)

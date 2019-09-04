@@ -6,6 +6,8 @@ import {
     CANDIDATE_SKILL_KNOWLEDGE_CLEAR,
     CANDIDATE_SKILL_EXPERIENCE_CHANGE,
     CANDIDATE_SKILL_ADD,
+    CANDIDATE_SKILL_REMOVE,
+    CANDIDATE_SKILL_CLEAR,
 } from './types'
 
 export function candidateSkillModalToggle() {
@@ -34,4 +36,12 @@ export function candidateSkillExperienceChange(value: string) {
 
 export function candidateSkillAdd() {
     return { type: CANDIDATE_SKILL_ADD }
+}
+
+export function candidateSkillRemove(name: string) {
+    return { type: CANDIDATE_SKILL_REMOVE, name }
+}
+
+export function candidateSkillClear() {
+    return { type: CANDIDATE_SKILL_CLEAR }
 }

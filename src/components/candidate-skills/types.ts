@@ -21,6 +21,8 @@ export const CANDIDATE_SKILL_KNOWLEDGE_SELECT = 'CANDIDATE_SKILL_KNOWLEDGE_SELEC
 export const CANDIDATE_SKILL_KNOWLEDGE_CLEAR = 'CANDIDATE_SKILL_KNOWLEDGE_CLEAR';
 export const CANDIDATE_SKILL_EXPERIENCE_CHANGE = 'CANDIDATE_SKILL_EXPERIENCE_CHANGE';
 export const CANDIDATE_SKILL_ADD = 'CANDIDATE_SKILL_ADD';
+export const CANDIDATE_SKILL_REMOVE = 'CANDIDATE_SKILL_REMOVE';
+export const CANDIDATE_SKILL_CLEAR = 'CANDIDATE_SKILL_CLEAR';
 
 interface ICandidateSkillModalToggleAction { type: typeof CANDIDATE_SKILL_MODAL_TOGGLE }
 interface ICandidateSkillNameChangeAction { type: typeof CANDIDATE_SKILL_NAME_CHANGE, value: string }
@@ -30,8 +32,10 @@ interface ICandidateSkillKnowledgeClearAction { type: typeof CANDIDATE_SKILL_KNO
 interface ICandidateSkillExperienceChangeAction { type: typeof CANDIDATE_SKILL_EXPERIENCE_CHANGE, value: number }
 
 interface ICandidateSkillAddAction { type: typeof CANDIDATE_SKILL_ADD }
+interface ICandidateSkillRemoveAction { type: typeof CANDIDATE_SKILL_REMOVE, name: string }
+interface ICandidateSkillClearAction { type: typeof CANDIDATE_SKILL_CLEAR }
 
 export type CandidateSkillModalActionTypes = ICandidateSkillModalToggleAction |
     ICandidateSkillNameChangeAction | ICandidateSkillExperienceChangeAction |
     ICandidateSkillKnowledgeToggleAction | ICandidateSkillKnowledgeSelectAction | ICandidateSkillKnowledgeClearAction |
-    ICandidateSkillAddAction;
+    ICandidateSkillAddAction | ICandidateSkillRemoveAction | ICandidateSkillClearAction;
