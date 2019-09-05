@@ -2,10 +2,10 @@ import React from 'react';
 import { IBenefitsApprovalModalState } from './types';
 import { IBenefit } from '../benefits-modal/types';
 import { IRow, Table, TableHeader, TableBody } from '@patternfly/react-table';
-import { Modal, InputGroup, TextInput, Button } from '@patternfly/react-core';
+import { Modal, InputGroup, TextInput, Button, ButtonVariant } from '@patternfly/react-core';
 
 import {
-    benefitApprovalAdd,
+    benefitApprovalAdd, benefitApprovalRemove,
     benefitApprovalDescriptionChange,
     benefitApprovalModalToggle,
     benefitApprovalNameChange,
@@ -13,6 +13,7 @@ import {
 
 export interface IBenefitsApprovalModalProps {
     benefitApprovalAdd: typeof benefitApprovalAdd,
+    benefitApprovalRemove: typeof benefitApprovalRemove,
     benefitApprovalDescriptionChange: typeof benefitApprovalDescriptionChange,
     benefitApprovalModalToggle: typeof benefitApprovalModalToggle,
     benefitApprovalNameChange: typeof benefitApprovalNameChange,
@@ -25,7 +26,9 @@ export default function BenefitsApprovalModal(props: IBenefitsApprovalModalProps
         return {
             cells: [
                 { title: benefit.benefitName },
-                { title: benefit.benefitDescription }
+                { title: benefit.benefitDescription },
+                // tslint:disable-next-line:jsx-no-lambda
+                { title: <Button variant={ButtonVariant.link} onClick={() => { props.benefitApprovalRemove(benefit.benefitName) }}>X</Button> }
             ]
         }
     }
@@ -62,7 +65,7 @@ export default function BenefitsApprovalModal(props: IBenefitsApprovalModalProps
         </InputGroup>
         <Table
             caption="Suggested Benefits Offer"
-            cells={['Name', 'Description']}
+            cells={['Name', 'Description', 'Action']}
             rows={props.state.benefits.map<IRow>(b => tableRowFromBenefit(b))} >
             <TableHeader />
             <TableBody rowKey="rowId" />

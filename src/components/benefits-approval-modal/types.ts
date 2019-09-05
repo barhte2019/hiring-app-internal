@@ -12,6 +12,9 @@ export const BENEFIT_APPROVAL_MODAL_TOGGLE = 'BENEFIT_APPROVAL_MODAL_TOGGLE';
 export const BENEFIT_APPROVAL_NAME_CHANGE = 'BENEFIT_APPROVAL_NAME_CHANGE';
 export const BENEFIT_APPROVAL_DESCRIPTION_CHANGE = 'BENEFIT_APPROVAL_DESCRIPTION_CHANGE';
 export const BENEFIT_APPROVAL_ADD = 'BENEFIT_APPROVAL_ADD';
+export const BENEFIT_APPROVAL_REMOVE = 'BENEFIT_APPROVAL_REMOVE';
+export const BENEFIT_APPROVAL_CLEAR = 'BENEFIT_APPROVAL_CLEAR';
+
 export const BENEFIT_APPROVAL_OPEN = 'BENEFIT_APPROVAL_OPEN';
 export const BENEFIT_LIST_LOADING = 'BENEFIT_LIST_LOADING';
 export const BENEFITS_SUCCESS = 'BENEFITS_SUCCESS';
@@ -21,6 +24,8 @@ interface IBenefitModalToggleAction { type: typeof BENEFIT_APPROVAL_MODAL_TOGGLE
 interface IBenefitNameChangeAction { type: typeof BENEFIT_APPROVAL_NAME_CHANGE, value: string }
 interface IBenefitDescriptionChangeAction { type: typeof BENEFIT_APPROVAL_DESCRIPTION_CHANGE, value: string }
 interface IBenefitAddAction { type: typeof BENEFIT_APPROVAL_ADD }
+interface IBenefitApprovalRemoveAction {type: typeof BENEFIT_APPROVAL_REMOVE, name: string}
+interface IBenefitApprovalClearAction {type: typeof BENEFIT_APPROVAL_CLEAR}
 interface IBenefitApprovalOpenAction { type: typeof BENEFIT_APPROVAL_OPEN, benefits: IBenefit[] }
 interface IBenefitLoadingAction {type: typeof BENEFIT_LIST_LOADING}
 interface IBenefitsSuccessAction {type: typeof BENEFITS_SUCCESS, benefits: IBenefit[]}
@@ -28,5 +33,5 @@ interface IBenefitsFailAction {type: typeof BENEFITS_FAILED, serverErrors: any}
 
 export type BenefitApprovalModalActionTypes = IBenefitModalToggleAction | IBenefitApprovalOpenAction |
     IBenefitNameChangeAction | IBenefitDescriptionChangeAction |
-    IBenefitAddAction |
+    IBenefitAddAction | IBenefitApprovalRemoveAction | IBenefitApprovalClearAction |
     IBenefitLoadingAction | IBenefitsSuccessAction | IBenefitsFailAction;

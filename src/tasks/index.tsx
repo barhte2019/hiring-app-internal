@@ -72,10 +72,12 @@ import BenefitsModal from 'src/components/benefits-modal';
 import { IBenefitsApprovalModalState } from 'src/components/benefits-approval-modal/types';
 import {
     benefitApprovalAdd,
+    benefitApprovalClear,
     benefitApprovalDescriptionChange,
     benefitApprovalModalToggle,
     benefitApprovalNameChange,
-    benefitApprovalOpen
+    benefitApprovalOpen,
+    benefitApprovalRemove,
 } from 'src/components/benefits-approval-modal/actions';
 import BenefitsApprovalModal from 'src/components/benefits-approval-modal';
 
@@ -132,6 +134,8 @@ interface ITaskProps {
     benefitManagerSelectToggle: typeof benefitManagerSelectToggle,
 
     benefitApprovalAdd: typeof benefitApprovalAdd,
+    benefitApprovalRemove: typeof benefitApprovalRemove,
+    benefitApprovalClear: typeof benefitApprovalClear,
     benefitApprovalDescriptionChange: typeof benefitApprovalDescriptionChange,
     benefitApprovalModalToggle: typeof benefitApprovalModalToggle,
     benefitApprovalNameChange: typeof benefitApprovalNameChange,
@@ -193,6 +197,7 @@ export class TaskContainer extends Component<ITaskProps> {
             }
 
             if (taskName.startsWith('Benefit') && taskName.endsWith('Approval')) {
+                this.props.benefitApprovalClear();
                 this.props.taskDetail(id);
                 this.props.benefitApprovalOpen(id);
             }
@@ -216,23 +221,17 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const candidateSkillsOk = () => {
             if (this.props.candidateSkillModalState.skills.length >= 1) {
-                let hiringPetition: any;
-                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
-                } else {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
-                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
-                    "hiringPetition": {
-                        ...hiringPetition,
-                        skills: this.props.candidateSkillModalState.skills
-                            .map<ICandidateSkill>(s => (
+                    "requestedSkills": this.props.candidateSkillModalState.skills
+                        .map(s => (
+                            {
+                                "com.myspace.hr_hiring.CandidateSkill":
                                 {
-                                    levelOfKnowledge: s.levelOfKnowledge,
-                                    skillName: s.skillName,
-                                    yearsOfExperience: s.yearsOfExperience
-                                }))
-                    },
+                                    "levelOfKnowledge": s.levelOfKnowledge,
+                                    "skillName": s.skillName,
+                                    "yearsOfExperience": s.yearsOfExperience
+                                }
+                            })),
                     "skillsDefined": true
                 });
                 this.props.candidateSkillModalToggle();
@@ -241,44 +240,36 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const benefitsOk = () => {
             if (this.props.benefitsModalState.benefits.length >= 1) {
-                let hiringPetition: any;
-                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
-                } else {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
-                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
-                    "hiringPetition": {
-                        ...hiringPetition,
-                        benefits: this.props.benefitsModalState.benefits
-                            .map<IBenefit>(b => ({
-                                benefitDescription: b.benefitDescription,
-                                benefitName: b.benefitName
-                            }))
-                    },
-                    "manager": this.props.benefitsModalState.manager
-                })
+                    "manager": this.props.benefitsModalState.manager,
+                    "offeredBenefits": this.props.benefitsModalState.benefits
+                        .map(b => (
+                            {
+                                "com.myspace.hr_hiring.JobRoleBenefit":
+                                {
+                                    "benefitDescription": b.benefitDescription,
+                                    "benefitName": b.benefitName
+                                }
+                            })),
+
+                });
             }
             this.props.benefitModalToggle();
         }
 
         const benefitsApprovalOk = () => {
             if (this.props.benefitsApprovalModalState.benefits.length >= 1) {
-                let hiringPetition: any;
-                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
-                } else {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
-                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
                     "benefitsDefined": true,
-                    "hiringPetition": {
-                        ...hiringPetition,
-                        benefits: this.props.benefitsApprovalModalState.benefits.map<IBenefit>(b => ({
-                            benefitDescription: b.benefitDescription,
-                            benefitName: b.benefitName
-                        }))
-                    }
+                    "offeredBenefits": this.props.benefitsApprovalModalState.benefits
+                        .map(b => (
+                            {
+                                "com.myspace.hr_hiring.JobRoleBenefit":
+                                {
+                                    "benefitDescription": b.benefitDescription,
+                                    "benefitName": b.benefitName
+                                }
+                            })),
                 })
             }
             this.props.benefitApprovalModalToggle();
@@ -361,6 +352,7 @@ export class TaskContainer extends Component<ITaskProps> {
                 <BenefitsApprovalModal
                     state={this.props.benefitsApprovalModalState}
                     benefitApprovalAdd={this.props.benefitApprovalAdd}
+                    benefitApprovalRemove={this.props.benefitApprovalRemove}
                     benefitApprovalDescriptionChange={this.props.benefitApprovalDescriptionChange}
                     benefitApprovalModalToggle={this.props.benefitApprovalModalToggle}
                     benefitApprovalNameChange={this.props.benefitApprovalNameChange}
@@ -385,10 +377,12 @@ const mapDispatchToProps: any = ({
     addInterviewerClick,
     benefitAdd,
     benefitApprovalAdd,
+    benefitApprovalClear,
     benefitApprovalDescriptionChange,
     benefitApprovalModalToggle,
     benefitApprovalNameChange,
     benefitApprovalOpen,
+    benefitApprovalRemove,
     benefitClear,
     benefitDescriptionChange,
     benefitManagerClear,

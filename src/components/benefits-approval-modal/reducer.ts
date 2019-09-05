@@ -8,6 +8,8 @@ import {
     BENEFIT_LIST_LOADING,
     BENEFITS_SUCCESS,
     BENEFITS_FAILED,
+    BENEFIT_APPROVAL_REMOVE,
+    BENEFIT_APPROVAL_CLEAR,
 } from './types';
 
 const initialState: IBenefitsApprovalModalState = {
@@ -47,6 +49,13 @@ export function benefitApprovalModalReducer(
                 benefits: state.benefits.concat([state]),
             }
         }
+        case BENEFIT_APPROVAL_REMOVE: {
+            return {
+                ...state,
+                benefits: state.benefits.filter(b => b.benefitName !== action.name)
+            }
+        }
+        case BENEFIT_APPROVAL_CLEAR: { return { ...state, benefits: [] } }
         case BENEFIT_APPROVAL_DESCRIPTION_CHANGE: {
             return {
                 ...state,
