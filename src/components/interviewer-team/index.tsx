@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
     interviewerCommentChange,
     interviewerNameChange,
+    interviewerSelectChange,
+    interviewerSelectClear,
+    interviewerSelectToggle,
     addInterviewerClick,
     handleModalToggle,
     removeInterviewer,
@@ -11,13 +14,13 @@ import {
     InputGroup, Button, TextInput,
     Modal,
     ButtonVariant,
+    Select, SelectOption, SelectVariant,
 } from '@patternfly/react-core';
 
 import {
     Table, TableHeader, TableBody, IRow
 } from '@patternfly/react-table';
 import { IInterviewer, IInterviewerTeamState } from './types';
-import { propTypes } from '@patternfly/react-icons/dist/js/common';
 
 interface IInterviewerTeamModalProps {
     addInterviewerClick: typeof addInterviewerClick,
@@ -27,6 +30,9 @@ interface IInterviewerTeamModalProps {
     interviewerNameChange: typeof interviewerNameChange,
     onOkClick: any,
     interviewerTeamState: IInterviewerTeamState,
+    interviewerSelectChange: typeof interviewerSelectChange,
+    interviewerSelectClear: typeof interviewerSelectClear,
+    interviewerSelectToggle: typeof interviewerSelectToggle,
 }
 
 export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) {
@@ -42,18 +48,41 @@ export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) 
         }
     }
 
+    const interviewerSelectWrapper = (event, value: string, isPlaceholder?: boolean | undefined) => {
+        if (!isPlaceholder) {
+            props.interviewerSelectChange(value);
+        } else {
+            props.interviewerSelectClear();
+        }
+    }
+
+    const interviewerUsers = ['ann', 'bob', 'eve', 'tina', 'tom'];
+    const interviewerSelectOptions = (
+        <Fragment>
+            {interviewerUsers.map((interviewer, index) => (<SelectOption key={`interviewer-${index}`} value={interviewer} />))}
+        </Fragment>)
+
+
+
     return (<Modal
         width={'50%'}
         title="Define Interviewer Team"
         isOpen={props.interviewerTeamState.modalVisible}
         onClose={props.handleModalToggle}>
         <InputGroup>
-            <TextInput
-                id="textInputInterviewer"
-                aria-label="Interviewer"
-                placeholder="Name"
-                onChange={props.interviewerNameChange}
-                value={props.interviewerTeamState.interviewerName} />
+            <Select
+                id="select-interviewer"
+                variant={SelectVariant.single}
+                aria-label="Select interviewer"
+                onToggle={props.interviewerSelectToggle}
+                onSelect={interviewerSelectWrapper}
+                isExpanded={props.interviewerTeamState.interviewerSelectExpanded}
+                selections={props.interviewerTeamState.interviewerName} >
+                <SelectOption value="Choose interviewer" isPlaceholder={true} />
+                {interviewerSelectOptions}
+            </Select>
+        </InputGroup>
+        <InputGroup>
             <TextInput
                 id="textInputComment"
                 aria-label="Comment"

@@ -22,6 +22,9 @@ import {
     clearInterviewers,
     removeInterviewer,
     handleModalToggle,
+    interviewerSelectChange,
+    interviewerSelectClear,
+    interviewerSelectToggle,
 } from 'src/components/interviewer-team/actions';
 
 import { handleProcessModalToggle, changeProcessId } from 'src/components/process-image-modal/actions';
@@ -99,6 +102,9 @@ interface ITaskProps {
     addInterviewerClick: typeof addInterviewerClick,
     removeInterviewer: typeof removeInterviewer,
     clearInterviewers: typeof clearInterviewers,
+    interviewerSelectChange: typeof interviewerSelectChange,
+    interviewerSelectClear: typeof interviewerSelectClear,
+    interviewerSelectToggle: typeof interviewerSelectToggle,
 
     handleModalToggle: typeof handleModalToggle,
 
@@ -321,6 +327,9 @@ export class TaskContainer extends Component<ITaskProps> {
                     addInterviewerClick={this.props.addInterviewerClick}
                     removeInterviewer={this.props.removeInterviewer}
                     handleModalToggle={this.props.handleModalToggle}
+                    interviewerSelectChange={this.props.interviewerSelectChange}
+                    interviewerSelectClear={this.props.interviewerSelectClear}
+                    interviewerSelectToggle={this.props.interviewerSelectToggle}
                     onOkClick={interviewerTeamOk} />
                 <ProcessImageModal
                     state={this.props.processImageModalState}
@@ -405,6 +414,9 @@ const mapDispatchToProps: any = ({
     handleProcessModalToggle,
     interviewerCommentChange,
     interviewerNameChange,
+    interviewerSelectChange,
+    interviewerSelectClear,
+    interviewerSelectToggle,
     ownedTaskListFetch,
     potentialTaskListFetch,
     releaseTask,

@@ -5,6 +5,9 @@ import {
     REMOVE_INTERVIEWER,
     CLEAR_INTERVIEWERS,
     HANDLE_MODAL_TOGGLE,
+    INTERVIEWER_SELECT_TOGGLE,
+    INTERVIEWER_SELECT_CHANGE,
+    INTERVIEWER_SELECT_CLEAR,
 } from './types';
 
 export function interviewerCommentChange(value: string) {
@@ -13,6 +16,18 @@ export function interviewerCommentChange(value: string) {
 
 export function interviewerNameChange(value: string) {
     return { type: INTERVIEWER_NAME_CHANGE, value }
+}
+
+export function interviewerSelectToggle(expanded: boolean) {
+    return { type: INTERVIEWER_SELECT_TOGGLE, expanded }
+}
+
+export function interviewerSelectChange(selection: string) {
+    return { type: INTERVIEWER_SELECT_CHANGE, selection }
+}
+
+export function interviewerSelectClear() {
+    return { type: INTERVIEWER_SELECT_CLEAR }
 }
 
 export function addInterviewerClick() {
