@@ -7,7 +7,15 @@ import {
     JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR, JOB_PROCESS_INSTANCE_RECEIVED,
     JOB_SUBMIT, JOB_CREATED, JOB_CREATED_ERROR,
     IJob,
-    JOB_MILESTONES_RECEIVED
+    JOB_MILESTONES_RECEIVED,
+    SALARY_MIN_CHANGE,
+    SALARY_MAX_CHANGE,
+    JOB_TYPE_SELECT_TOGGLE,
+    JOB_TYPE_SELECT_CHANGE,
+    JOB_TYPE_SELECT_CLEAR,
+    JOB_CATEGORY_SELECT_TOGGLE,
+    JOB_CATEGORY_SELECT_CHANGE,
+    JOB_CATEGORY_SELECT_CLEAR
 } from './types';
 
 export function jobDescriptionChange(value: string) {
@@ -20,6 +28,38 @@ export function jobLocationChange(value: string) {
 
 export function jobTitleChange(value: string) {
     return { type: JOB_TITLE_CHANGE, value }
+}
+
+export function jobSalaryMinChange(value: string) {
+    return { type: SALARY_MIN_CHANGE, value }
+}
+
+export function jobSalaryMaxChange(value: string) {
+    return { type: SALARY_MAX_CHANGE, value }
+}
+
+export function jobTypeSelectToggle(expanded: boolean) {
+    return { type: JOB_TYPE_SELECT_TOGGLE, expanded }
+}
+
+export function jobTypeSelectChange(selection: string) {
+    return { type: JOB_TYPE_SELECT_CHANGE, selection }
+}
+
+export function jobTypeSelectClear() {
+    return { type: JOB_TYPE_SELECT_CLEAR }
+}
+
+export function jobCategorySelectToggle(expanded: boolean) {
+    return { type: JOB_CATEGORY_SELECT_TOGGLE, expanded }
+}
+
+export function jobCategorySelectChange(selection: string) {
+    return { type: JOB_CATEGORY_SELECT_CHANGE, selection }
+}
+
+export function jobCategorySelectClear() {
+    return { type: JOB_CATEGORY_SELECT_CLEAR }
 }
 
 export function jobListFecth(page: number, pageSize: number) {

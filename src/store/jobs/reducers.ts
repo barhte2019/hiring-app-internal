@@ -5,11 +5,13 @@ import {
     JOB_DESCRIPTION_CHANGE, JOB_LOCATION_CHANGE, JOB_TITLE_CHANGE,
     JOB_LIST_FECTHING, JOB_LIST_FETCH_SUCCESS, JOB_LIST_FETCH_ERROR, JOB_DETAIL_RECEIVED,
     JOB_DETAIL_FETCHING, JOB_DETAIL_FETCH_SUCCESS, JOB_DETAIL_FETCH_ERROR,
-    JOB_SUBMIT, JOB_CREATED_ERROR, JOB_CREATED, JOB_MILESTONES_RECEIVED, JOB_PROCESS_INSTANCE_RECEIVED,
+    JOB_SUBMIT, JOB_CREATED_ERROR, JOB_CREATED, JOB_MILESTONES_RECEIVED, JOB_PROCESS_INSTANCE_RECEIVED, SALARY_MIN_CHANGE, SALARY_MAX_CHANGE, JOB_TYPE_SELECT_TOGGLE, JOB_TYPE_SELECT_CHANGE, JOB_TYPE_SELECT_CLEAR, JOB_CATEGORY_SELECT_TOGGLE, JOB_CATEGORY_SELECT_CHANGE, JOB_CATEGORY_SELECT_CLEAR,
 } from './types';
 
 const initialState: IJobState = {
+    jobCategorySelectExpanded: false,
     jobIds: [],
+    jobTypeSelectExpanded: false,
     list: {},
     loading: false,
     milestones: {},
@@ -23,7 +25,8 @@ const initialState: IJobState = {
         jobDescription: '',
         jobTitle: '',
         location: ''
-    }
+    },
+
 }
 
 export function jobsReducer(
@@ -31,33 +34,20 @@ export function jobsReducer(
     action: JobActionTypes
 ): IJobState {
     switch (action.type) {
-        case JOB_DESCRIPTION_CHANGE: {
-            return {
-                ...state,
-                newJob: {
-                    ...state.newJob,
-                    jobDescription: action.value
-                }
-            }
-        }
-        case JOB_LOCATION_CHANGE: {
-            return {
-                ...state,
-                newJob: {
-                    ...state.newJob,
-                    location: action.value
-                }
-            }
-        }
-        case JOB_TITLE_CHANGE: {
-            return {
-                ...state,
-                newJob: {
-                    ...state.newJob,
-                    jobTitle: action.value
-                }
-            }
-        }
+        case JOB_DESCRIPTION_CHANGE: { return { ...state, newJob: { ...state.newJob, jobDescription: action.value } } }
+        case JOB_LOCATION_CHANGE: { return { ...state, newJob: { ...state.newJob, location: action.value } } }
+        case JOB_TITLE_CHANGE: { return { ...state, newJob: { ...state.newJob, jobTitle: action.value } } }
+        case SALARY_MIN_CHANGE: { return { ...state, newJob: { ...state.newJob, salaryMin: Number(action.value) } } }
+        case SALARY_MAX_CHANGE: { return { ...state, newJob: { ...state.newJob, salaryMax: Number(action.value) } } }
+
+        case JOB_TYPE_SELECT_TOGGLE: { return { ...state, jobTypeSelectExpanded: action.expanded } }
+        case JOB_TYPE_SELECT_CHANGE: { return { ...state, jobTypeSelectExpanded: false, newJob: { ...state.newJob, jobType: action.selection } } }
+        case JOB_TYPE_SELECT_CLEAR: { return { ...state, jobTypeSelectExpanded: false, newJob: { ...state.newJob, jobType: '' } } }
+
+        case JOB_CATEGORY_SELECT_TOGGLE: { return { ...state, jobCategorySelectExpanded: action.expanded } }
+        case JOB_CATEGORY_SELECT_CHANGE: { return { ...state, jobCategorySelectExpanded: false, newJob: { ...state.newJob, jobCategory: action.selection } } }
+        case JOB_CATEGORY_SELECT_CLEAR: { return { ...state, jobCategorySelectExpanded: false, newJob: { ...state.newJob, jobCategory: '' } } }
+
         case JOB_DETAIL_FETCHING: {
             return {
                 ...state,

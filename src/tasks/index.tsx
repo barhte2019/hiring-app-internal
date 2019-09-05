@@ -199,17 +199,9 @@ export class TaskContainer extends Component<ITaskProps> {
 
         const interviewerTeamOk = () => {
             if (this.props.interviewerModalState.interviewers.length >= 1) {
-                let hiringPetition: any;
-                if (this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition']) {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition['com.myspace.hr_hiring.HiringPetition'];
-                } else {
-                    hiringPetition = this.props.taskState.selectedTaskOutput.hiringPetition;
-                }
                 this.props.completeTask(this.props.taskState.selectedTaskId, {
-                    "hiringPetition": {
-                        ...hiringPetition,
-                        interviewers: this.props.interviewerModalState.interviewers.map<string>(item => item.name)
-                    },
+                    "interviewerAssignments": this.props.interviewerModalState.interviewers
+                        .map(i => ({ "com.myspace.hr_hiring.InterviewerAssignment": { "interviewerName": i.name, "comment": i.comment } })),
                     "interviewerTeamDefined": true
                 });
                 this.props.handleModalToggle();
