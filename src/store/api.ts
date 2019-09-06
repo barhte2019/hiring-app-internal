@@ -42,6 +42,7 @@ export default {
             "hiringPetition": { ...job }
           },
           "case-group-assignments": {
+            "applicant": "applicant",
             "benefits-compensation": "talent-acquisition",
             "talent-acquisition": "talent-acquisition",
             "vacancy-department": "talent-acquisition",
@@ -108,18 +109,18 @@ export default {
     detail: (id: number) => api().get('services/rest/server/containers/hr-hiring/tasks/' + id + '/contents/input'),
     listMine: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/owners', {
-        params: {
-          page,
-          pageSize,
-        }
-      }),
+      params: {
+        page,
+        pageSize,
+      }
+    }),
     listPot: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/pot-owners', {
-        params: {
-          page,
-          pageSize
-        }
-      }),
+      params: {
+        page,
+        pageSize
+      }
+    }),
     release: (id: number) => api().put(
       'services/rest/server/containers/hr-hiring/tasks/' + id + '/states/released'
     ),
