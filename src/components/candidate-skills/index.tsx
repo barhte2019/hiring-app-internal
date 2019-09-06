@@ -95,9 +95,9 @@ export default function CandidateSkillsModal(props: ICandidateSkillsModalProps) 
                 isExpanded={props.state.selectKnowledgeExpanded}
                 selections={props.state.levelOfKnowledge}>
                 <SelectOption value="Choose knowledge Level" isPlaceholder={true} />
-                <SelectOption value="Advanced" />
-                <SelectOption value="Experienced" />
-                <SelectOption value="Foundational" />
+                <SelectOption value="Expert" />
+                <SelectOption value="Proficient" />
+                <SelectOption value="Basic" />
             </Select>
             <Button
                 id="AddInterviewerButton"
