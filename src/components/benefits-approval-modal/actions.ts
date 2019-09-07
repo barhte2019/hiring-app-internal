@@ -44,7 +44,13 @@ export function benefitApprovalOpen(taskId: number) {
                 // tslint:disable-next-line:no-string-literal
                 const responseBenefits: any[] = response.data['offeredBenefits'];
                 // tslint:disable-next-line:no-string-literal
-                const benefits: IBenefit[] = responseBenefits.map<IBenefit>(item => ({ ...item['com.myspace.hr_hiring.JobRoleBenefit'] }))
+                const benefits: IBenefit[] = responseBenefits.map<IBenefit>(item => {
+                    if (item['com.myspace.hr_hiring.JobRoleBenefit']) {
+                        return { ...item['com.myspace.hr_hiring.JobRoleBenefit'] };
+                    } else {
+                        return { ...item };
+                    }
+                })
                 dispatch(benefitApprovalModalToggle());
                 return dispatch({ type: BENEFITS_SUCCESS, benefits });
             })
