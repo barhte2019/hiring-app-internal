@@ -81,6 +81,15 @@ import {
 } from 'src/components/benefits-approval-modal/actions';
 import BenefitsApprovalModal from 'src/components/benefits-approval-modal';
 
+import { IScheduleInterviewsModalState } from 'src/components/schedule-interviews/types';
+import {
+    handleScheduleInterviewModalToggle,
+    scheduleInterviewModalOpen,
+    startsAtChange,
+    durationChange
+} from 'src/components/schedule-interviews/actions';
+import ScheduleInterviewsModal from 'src/components/schedule-interviews';
+
 
 interface ITaskProps {
     claimTask: typeof claimTask,
@@ -97,6 +106,7 @@ interface ITaskProps {
     candidateSkillModalState: ICandidateSkillsModalState,
     benefitsModalState: IBenefitModalState,
     benefitsApprovalModalState: IBenefitsApprovalModalState,
+    scheduleInterviewsModalState: IScheduleInterviewsModalState,
 
     toggleActiveTab: typeof toggleActiveTab,
     interviewerCommentChange: typeof interviewerCommentChange,
@@ -139,7 +149,12 @@ interface ITaskProps {
     benefitApprovalDescriptionChange: typeof benefitApprovalDescriptionChange,
     benefitApprovalModalToggle: typeof benefitApprovalModalToggle,
     benefitApprovalNameChange: typeof benefitApprovalNameChange,
-    benefitApprovalOpen: typeof benefitApprovalOpen
+    benefitApprovalOpen: typeof benefitApprovalOpen,
+
+    handleScheduleInterviewModalToggle: typeof handleScheduleInterviewModalToggle,
+    scheduleInterviewModalOpen: typeof scheduleInterviewModalOpen,
+    startsAtChange: typeof startsAtChange,
+    durationChange: typeof durationChange,
 }
 
 
@@ -200,6 +215,11 @@ export class TaskContainer extends Component<ITaskProps> {
                 this.props.benefitApprovalClear();
                 this.props.taskDetail(id);
                 this.props.benefitApprovalOpen(id);
+            }
+
+            if (taskName.startsWith('Schedule')) {
+                this.props.taskDetail(id);
+                this.props.scheduleInterviewModalOpen(id);
             }
         }
 
@@ -273,6 +293,26 @@ export class TaskContainer extends Component<ITaskProps> {
                 })
             }
             this.props.benefitApprovalModalToggle();
+        }
+
+        const scheduleSubmit = () => {
+            // validate appoinments
+            const keys: string[] = Object.keys(this.props.scheduleInterviewsModalState.appointments);
+            if (keys && keys.length > 0) {
+                this.props.completeTask(this.props.taskState.selectedTaskId, {
+                    "interviewerAppointments": this.props.scheduleInterviewsModalState.interviewers
+                        .map(i => ({
+                            "com.myspace.hr_hiring.InterviewAppointment": {
+                                comment: i.comment,
+                                interviewDurationMinutes: Number(this.props.scheduleInterviewsModalState.appointments[i.interviewer].duration),
+                                interviewStarts: this.props.scheduleInterviewsModalState.appointments[i.interviewer].startsAt,
+                                interviewee: i.interviewee,
+                                interviewer: i.interviewer
+                            }
+                        }))
+                });
+                this.props.handleScheduleInterviewModalToggle();
+            }
         }
 
         return (
@@ -357,6 +397,12 @@ export class TaskContainer extends Component<ITaskProps> {
                     benefitApprovalModalToggle={this.props.benefitApprovalModalToggle}
                     benefitApprovalNameChange={this.props.benefitApprovalNameChange}
                     okClickHandler={benefitsApprovalOk} />
+                <ScheduleInterviewsModal
+                    scheduleInterviewsModalState={this.props.scheduleInterviewsModalState}
+                    handleModalToggle={this.props.handleScheduleInterviewModalToggle}
+                    startsAtChange={this.props.startsAtChange}
+                    durationChange={this.props.durationChange}
+                    scheduleSubmit={scheduleSubmit} />
             </PageSection>);
     }
 
@@ -369,6 +415,7 @@ const mapStateToProps: any = (state: AppState) => ({
     candidateSkillModalState: state.candidateSkillModalState,
     interviewerModalState: state.interviewerModalState,
     processImageModalState: state.processImageModalState,
+    scheduleInterviewsModalState: state.scheduleInterviewsState,
     sysState: state.system,
     taskState: state.task,
 })
@@ -404,8 +451,10 @@ const mapDispatchToProps: any = ({
     claimTask,
     clearInterviewers,
     completeTask,
+    durationChange,
     handleModalToggle,
     handleProcessModalToggle,
+    handleScheduleInterviewModalToggle,
     interviewerCommentChange,
     interviewerNameChange,
     interviewerSelectChange,
@@ -415,6 +464,8 @@ const mapDispatchToProps: any = ({
     potentialTaskListFetch,
     releaseTask,
     removeInterviewer,
+    scheduleInterviewModalOpen,
+    startsAtChange,
     taskDetail,
     toggleActiveTab,
 })

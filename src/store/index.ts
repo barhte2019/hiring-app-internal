@@ -12,6 +12,7 @@ import { processImageModalReducer } from 'src/components/process-image-modal/red
 import { candidateSkillModalReducer } from 'src/components/candidate-skills/reducer';
 import { benefitModalReducer } from 'src/components/benefits-modal/reducer';
 import { benefitApprovalModalReducer } from 'src/components/benefits-approval-modal/reducer';
+import { scheduleInterviewsModalReducer } from 'src/components/schedule-interviews/reducer';
 
 export const history = createBrowserHistory();
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     jobs: jobsReducer,
     processImageModalState: processImageModalReducer,
     router: connectRouter(history),
+    scheduleInterviewsState: scheduleInterviewsModalReducer,
     system: systemReducer,
     task: tasksReducer,
 });
