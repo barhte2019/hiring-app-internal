@@ -13,6 +13,7 @@ import { candidateSkillModalReducer } from 'src/components/candidate-skills/redu
 import { benefitModalReducer } from 'src/components/benefits-modal/reducer';
 import { benefitApprovalModalReducer } from 'src/components/benefits-approval-modal/reducer';
 import { scheduleInterviewsModalReducer } from 'src/components/schedule-interviews/reducer';
+import { interviewerFeedbackModalReducer } from 'src/components/interviewer-feedback/reducer';
 
 export const history = createBrowserHistory();
 
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     benefitsApprovalModalState: benefitApprovalModalReducer,
     benefitsModalState: benefitModalReducer,
     candidateSkillModalState: candidateSkillModalReducer,
+    interviewerFeedbackModalState: interviewerFeedbackModalReducer,
     interviewerModalState: interviewerTeamModalReducer,
     jobs: jobsReducer,
     processImageModalState: processImageModalReducer,

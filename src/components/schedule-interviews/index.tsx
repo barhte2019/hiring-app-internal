@@ -34,8 +34,8 @@ export default function ScheduleInterviewsModal(props: IScheduleInterviewsModalP
         return {
             cells: [
                 { title: interviewerSchedule.interviewer },
-                { title: <TextInput required={true} isRequired={true} onChange={onChangeHelperStartsAt} name={interviewerSchedule.interviewer} /> },
-                { title: <TextInput required={true} isRequired={true} onChange={onChangeHelperDuration} name={interviewerSchedule.interviewer} type="number" /> },
+                { title: <TextInput aria-label="Meeting starts at" required={true} isRequired={true} onChange={onChangeHelperStartsAt} name={interviewerSchedule.interviewer} /> },
+                { title: <TextInput aria-label="Meeting duration" required={true} isRequired={true} onChange={onChangeHelperDuration} name={interviewerSchedule.interviewer} type="number" /> },
             ]
         }
     }
