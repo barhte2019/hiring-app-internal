@@ -55,7 +55,7 @@ import {
 } from 'src/components/candidate-skills/actions';
 import CandidateSkillsModal from 'src/components/candidate-skills';
 
-import { IBenefitModalState, IBenefit } from 'src/components/benefits-modal/types';
+import { IBenefitModalState } from 'src/components/benefits-modal/types';
 import {
     benefitAdd,
     benefitDescriptionChange,
@@ -98,6 +98,13 @@ import {
 } from 'src/components/interviewer-feedback/actions';
 import InterviewerFeedbackModal from 'src/components/interviewer-feedback';
 
+import { IInterviewerFeedbackReviewModalState } from 'src/components/interviewer-feedback-review/types';
+import {
+    interviewerFeedbackReviewModalToggle,
+    interviewerFeedbackReviewModalOpen,
+} from 'src/components/interviewer-feedback-review/actions';
+import InterviewerFeedbackReviewModal from 'src/components/interviewer-feedback-review';
+
 
 interface ITaskProps {
     claimTask: typeof claimTask,
@@ -116,6 +123,7 @@ interface ITaskProps {
     benefitsApprovalModalState: IBenefitsApprovalModalState,
     scheduleInterviewsModalState: IScheduleInterviewsModalState,
     interviewerFeedbackModalState: IInterviewerFeedbackModalState,
+    interviewerFeedbackReviewModalState: IInterviewerFeedbackReviewModalState,
 
     toggleActiveTab: typeof toggleActiveTab,
     interviewerCommentChange: typeof interviewerCommentChange,
@@ -168,6 +176,9 @@ interface ITaskProps {
     interviewerFeedbackToggle: typeof interviewerFeedbackToggle,
     interviewerFeedbackCommentChange: typeof interviewerFeedbackCommentChange,
     interviewerFeedbackScoreChange: typeof interviewerFeedbackScoreChange,
+
+    interviewerFeedbackReviewModalToggle: typeof interviewerFeedbackReviewModalToggle,
+    interviewerFeedbackReviewModalOpen: typeof interviewerFeedbackReviewModalOpen,
 }
 
 
@@ -238,6 +249,11 @@ export class TaskContainer extends Component<ITaskProps> {
             if (taskName.startsWith('Interviewer Feedback') && !taskName.endsWith("Review")) {
                 this.props.taskDetail(id);
                 this.props.interviewerFeedbackToggle();
+            }
+
+            if (taskName.startsWith('Interviewer Feedback') && taskName.endsWith("Review")) {
+                this.props.taskDetail(id);
+                this.props.interviewerFeedbackReviewModalOpen(id);
             }
 
         }
@@ -345,6 +361,22 @@ export class TaskContainer extends Component<ITaskProps> {
             this.props.interviewerFeedbackToggle();
         }
 
+        const candidateAcceptedClick = () => {
+            this.props.completeTask(this.props.taskState.selectedTaskId, {
+                "applicantRejected": false,
+                "applicantReviewCompleted": true
+            })
+            this.props.interviewerFeedbackReviewModalToggle();
+        }
+
+        const candidateRejectedClick = () => {
+            this.props.completeTask(this.props.taskState.selectedTaskId, {
+                "applicantRejected": true,
+                "applicantReviewCompleted": true
+            })
+            this.props.interviewerFeedbackReviewModalToggle();
+        }
+
         return (
             <PageSection variant={PageSectionVariants.light}>
                 <Tabs activeKey={this.props.taskState.activeTabKey} onSelect={tabSelectWrapper}>
@@ -439,6 +471,11 @@ export class TaskContainer extends Component<ITaskProps> {
                     onFeedbackSubmit={interviewerFeedbackSubmit}
                     interviewerFeedbackCommentChange={this.props.interviewerFeedbackCommentChange}
                     interviewerFeedbackScoreChange={this.props.interviewerFeedbackScoreChange} />
+                <InterviewerFeedbackReviewModal
+                    interviewerFeedbackReviewModalState={this.props.interviewerFeedbackReviewModalState}
+                    interviewerFeedbackReviewModalToggle={this.props.interviewerFeedbackReviewModalToggle}
+                    onFeedbackAcceptCandidate={candidateAcceptedClick}
+                    onFeedbackRejectCandidate={candidateRejectedClick} />
             </PageSection>);
     }
 
@@ -450,6 +487,7 @@ const mapStateToProps: any = (state: AppState) => ({
     benefitsModalState: state.benefitsModalState,
     candidateSkillModalState: state.candidateSkillModalState,
     interviewerFeedbackModalState: state.interviewerFeedbackModalState,
+    interviewerFeedbackReviewModalState: state.interviewerFeedbackReviewModalState,
     interviewerModalState: state.interviewerModalState,
     processImageModalState: state.processImageModalState,
     scheduleInterviewsModalState: state.scheduleInterviewsState,
@@ -494,6 +532,8 @@ const mapDispatchToProps: any = ({
     handleScheduleInterviewModalToggle,
     interviewerCommentChange,
     interviewerFeedbackCommentChange,
+    interviewerFeedbackReviewModalOpen,
+    interviewerFeedbackReviewModalToggle,
     interviewerFeedbackScoreChange,
     interviewerFeedbackToggle,
     interviewerNameChange,

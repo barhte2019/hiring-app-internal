@@ -99,7 +99,7 @@ export default function InterviewerTeamModal(props: IInterviewerTeamModalProps) 
             rows={props.interviewerTeamState.interviewers.map<IRow>(interviewer => tableRowFromInterviewer(interviewer))}
         >
             <TableHeader />
-            <TableBody rowKey='rowId' />
+            <TableBody rowKey='name' />
         </Table>
         <Button id="OkButton" isActive={props.interviewerTeamState.interviewers.length >= 1} onClick={props.onOkClick}>OK</Button>
     </Modal>)

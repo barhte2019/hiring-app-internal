@@ -2,11 +2,10 @@ import React, { FormEvent } from 'react';
 
 import {
     Form,
-    InputGroup, Button, TextInput,
+    Button, TextInput,
     Modal,
-    ButtonVariant,
-    Select, SelectOption, SelectVariant,
 } from '@patternfly/react-core';
+
 import {
     IInterviewerFeedbackModalState
 } from './types';
