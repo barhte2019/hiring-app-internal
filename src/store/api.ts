@@ -106,6 +106,20 @@ export default {
         }
       }
     ),
+    createDynamic: (
+      caseId: string, 
+      taskDescription: string, 
+      actor: string, 
+      data: any) => api().post(
+      '/server/containers/hr-hiring/cases/instances/' + caseId + '/tasks',
+      {
+        actors: actor,
+        data,
+        description: 'Dynamic task created by system, looking for additional interviewer',
+        groups: '',
+        name: 'AdditionalInterviewer'
+      }
+    ),
     detail: (id: number) => api().get('services/rest/server/containers/hr-hiring/tasks/' + id + '/contents/input'),
     listMine: (page: number, pageSize: number) => api().get<ITaskSummary>(
       'services/rest/server/queries/tasks/instances/owners', {
