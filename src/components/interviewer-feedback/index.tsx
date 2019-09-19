@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, Fragment } from 'react';
 
 import {
     Form,
@@ -48,5 +48,17 @@ export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModa
 
             <Button type="submit">Ok</Button>
         </Form>
+        <div>
+            <h2>Additional Interviewer Requested</h2>
+            <TextInput
+                id="textInputDynamicTo"
+                aria-label="Dynamic Task To"
+                placeholder="To" />
+            <TextInput
+                id="textInputDynamicMessage"
+                aria-label="Dynamic Task Message"
+                placeholder="Message" />
+            <Button className='pf-c-button pf-m-secondary'>Send</Button>
+        </div>
     </Modal>)
 }
