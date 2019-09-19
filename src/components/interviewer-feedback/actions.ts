@@ -1,4 +1,5 @@
 import {
+    ADDITIONAL_INTERVIEWER_TOGGLE,
     INTERVIEWER_FEEDBACK_TOGGLE,
     INTERVIEWER_FEEDBACK_SCORE_CHANGE,
     INTERVIEWER_FEEDBACK_COMMENT_CHANGE
@@ -14,4 +15,8 @@ export function interviewerFeedbackScoreChange(value: string) {
 
 export function interviewerFeedbackCommentChange(value: string) {
     return { type: INTERVIEWER_FEEDBACK_COMMENT_CHANGE, value }
+}
+
+export function toggleAdditionalInterviewer() {
+    return { type: ADDITIONAL_INTERVIEWER_TOGGLE }
 }
