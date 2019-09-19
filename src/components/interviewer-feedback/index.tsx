@@ -1,4 +1,4 @@
-import React, { FormEvent, Fragment } from 'react';
+import React, { FormEvent } from 'react';
 
 import {
     Form,
@@ -13,7 +13,8 @@ import {
 import {
     interviewerFeedbackToggle,
     interviewerFeedbackCommentChange,
-    interviewerFeedbackScoreChange
+    interviewerFeedbackScoreChange,
+    toggleAdditionalInterviewer
 } from './actions';
 
 interface IInterviewerFeedbackModalProps {
@@ -22,6 +23,7 @@ interface IInterviewerFeedbackModalProps {
     onFeedbackSubmit: any,
     interviewerFeedbackCommentChange: typeof interviewerFeedbackCommentChange,
     interviewerFeedbackScoreChange: typeof interviewerFeedbackScoreChange,
+    toggleAdditionalInterviewer: typeof toggleAdditionalInterviewer,
 }
 
 export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModalProps) {
