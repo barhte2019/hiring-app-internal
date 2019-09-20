@@ -14,7 +14,9 @@ import {
     interviewerFeedbackToggle,
     interviewerFeedbackCommentChange,
     interviewerFeedbackScoreChange,
-    toggleAdditionalInterviewer
+    toggleAdditionalInterviewer,
+    dynamicTaskMessageChange, 
+    dynamicTaskRecipientChange
 } from './actions';
 
 interface IInterviewerFeedbackModalProps {
@@ -24,6 +26,8 @@ interface IInterviewerFeedbackModalProps {
     interviewerFeedbackCommentChange: typeof interviewerFeedbackCommentChange,
     interviewerFeedbackScoreChange: typeof interviewerFeedbackScoreChange,
     toggleAdditionalInterviewer: typeof toggleAdditionalInterviewer,
+    dynamicTaskMessageChange: typeof dynamicTaskMessageChange, 
+    dynamicTaskRecipientChange: typeof dynamicTaskRecipientChange,
 }
 
 export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModalProps) {
@@ -60,11 +64,13 @@ export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModa
             <TextInput
                 id="textInputDynamicTo"
                 aria-label="Dynamic Task To"
-                placeholder="To" />
+                placeholder="To"
+                onChange={props.dynamicTaskRecipientChange} />
             <TextInput
                 id="textInputDynamicMessage"
                 aria-label="Dynamic Task Message"
-                placeholder="Message" />
+                placeholder="Message"
+                onChange={props.dynamicTaskMessageChange} />
             <Button className='pf-c-button pf-m-secondary'>Send</Button>
         </div> }
     </Modal>)
