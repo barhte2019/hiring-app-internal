@@ -95,7 +95,9 @@ import {
     interviewerFeedbackToggle,
     interviewerFeedbackCommentChange,
     interviewerFeedbackScoreChange,
-    toggleAdditionalInterviewer
+    toggleAdditionalInterviewer,
+    dynamicTaskMessageChange,
+    dynamicTaskRecipientChange
 } from 'src/components/interviewer-feedback/actions';
 import InterviewerFeedbackModal from 'src/components/interviewer-feedback';
 
@@ -178,6 +180,8 @@ interface ITaskProps {
     interviewerFeedbackCommentChange: typeof interviewerFeedbackCommentChange,
     interviewerFeedbackScoreChange: typeof interviewerFeedbackScoreChange,
     toggleAdditionalInterviewer: typeof toggleAdditionalInterviewer,
+    dynamicTaskMessageChange: typeof dynamicTaskMessageChange,
+    dynamicTaskRecipientChange: typeof dynamicTaskRecipientChange,
 
     interviewerFeedbackReviewModalToggle: typeof interviewerFeedbackReviewModalToggle,
     interviewerFeedbackReviewModalOpen: typeof interviewerFeedbackReviewModalOpen,
@@ -468,6 +472,8 @@ export class TaskContainer extends Component<ITaskProps> {
                     durationChange={this.props.durationChange}
                     scheduleSubmit={scheduleSubmit} />
                 <InterviewerFeedbackModal
+                    dynamicTaskMessageChange={this.props.dynamicTaskMessageChange}
+                    dynamicTaskRecipientChange={this.props.dynamicTaskRecipientChange}
                     toggleAdditionalInterviewer={this.props.toggleAdditionalInterviewer}
                     interviewerFeedbackModalState={this.props.interviewerFeedbackModalState}
                     interviewerFeedbackToggle={this.props.interviewerFeedbackToggle}
@@ -530,6 +536,8 @@ const mapDispatchToProps: any = ({
     clearInterviewers,
     completeTask,
     durationChange,
+    dynamicTaskMessageChange,
+    dynamicTaskRecipientChange,
     handleModalToggle,
     handleProcessModalToggle,
     handleScheduleInterviewModalToggle,
