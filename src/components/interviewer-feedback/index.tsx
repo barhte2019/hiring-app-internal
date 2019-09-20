@@ -51,11 +51,11 @@ export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModa
             <Button type="submit">Ok</Button>
             <Button 
                 onClick={props.toggleAdditionalInterviewer} 
-                className="pf-c-button pf-m-inline pf-m-link">
-                {props.interviewerFeedbackModalState.additionalVisible?"Show Additional Interviewer":"Hide Additional Interviewer"}
+                className="pf-c-button pf-m-secondary">
+                {props.interviewerFeedbackModalState.additionalVisible?"Hide Additional Interviewer":"Show Additional Interviewer"}
             </Button>
         </Form>
-        <div>
+        { props.interviewerFeedbackModalState.additionalVisible && <div>
             <h2>Additional Interviewer Requested</h2>
             <TextInput
                 id="textInputDynamicTo"
@@ -66,6 +66,6 @@ export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModa
                 aria-label="Dynamic Task Message"
                 placeholder="Message" />
             <Button className='pf-c-button pf-m-secondary'>Send</Button>
-        </div>
+        </div> }
     </Modal>)
 }
