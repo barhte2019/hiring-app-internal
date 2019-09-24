@@ -45,7 +45,7 @@ export default {
             "applicant": "applicant",
             "benefits-compensation": "talent-acquisition",
             "talent-acquisition": "talent-acquisition",
-            "vacancy-department": "talent-acquisition",
+            "vacancy-department": "interviewer",
           },
           "case-user-assignments": { "owner": owner },
         }
