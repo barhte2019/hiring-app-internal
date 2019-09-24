@@ -4,7 +4,7 @@ import {
     TOGGLE_ACTIVE_TAB,
     POT_TASK_CLAIMING, POT_TASK_CLAIM_SUCCESS, POT_TASK_CLAIM_FAILED,
     OWNED_TASK_LIST_FETCHING, OWNED_TASK_LIST_SUCCESS, OWNED_TASK_LIST_ERROR,
-    OWNED_TASK_RELEASING, OWNED_TASK_RELEASE_SUCCESS, OWNED_TASK_RELEASE_FAILED, TASK_COMPLETING, TASK_COMPLETED_SUCCESS, TASK_COMPLETED_FAILED, TASK_DETAIL_FETCHING, TASK_DETAIL_FETCH_SUCCESS, TASK_DETAIL_FECH_FAILED,
+    OWNED_TASK_RELEASING, OWNED_TASK_RELEASE_SUCCESS, OWNED_TASK_RELEASE_FAILED, TASK_COMPLETING, TASK_COMPLETED_SUCCESS, TASK_COMPLETED_FAILED, TASK_DETAIL_FETCHING, TASK_DETAIL_FETCH_SUCCESS, TASK_DETAIL_FECH_FAILED, DYNAMIC_TASK_CREATING, DYNAMIC_TASK_CREATE_SUCCESS, DYNAMIC_TASK_CREATE_FAILED,
 } from "./types";
 
 
@@ -98,6 +98,10 @@ export function tasksReducer(state = initialState, action: TaskActionTypes): ITa
         case TASK_DETAIL_FETCHING: { return { ...state, loading: true } }
         case TASK_DETAIL_FETCH_SUCCESS: { return { ...state, selectedTaskOutput: action.output, selectedTaskId: action.taskId, loading: false } }
         case TASK_DETAIL_FECH_FAILED: { return { ...state, loading: false } }
+
+        case DYNAMIC_TASK_CREATING: { return { ...state, loading: true } }
+        case DYNAMIC_TASK_CREATE_SUCCESS: { return { ...state, loading: false } }
+        case DYNAMIC_TASK_CREATE_FAILED: { return { ...state, error_message: action.serverErrors, loading: false } }
 
         default: return state;
     }

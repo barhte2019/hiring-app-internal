@@ -37,6 +37,10 @@ export const TASK_DETAIL_FETCHING = 'TASK_DETAIL_FETCHING';
 export const TASK_DETAIL_FETCH_SUCCESS = 'TASK_DETAIL_FETCH_SUCCESS';
 export const TASK_DETAIL_FECH_FAILED = 'TASK_DETAIL_FETCH_FAILED';
 
+export const DYNAMIC_TASK_CREATING = 'DYNAMIC_TASK_CREATING';
+export const DYNAMIC_TASK_CREATE_SUCCESS = 'DYNAMIC_TASK_CREATE_SUCCESS';
+export const DYNAMIC_TASK_CREATE_FAILED = 'DYNAMIC_TASK_CREATE_FAILED';
+
 interface IToggleActiveTabAction {
     type: typeof TOGGLE_ACTIVE_TAB,
     tabIndex: number
@@ -66,6 +70,10 @@ interface ITaskDetailFetchingAction { type: typeof TASK_DETAIL_FETCHING }
 interface ITaskDetailFetchSuccessAction { type: typeof TASK_DETAIL_FETCH_SUCCESS, output: any, taskId: number }
 interface ITaskDetailFetchFailAction { type: typeof TASK_DETAIL_FECH_FAILED, serverErrors: any }
 
+interface IDynamicTaskCreatingAction { type: typeof DYNAMIC_TASK_CREATING }
+interface IDynamicTaskCreateSuccessAction { type: typeof DYNAMIC_TASK_CREATE_SUCCESS }
+interface IDynamicTaskCreateFailAction { type: typeof DYNAMIC_TASK_CREATE_FAILED, serverErrors: any }
+
 export type TaskActionTypes =
     IToggleActiveTabAction |
     IPotTaskListFetchingAction | IPotTaskListFetchSuccessAction | IPotTaskListFetchErrorAction |
@@ -73,4 +81,5 @@ export type TaskActionTypes =
     IPotTaskClaimingAction | IPotTaskClaimSuccessAction | IPotTaskClaimFailedAction |
     IOwnedTaskReleasingAction | IOwnedTaskReleaseSuccessAction | IOwnedTaskReleaseFailedAction |
     ITaskCompletingAction | ITaskCompleteSuccessAction | ITaskCompleteFailAction |
-    ITaskDetailFetchingAction | ITaskDetailFetchSuccessAction | ITaskDetailFetchFailAction;
+    ITaskDetailFetchingAction | ITaskDetailFetchSuccessAction | ITaskDetailFetchFailAction |
+    IDynamicTaskCreatingAction | IDynamicTaskCreateSuccessAction | IDynamicTaskCreateFailAction;

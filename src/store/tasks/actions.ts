@@ -8,6 +8,7 @@ import {
     OWNED_TASK_RELEASING, OWNED_TASK_RELEASE_SUCCESS, OWNED_TASK_RELEASE_FAILED,
     TASK_COMPLETING, TASK_COMPLETED_SUCCESS, TASK_COMPLETED_FAILED,
     TASK_DETAIL_FETCHING, TASK_DETAIL_FETCH_SUCCESS, TASK_DETAIL_FECH_FAILED,
+    DYNAMIC_TASK_CREATING, DYNAMIC_TASK_CREATE_SUCCESS, DYNAMIC_TASK_CREATE_FAILED,
 } from './types';
 
 export function toggleActiveTab(tabIndex: number) {
@@ -79,7 +80,7 @@ export function completeTask(taskId: number, output: any) {
             return dispatch({ type: TASK_COMPLETED_SUCCESS })
                 .then(dispatch(ownedTaskListFetch(0, 10)))
                 .then(dispatch(potentialTaskListFetch(0, 10)))
-        }).catch( err => {
+        }).catch(err => {
             return dispatch({ type: TASK_COMPLETED_FAILED, serverErrors: err })
         });
     }
@@ -87,11 +88,25 @@ export function completeTask(taskId: number, output: any) {
 
 export function taskDetail(taskId: number) {
     return dispatch => {
-        dispatch({type: TASK_DETAIL_FETCHING});
+        dispatch({ type: TASK_DETAIL_FETCHING });
         return api.tasks.detail(taskId).then(resp => {
-            return dispatch({type: TASK_DETAIL_FETCH_SUCCESS, output: resp.data, taskId})
-        }).catch( err => {
-            return dispatch({type: TASK_DETAIL_FECH_FAILED, serverErrors: err})
+            return dispatch({ type: TASK_DETAIL_FETCH_SUCCESS, output: resp.data, taskId })
+        }).catch(err => {
+            return dispatch({ type: TASK_DETAIL_FECH_FAILED, serverErrors: err })
         });
+    }
+}
+
+export function createDynamic(caseId: string, description: string, actor: string, data: any) {
+    return dispatch => {
+        dispatch({ type: DYNAMIC_TASK_CREATING });
+        // api.tasks.createDynamicAtStage(caseId, '_4862F81A-6382-4145-9A82-FDC28A86E8B4', description, actor, data)
+        return api.tasks.createDynamic(caseId, description, actor, data).then(r => {
+            // tslint:disable-next-line:no-console
+            console.log(r);
+            return dispatch({ type: DYNAMIC_TASK_CREATE_SUCCESS });
+        }).catch(err => {
+            return dispatch({ type: DYNAMIC_TASK_CREATE_FAILED, serverErrors: err })
+        })
     }
 }

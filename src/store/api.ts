@@ -45,7 +45,7 @@ export default {
             "applicant": "applicant",
             "benefits-compensation": "talent-acquisition",
             "talent-acquisition": "talent-acquisition",
-            "vacancy-department": "talent-acquisition",
+            "vacancy-department": "interviewer",
           },
           "case-user-assignments": { "owner": owner },
         }
@@ -111,13 +111,30 @@ export default {
       taskDescription: string, 
       actor: string, 
       data: any) => api().post(
-      '/server/containers/hr-hiring/cases/instances/' + caseId + '/tasks',
+      'services/rest/server/containers/hr-hiring/cases/instances/' + caseId + '/tasks',
       {
         actors: actor,
         data,
-        description: 'Dynamic task created by system, looking for additional interviewer',
+        description: taskDescription,
         groups: '',
-        name: 'AdditionalInterviewer'
+        name: 'Additional Interviewer'
+      }
+    ),
+    createDynamicAtStage: (
+      caseId: string, 
+      stageId: string,
+      taskDescription: string, 
+      actor: string, 
+      data: any) => api().post(
+        // 'services/rest/server/containers/hr-hiring/cases/instances/' + caseId + '/stages/_4862F81A-6382-4145-9A82-FDC28A86E8B4/tasks',
+        // got the stage from: http://localhost:8080/kie-server/services/rest/server/containers/hr-hiring/cases/instances/APP-0000000002/stages?active=false&page=0&pageS=10
+      'services/rest/server/containers/hr-hiring/cases/instances/' + caseId + '/stages/' + stageId + '/tasks',
+      {
+        actors: actor,
+        data,
+        description: taskDescription,
+        groups: '',
+        name: 'Additional Interviewer'
       }
     ),
     detail: (id: number) => api().get('services/rest/server/containers/hr-hiring/tasks/' + id + '/contents/input'),

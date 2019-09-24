@@ -36,7 +36,8 @@ import {
     toggleActiveTab,
     potentialTaskListFetch,
     ownedTaskListFetch,
-    claimTask, releaseTask, completeTask, taskDetail
+    claimTask, releaseTask, completeTask, taskDetail,
+    createDynamic,
 } from 'src/store/tasks/actions';
 import ProcessImageModal from 'src/components/process-image-modal';
 import { IProcessModalState } from 'src/components/process-image-modal/types';
@@ -116,6 +117,7 @@ interface ITaskProps {
     ownedTaskListFetch: typeof ownedTaskListFetch,
     completeTask: typeof completeTask,
     taskDetail: typeof taskDetail,
+    createDynamic: typeof createDynamic,
 
     sysState: ISystemState,
     taskState: ITaskState,
@@ -383,6 +385,18 @@ export class TaskContainer extends Component<ITaskProps> {
             this.props.interviewerFeedbackReviewModalToggle();
         }
 
+        const dynamicTaskCreateClick = () => {
+            // Gather processs instance id;
+            // Gather case-id of the given process instance id;
+            // start the dynamic task at the "interviewer milestone"
+            const caseId = this.props.taskState.selectedTaskOutput.caseId;
+            const description = this.props.interviewerFeedbackModalState.dt_message;
+            const actor = this.props.interviewerFeedbackModalState.dt_recipient;
+            const data = { "jobApplication": this.props.taskState.selectedTaskOutput.jobApplication }
+            this.props.createDynamic(caseId, description, actor, data);
+            this.props.toggleAdditionalInterviewer();
+        }
+
         return (
             <PageSection variant={PageSectionVariants.light}>
                 <Tabs activeKey={this.props.taskState.activeTabKey} onSelect={tabSelectWrapper}>
@@ -474,6 +488,7 @@ export class TaskContainer extends Component<ITaskProps> {
                 <InterviewerFeedbackModal
                     dynamicTaskMessageChange={this.props.dynamicTaskMessageChange}
                     dynamicTaskRecipientChange={this.props.dynamicTaskRecipientChange}
+                    dynamicTaskCreatedClick={dynamicTaskCreateClick}
                     toggleAdditionalInterviewer={this.props.toggleAdditionalInterviewer}
                     interviewerFeedbackModalState={this.props.interviewerFeedbackModalState}
                     interviewerFeedbackToggle={this.props.interviewerFeedbackToggle}
@@ -535,6 +550,7 @@ const mapDispatchToProps: any = ({
     claimTask,
     clearInterviewers,
     completeTask,
+    createDynamic,
     durationChange,
     dynamicTaskMessageChange,
     dynamicTaskRecipientChange,

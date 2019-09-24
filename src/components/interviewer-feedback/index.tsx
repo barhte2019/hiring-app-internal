@@ -28,6 +28,7 @@ interface IInterviewerFeedbackModalProps {
     toggleAdditionalInterviewer: typeof toggleAdditionalInterviewer,
     dynamicTaskMessageChange: typeof dynamicTaskMessageChange, 
     dynamicTaskRecipientChange: typeof dynamicTaskRecipientChange,
+    dynamicTaskCreatedClick: any,
 }
 
 export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModalProps) {
@@ -71,7 +72,7 @@ export default function InterviewerFeedbackModal(props: IInterviewerFeedbackModa
                 aria-label="Dynamic Task Message"
                 placeholder="Message"
                 onChange={props.dynamicTaskMessageChange} />
-            <Button className='pf-c-button pf-m-secondary'>Send</Button>
+            <Button className='pf-c-button pf-m-secondary' onClick={props.dynamicTaskCreatedClick}>Send</Button>
         </div> }
     </Modal>)
 }
