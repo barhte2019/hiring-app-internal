@@ -100,8 +100,8 @@ export function taskDetail(taskId: number) {
 export function createDynamic(caseId: string, description: string, actor: string, data: any) {
     return dispatch => {
         dispatch({ type: DYNAMIC_TASK_CREATING });
-        // api.tasks.createDynamicAtStage(caseId, '_4862F81A-6382-4145-9A82-FDC28A86E8B4', description, actor, data)
-        return api.tasks.createDynamic(caseId, description, actor, data).then(r => {
+        // api.tasks.createDynamic(caseId, description, actor, data)
+        return api.tasks.createDynamicAtStage(caseId, '_4862F81A-6382-4145-9A82-FDC28A86E8B4', description, actor, data).then(r => {
             return dispatch({ type: DYNAMIC_TASK_CREATE_SUCCESS });
         }).catch(err => {
             return dispatch({ type: DYNAMIC_TASK_CREATE_FAILED, serverErrors: err })
