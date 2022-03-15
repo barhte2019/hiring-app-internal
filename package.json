@@ -71,7 +71,7 @@
     "connected-react-router": "^6.5.2",
     "history": "^4.9.0",
     "keycloak-js": "^6.0.1",
-    "lodash-es": "^4.17.13",
+    "lodash-es": "^4.17.21",
     "prop-types": "^15.7.2",
     "react-keycloak": "^6.0.4",
     "react-redux": "^7.0.3",
